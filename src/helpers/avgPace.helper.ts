@@ -33,3 +33,11 @@ export const averagePaces = (
   const result = toHHMMSS(Math.round(sum / md.length));
   return result;
 };
+
+export const calcTime = (md: MileData[], start: number) => {
+  const sum = md.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.pace,
+    0
+  );
+  return toHHMMSS(sum + start);
+};

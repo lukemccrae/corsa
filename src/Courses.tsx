@@ -34,8 +34,9 @@ export default function Courses({ userId }: { userId: string }) {
 
   React.useEffect(() => {
     const fetchPlansData = async () => {
-      // const retrievedPlans = await fetchPlans({ userId });
-      const retrievedPlans = mockPlans();
+      const retrievedPlans = await fetchPlans({ userId });
+      // const retrievedPlans = mockPlans();
+      console.log(retrievedPlans, "<< plans");
 
       if (retrievedPlans && retrievedPlans.length > 0) {
         setPlans(retrievedPlans);

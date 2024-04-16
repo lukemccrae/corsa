@@ -8,6 +8,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LayersIcon from "@mui/icons-material/Layers";
+import AddIcon from "@mui/icons-material/Add";
 import InfoIcon from "@mui/icons-material/Info";
 export const mainListItems = (
   <React.Fragment>
@@ -22,6 +23,12 @@ export const mainListItems = (
         <SearchIcon />
       </ListItemIcon>
       <ListItemText primary="Explore" />
+    </ListItemButton>
+    <ListItemButton>
+      <ListItemIcon>
+        <AddIcon onClick={() => console.log("hi")} />
+      </ListItemIcon>
+      <ListItemText primary="Add" />
     </ListItemButton>
   </React.Fragment>
 );

@@ -7,61 +7,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Title from "./Title";
 import { Plan } from "./types";
-import { percentageOfPace, toHHMMSS } from "./helpers/avgPace.helper";
-
-function createData(
-  id: number,
-  date: string,
-  name: string,
-  shipTo: string,
-  paymentMethod: string,
-  amount: number
-) {
-  return { id, date, name, shipTo, paymentMethod, amount };
-}
-
-const rows = [
-  createData(
-    0,
-    "16 Mar, 2019",
-    "Elvis Presley",
-    "Tupelo, MS",
-    "VISA ⠀•••• 3719",
-    312.44
-  ),
-  createData(
-    1,
-    "16 Mar, 2019",
-    "Paul McCartney",
-    "London, UK",
-    "VISA ⠀•••• 2574",
-    866.99
-  ),
-  createData(
-    2,
-    "16 Mar, 2019",
-    "Tom Scholz",
-    "Boston, MA",
-    "MC ⠀•••• 1253",
-    100.81
-  ),
-  createData(
-    3,
-    "16 Mar, 2019",
-    "Michael Jackson",
-    "Gary, IN",
-    "AMEX ⠀•••• 2000",
-    654.39
-  ),
-  createData(
-    4,
-    "15 Mar, 2019",
-    "Bruce Springsteen",
-    "Long Branch, NJ",
-    "VISA ⠀•••• 5919",
-    212.79
-  ),
-];
+import {
+  averagePaces,
+  calcTime,
+  percentageOfPace,
+  toHHMMSS,
+} from "./helpers/avgPace.helper";
+import { MileProfile } from "./MileProfile";
 
 interface PaceTableProps {
   plan: Plan;
@@ -102,17 +54,24 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
                     toHHMMSS(md.pace)}
               </TableCell>
               <TableCell>
-                {" "}
-                {profile && profile[i] ? (
-                  <MileProfile profile={profile[i]}></MileProfile>
-                ) : (
-                  <div></div>
+                <MileProfile mileData={md}></MileProfile>
+              </TableCell>
+              <TableCell>
+                {averagePaces(
+                  plan.mileData.slice(0, i + 1),
+                  plan.lastMileDistance,
+                  i === plan.mileData.length - 1
                 )}
               </TableCell>
-              <TableCell></TableCell>
-              <TableCell align="right"></TableCell>
-              <TableCell align="right"></TableCell>
-              <TableCell align="right"></TableCell>
+              <TableCell align="right">
+                {Math.round(md.elevationGain * 3.28084)}
+              </TableCell>
+              <TableCell align="right">
+                {Math.round(md.elevationLoss * 3.28084)}
+              </TableCell>
+              <TableCell align="right">
+                {calcTime(plan.mileData.slice(0, i + 1), plan.startTime)}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

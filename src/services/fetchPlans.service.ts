@@ -1,5 +1,3 @@
-import { GetPlansByUserId, Plan } from "../types";
-
 interface FetchPlanProps {
   userId: string;
 }
@@ -13,6 +11,7 @@ export const fetchPlans = async (props: FetchPlanProps) => {
               elevationGain
               elevationLoss
               pace
+              mileVertProfile
             }
             name
             startTime
@@ -37,6 +36,7 @@ export const fetchPlans = async (props: FetchPlanProps) => {
       }
     );
     const plans = await result.json();
+    console.log(plans, "<< plans");
     return plans.data.getPlansByUserId;
   } catch (e) {
     console.log(e, "<< error");

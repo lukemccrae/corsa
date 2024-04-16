@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import React from "react";
+import { MileData } from "./types";
 
 const ProfileBox = styled.div`
   display: inline-flex;
@@ -10,7 +11,7 @@ const Point = styled.div`
   width: 1px;
   height: 1px;
   margin-right: 2px;
-  background-color: white;
+  background-color: black;
 
   /* Media query for screens between 769px and 1024px */
   @media (max-width: 630px) {
@@ -18,18 +19,15 @@ const Point = styled.div`
   }
 `;
 
-type MileVertProfile = {
-  mileVertProfile: number[];
-};
-
 interface MileProfileProps {
-  profile: MileVertProfile;
+  mileData: MileData;
 }
 
 export const MileProfile = (props: MileProfileProps) => {
+  console.log(props, "props");
   return (
     <ProfileBox>
-      {props.profile.mileVertProfile.map((p) => (
+      {props.mileData.mileVertProfile.map((p) => (
         <Point
           key={Math.random()}
           style={{ color: "white", paddingBottom: p + "px" }}
