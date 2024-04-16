@@ -36,7 +36,6 @@ export default function Courses({ userId }: { userId: string }) {
     const fetchPlansData = async () => {
       const retrievedPlans = await fetchPlans({ userId });
       // const retrievedPlans = mockPlans();
-      console.log(retrievedPlans, "<< plans");
 
       if (retrievedPlans && retrievedPlans.length > 0) {
         setPlans(retrievedPlans);
@@ -91,7 +90,7 @@ export default function Courses({ userId }: { userId: string }) {
           </Grid>
         </div>
       ) : (
-        <div>hihihi</div>
+        <div></div>
       )}
     </div>
   );
