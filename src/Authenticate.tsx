@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import UserPool from "./UserPool";
 import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 import jwtdecode from "jwt-decode";

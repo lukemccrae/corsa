@@ -9,7 +9,6 @@ import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -21,7 +20,6 @@ import { mainListItems, secondaryListItems } from "./listItems";
 import Chart from "./Chart";
 import { Authenticate } from "./Authenticate";
 
-import { PaceTable } from "./PaceTable";
 import Courses from "./Courses";
 
 function Copyright(props: any) {
@@ -201,21 +199,6 @@ export default function Dashboard() {
             ) : (
               <Authenticate setUser={setUser}></Authenticate>
             )}
-
-            {/* <Grid container spacing={3}>
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    height: 240,
-                  }}
-                >
-                  <Chart />
-                </Paper>
-              </Grid>
-            </Grid> */}
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
