@@ -24,7 +24,6 @@ interface MileProfileProps {
 }
 
 export const MileProfile = (props: MileProfileProps) => {
-  console.log(props, "props");
   return (
     <ProfileBox>
       {props.mileData.mileVertProfile.map((p) => (

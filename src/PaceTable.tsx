@@ -49,9 +49,9 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
                 {" "}
                 {i === plan.mileData.length - 1
                   ? //If this is the last mile, calculate the pace as a percentage
-                    toHHMMSS(percentageOfPace(plan.lastMileDistance, md.pace))
+                  toHHMMSS(percentageOfPace(plan.lastMileDistance, md.pace))
                   : // for all other miles return the pace in minutes
-                    toHHMMSS(md.pace)}
+                  toHHMMSS(md.pace)}
               </TableCell>
               <TableCell>
                 <MileProfile mileData={md}></MileProfile>

@@ -6,6 +6,7 @@ import {
   Box,
   FormControl,
   FormHelperText,
+  Grid,
   Input,
   InputLabel,
 } from "@mui/material";
@@ -85,81 +86,82 @@ export const Authenticate = (props: AuthenticationProps) => {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-      }}
-    >
-      {needToRegister ? (
-        <div>
-          <form onSubmit={onSubmitRegister}>
-            Register
-            <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="my-email-input">Email address</InputLabel>
-              <Input
-                value={registerEmail}
-                onChange={(event) => setRegisterEmail(event.target.value)}
-                id="my-email-input"
-                aria-describedby="my-helper-text"
-              />
-            </FormControl>
-            <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="my-password-input">Password</InputLabel>
-              <Input
-                value={registerPassword}
-                onChange={(event) => setRegisterPassword(event.target.value)}
-                id="my-password-input"
-                aria-describedby="my-helper-text"
-              />
-            </FormControl>
-            <button type="submit">Register</button>
-          </form>
-          <button
-            onClick={() => {
-              setNeedToRegister(false);
-            }}
-          >
-            I have an account
-          </button>
-        </div>
-      ) : (
-        <div>
-          <form onSubmit={onSubmitLogin}>
-            Login
-            <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="my-email-input">Email address</InputLabel>
-              <Input
-                value={loginEmail}
-                onChange={(event) => setLoginEmail(event.target.value)}
-                id="my-email-input"
-                aria-describedby="my-helper-text"
-              />
-            </FormControl>
-            <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="my-password-input">Password</InputLabel>
-              <Input
-                value={loginPassword}
-                onChange={(event) => setLoginPassword(event.target.value)}
-                id="my-password-input"
-                aria-describedby="my-helper-text"
-              />
-            </FormControl>
-            <button type="submit">Sign in</button>
-          </form>
-          <button
-            onClick={() => {
-              setNeedToRegister(true);
-            }}
-          >
-            Need to register
-          </button>
-        </div>
-      )}
+    <Grid justifyContent="center" style={{ height: '75vh' }} item xs={12} sm={6} container spacing={1}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100%",
+        }}
+      >
+        {needToRegister ? (
+          <Box>
+            <form onSubmit={onSubmitRegister}>
+              Register
+              <FormControl fullWidth margin="normal">
+                <InputLabel htmlFor="my-email-input">Email address</InputLabel>
+                <Input
+                  value={registerEmail}
+                  onChange={(event) => setRegisterEmail(event.target.value)}
+                  id="my-email-input"
+                  aria-describedby="my-helper-text"
+                />
+              </FormControl>
+              <FormControl fullWidth margin="normal">
+                <InputLabel htmlFor="my-password-input">Password</InputLabel>
+                <Input
+                  value={registerPassword}
+                  onChange={(event) => setRegisterPassword(event.target.value)}
+                  id="my-password-input"
+                  aria-describedby="my-helper-text"
+                />
+              </FormControl>
+              <button type="submit">Register</button>
+            </form>
+            <button
+              onClick={() => {
+                setNeedToRegister(false);
+              }}
+            >
+              I have an account
+            </button>
+          </Box>
+        ) : (
+          <Box>
+            <form onSubmit={onSubmitLogin}>
+              Login
+              <FormControl fullWidth margin="normal">
+                <InputLabel htmlFor="my-email-input">Email address</InputLabel>
+                <Input
+                  value={loginEmail}
+                  onChange={(event) => setLoginEmail(event.target.value)}
+                  id="my-email-input"
+                  aria-describedby="my-helper-text"
+                />
+              </FormControl>
+              <FormControl fullWidth margin="normal">
+                <InputLabel htmlFor="my-password-input">Password</InputLabel>
+                <Input
+                  value={loginPassword}
+                  onChange={(event) => setLoginPassword(event.target.value)}
+                  id="my-password-input"
+                  aria-describedby="my-helper-text"
+                />
+              </FormControl>
+              <button type="submit">Sign in</button>
+            </form>
+            <button
+              onClick={() => {
+                setNeedToRegister(true);
+              }}
+            >
+              Need to register
+            </button>
+          </Box>
+        )}
 
-      {/* <label htmlFor="email">Email</label>
+        {/* <label htmlFor="email">Email</label>
         <input
           value={registerEmail}
           onChange={(event) => setRegisterEmail(event.target.value)}
@@ -170,7 +172,8 @@ export const Authenticate = (props: AuthenticationProps) => {
           onChange={(event) => setRegisterPassword(event.target.value)}
         ></input>
         <button type="submit">Signup</button> */}
-    </Box>
+      </Box>
+    </Grid>
   );
 };
 

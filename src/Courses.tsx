@@ -49,51 +49,57 @@ export default function Courses({ userId }: { userId: string }) {
   };
 
   return (
-    <div>
-      <Title>{"My Courses"}</Title>
+    <Grid justifyContent="center" item xs={12} sm={12} container spacing={1}>
+      <Box>
+        <Title>{"My Courses"}</Title>
+        {plans.map((plan: Plan, i: number) => {
+          console.log(plan.id)
+          return (
+            <React.Fragment key={plan.id}>
+              <Card
+                sx={{ minWidth: 300, maxWidth: 600 }}
+                onClick={() => {
+                  handleClick(i);
+                }}
+                style={{ cursor: "pointer" }}
+                variant="outlined"
+              >
+                <CardContent>
+                  <Typography
+                    sx={{ fontSize: 14 }}
+                    color="text.secondary"
+                    gutterBottom
+                  >
+                    {plan.name}
+                  </Typography>
+                  <Typography component="div">
+                    Distance: {plan.mileData.length - 1 + plan.lastMileDistance}
+                    {" mi."}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </React.Fragment>
+          )
+        })}
 
-      {plans.map((plan: Plan, i: number) => {
-        console.log(plan.id)
-        return (
-          <React.Fragment key={plan.id}>
-            <Card
-              sx={{ minWidth: 275 }}
-              onClick={() => {
-                handleClick(i);
-              }}
-              style={{ cursor: "pointer" }}
-              variant="outlined"
-            >
-              <CardContent>
-                <Typography
-                  sx={{ fontSize: 14 }}
-                  color="text.secondary"
-                  gutterBottom
-                >
-                  {plan.name}
-                </Typography>
-                <Typography component="div">
-                  Distance: {plan.mileData.length - 1 + plan.lastMileDistance}
-                  {" mi."}
-                </Typography>
-              </CardContent>
-            </Card>
-          </React.Fragment>
-        );
-      })}
-      {/* If a plan has been selected show the table */}
-      {typeof expandedPlan === "number" ? (
-        <div>
-          <div style={{ margin: "10px" }}></div>
-          <Grid item xs={12}>
-            <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-              <PaceTable plan={plans[expandedPlan]}></PaceTable>
-            </Paper>
-          </Grid>
-        </div>
-      ) : (
-        <div></div>
-      )}
-    </div>
+        {/* If a plan has been selected show the table */}
+        {typeof expandedPlan === "number" ? (
+          <div>
+            <div style={{ margin: "10px" }}></div>
+            <Grid item xs={12} sm={12} justifyContent="center">
+              <Paper sx={{ minWidth: 200, maxWidth: 600 }}>
+                <PaceTable plan={plans[expandedPlan]}></PaceTable>
+              </Paper>
+            </Grid>
+          </div>
+        ) : (
+          <div></div>
+        )}
+      </Box>
+    </Grid>
+
+
+
+
   );
 }
