@@ -4,31 +4,30 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
 import MapIcon from "@mui/icons-material/Map";
-import SearchIcon from "@mui/icons-material/Search";
-import PeopleIcon from "@mui/icons-material/People";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import LayersIcon from "@mui/icons-material/Layers";
 import AddIcon from "@mui/icons-material/Add";
 import InfoIcon from "@mui/icons-material/Info";
-export const mainListItems = (
+interface MainListItemsProps {
+  setAddCourseOpen: Function;
+}
+export const mainListItems = ({ setAddCourseOpen }: MainListItemsProps) => (
   <React.Fragment>
     <ListItemButton>
       <ListItemIcon>
-        <MapIcon />
+        <MapIcon onClick={() => setAddCourseOpen(false)} />
       </ListItemIcon>
-      <ListItemText primary="My Courses" />
+      <ListItemText />
     </ListItemButton>
-    <ListItemButton>
+    {/* <ListItemButton>
       <ListItemIcon>
         <SearchIcon />
       </ListItemIcon>
       <ListItemText primary="Explore" />
-    </ListItemButton>
+    </ListItemButton> */}
     <ListItemButton>
       <ListItemIcon>
-        <AddIcon onClick={() => console.log("hi")} />
+        <AddIcon onClick={() => setAddCourseOpen(true)} />
       </ListItemIcon>
-      <ListItemText primary="Add" />
+      <ListItemText />
     </ListItemButton>
   </React.Fragment>
 );
@@ -40,7 +39,7 @@ export const secondaryListItems = (
       <ListItemIcon>
         <InfoIcon />
       </ListItemIcon>
-      <ListItemText primary="About" />
+      <ListItemText />
     </ListItemButton>
   </React.Fragment>
 );

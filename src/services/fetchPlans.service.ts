@@ -28,7 +28,7 @@ export const fetchPlans = async (props: FetchPlanProps) => {
         headers: {
           "Content-Type": "application/json",
           // 'x-api-key': `${process.env.NEXT_PUBLIC_X_API_KEY}`
-          "x-api-key": "da2-n2ejbqwu4rdmxa37xezj5fm2ri",
+          "x-api-key": "da2-jks23istirg3fm73zd5lecjthy",
 
           // Authorization: `Bearer ${JSON.stringify(token)}`,
         },

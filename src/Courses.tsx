@@ -53,6 +53,7 @@ export default function Courses({ userId }: { userId: string }) {
       <Title>{"My Courses"}</Title>
 
       {plans.map((plan: Plan, i: number) => {
+        console.log(plan.id)
         return (
           <React.Fragment key={plan.id}>
             <Card
@@ -61,6 +62,7 @@ export default function Courses({ userId }: { userId: string }) {
                 handleClick(i);
               }}
               style={{ cursor: "pointer" }}
+              variant="outlined"
             >
               <CardContent>
                 <Typography
