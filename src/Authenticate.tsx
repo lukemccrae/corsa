@@ -7,8 +7,10 @@ import {
   FormControl,
   FormHelperText,
   Grid,
+  Container,
   Input,
   InputLabel,
+  useMediaQuery,
 } from "@mui/material";
 
 interface AuthenticationProps {
@@ -40,6 +42,7 @@ export const Authenticate = (props: AuthenticationProps) => {
 
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
+  const isSmallScreen = useMediaQuery('(max-width:600px)');
 
   const onSubmitRegister = (event: any) => {
     event.preventDefault();
@@ -86,94 +89,94 @@ export const Authenticate = (props: AuthenticationProps) => {
   };
 
   return (
-    <Grid justifyContent="center" style={{ height: '75vh' }} item xs={12} sm={6} container spacing={1}>
+    <Container>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <h2>Corsa is a split calculator for trail racing.</h2>
+      </div>
+
       <Box
         sx={{
           display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
+          justifyContent: "space-around",
+          alignItems: "flex-start",
           height: "100%",
+          flexDirection: isSmallScreen ? 'column' : 'row',
+          gap: '16px',
         }}
       >
-        {needToRegister ? (
-          <Box>
-            <form onSubmit={onSubmitRegister}>
-              Register
+        <Box style={{ padding: "30px", width: "40vw", minWidth: "300px", backgroundColor: "grey", opacity: "90%" }} >
+          <Grid container spacing={2}>
+            <Grid item xs={4}>
+              <h2 style={{ margin: "0" }}>Register</h2>
+
+              <form onSubmit={onSubmitRegister}>
+                <FormControl margin="normal">
+                  <Input
+                    value={registerEmail}
+                    onChange={(event) => setRegisterEmail(event.target.value)}
+                    id="my-email-input"
+                    aria-describedby="my-helper-text"
+                    placeholder="Email"
+                  />
+                </FormControl>
+                <FormControl margin="normal">
+                  <Input
+                    value={registerPassword}
+                    onChange={(event) => setRegisterPassword(event.target.value)}
+                    id="my-password-input"
+                    aria-describedby="my-helper-text"
+                    placeholder="Password"
+                  />
+                </FormControl>
+                <button type="submit">Register</button>
+              </form>
+            </Grid>
+            <Grid item xs={8}>
+              <div>
+                <ol>
+                  <li><h3>Get insights from GPX</h3></li>
+                  <li><h3>Create pacing plan</h3></li>
+                  <li><h3>Target performance goals</h3></li>
+                </ol>
+                <img style={{ width: '180px', height: '120px' }} src="https://via.placeholder.com/500" alt="Application example" />
+              </div>
+            </Grid>
+          </Grid>
+        </Box>
+
+        <Box style={{ padding: "30px", width: "20vw", minWidth: "300px", backgroundColor: "grey", opacity: "90%", display: "flex", justifyContent: "center" }} >
+          <div style={{ width: "15vw", minWidth: "250px" }}>
+            <h2 style={{ margin: "0" }}>Sign In</h2>
+
+            <form onSubmit={onSubmitLogin} style={{ width: "100%" }}>
               <FormControl fullWidth margin="normal">
-                <InputLabel htmlFor="my-email-input">Email address</InputLabel>
-                <Input
-                  value={registerEmail}
-                  onChange={(event) => setRegisterEmail(event.target.value)}
-                  id="my-email-input"
-                  aria-describedby="my-helper-text"
-                />
-              </FormControl>
-              <FormControl fullWidth margin="normal">
-                <InputLabel htmlFor="my-password-input">Password</InputLabel>
-                <Input
-                  value={registerPassword}
-                  onChange={(event) => setRegisterPassword(event.target.value)}
-                  id="my-password-input"
-                  aria-describedby="my-helper-text"
-                />
-              </FormControl>
-              <button type="submit">Register</button>
-            </form>
-            <button
-              onClick={() => {
-                setNeedToRegister(false);
-              }}
-            >
-              I have an account
-            </button>
-          </Box>
-        ) : (
-          <Box>
-            <form onSubmit={onSubmitLogin}>
-              Login
-              <FormControl fullWidth margin="normal">
-                <InputLabel htmlFor="my-email-input">Email address</InputLabel>
                 <Input
                   value={loginEmail}
                   onChange={(event) => setLoginEmail(event.target.value)}
                   id="my-email-input"
                   aria-describedby="my-helper-text"
+                  placeholder="Email"
                 />
               </FormControl>
               <FormControl fullWidth margin="normal">
-                <InputLabel htmlFor="my-password-input">Password</InputLabel>
                 <Input
                   value={loginPassword}
                   onChange={(event) => setLoginPassword(event.target.value)}
                   id="my-password-input"
                   aria-describedby="my-helper-text"
+                  placeholder="Password"
+
                 />
               </FormControl>
               <button type="submit">Sign in</button>
             </form>
-            <button
-              onClick={() => {
-                setNeedToRegister(true);
-              }}
-            >
-              Need to register
-            </button>
-          </Box>
-        )}
+          </div>
 
-        {/* <label htmlFor="email">Email</label>
-        <input
-          value={registerEmail}
-          onChange={(event) => setRegisterEmail(event.target.value)}
-        ></input>
-        <label htmlFor="password">Password</label>
-        <input
-          value={registerPassword}
-          onChange={(event) => setRegisterPassword(event.target.value)}
-        ></input>
-        <button type="submit">Signup</button> */}
+
+
+        </Box>
       </Box>
-    </Grid>
+    </Container >
   );
 };
 

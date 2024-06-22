@@ -42,7 +42,7 @@ export const handleFileUpload = async (gpx: string, userId: string) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": `da2-jks23istirg3fm73zd5lecjthy`,
+          "x-api-key": `da2-hf2lszirqnej7ayhv7h7dyu5vu`,
           // 'x-api-key': `${process.env.NEXT_PUBLIC_X_API_KEY}`
           // Authorization: `Bearer ${JSON.stringify(token)}`,
         },

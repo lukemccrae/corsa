@@ -11,7 +11,7 @@ export const AddCourse = (props: AddCourseProps) => {
   const [showFileUpload, setShowFileUpload] = React.useState(false);
   const [gpx, setGpx] = React.useState<string>("");
 
-  React.useEffect(() => {}, []);
+  React.useEffect(() => { }, []);
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -38,42 +38,25 @@ export const AddCourse = (props: AddCourseProps) => {
   return (
     <div>
       <Title>{"Add Course"}</Title>
-      {showFileUpload ? (
-        <div>
-          <input type="file" accept=".gpx" onChange={handleFileChange} />
-          <span
-            style={{
-              color: "blue",
-              textDecoration: "underline",
-              cursor: "pointer",
-              display: "block",
-              fontSize: "12px",
-            }}
-            onClick={() => setShowFileUpload(false)}
-          >
-            Text input
-          </span>
-          <button onClick={handleSubmit}>Submit</button>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <MinHeightTextarea gpx={gpx} setGpx={setGpx}></MinHeightTextarea>
-          <span
-            style={{
-              color: "blue",
-              textDecoration: "underline",
-              cursor: "pointer",
-              fontSize: "12px",
-              display: "flex",
-              justifyContent: "flex-end",
-            }}
-            onClick={() => setShowFileUpload(true)}
-          >
-            File input
-          </span>
-          <button type="submit">Submit</button>
-        </form>
-      )}
+      {
+        (
+          <div>
+            <input type="file" accept=".gpx" onChange={handleFileChange} />
+            <span
+              style={{
+                color: "blue",
+                textDecoration: "underline",
+                cursor: "pointer",
+                display: "block",
+                fontSize: "12px",
+              }}
+              onClick={() => setShowFileUpload(false)}
+            >
+            </span>
+            <button onClick={handleSubmit}>Submit</button>
+          </div>
+        )
+      }
     </div>
   );
 };

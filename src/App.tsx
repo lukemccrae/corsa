@@ -29,24 +29,6 @@ import Courses from "./Courses";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { AddButton } from "./AddButton";
 
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://corsa.run">
-        CORSA
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
@@ -91,7 +73,7 @@ export default function Dashboard() {
         <CssBaseline />
         <Box sx={{ flexGrow: 1 }}>
           <AppBar position="fixed">
-            <Toolbar>
+            <Toolbar style={{ display: isLoggedIn ? "flex" : "none" }}>
               <Typography
                 component="h1"
                 variant="h6"
@@ -134,12 +116,13 @@ export default function Dashboard() {
         <Box
           component="main"
           sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
+            backgroundImage: `url("https://i.postimg.cc/jd5W4p0w/greg-rosenke-4-OBZRv-L9v3-Y-unsplash-1-min.jpg")`,
             flexGrow: 1,
-            height: "100%",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundAttachment: "fixed", /* This keeps the background image fixed while scrolling */
+            backgroundRepeat: "no-repeat",
+            height: "100vh",
             overflow: "auto",
             width: '100vw',
             justifyContent: "center"
@@ -168,10 +151,27 @@ export default function Dashboard() {
                 setIsLoggedIn={setIsLoggedIn}
               ></Authenticate>
             )}
-            {/* <Copyright sx={{ pt: 4 }} /> */}
           </Container>
         </Box>
+        <Box
+          component="footer"
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          width="100%"
+          height="30px"
+          bgcolor="grey.200"
+          p={1}
+          position="fixed"
+          bottom="0"
+        >
+          <div>{"site by "}<a href="https://www.linkedin.com/in/lukemccrae/"> Luke McCrae</a></div>
+          <div>
+            <a href="https://github.com/lukemccrae/corsa">Copyleft</a> CORSA {new Date().getFullYear()}
+          </div>
+        </Box>
       </Box>
+
     </ThemeProvider>
   );
 }
