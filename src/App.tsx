@@ -137,7 +137,7 @@ export default function Dashboard() {
                     sx={{ p: 5, display: "flex", flexDirection: "column" }}
                   >
                     {addCourseOpen ? (
-                      <AddCourse userId={user.userId}></AddCourse>
+                      <AddCourse setAddCourseOpen={setAddCourseOpen} userId={user.userId}></AddCourse>
                     ) : (
                       <Courses userId={user.userId}></Courses>
                     )}

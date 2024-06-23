@@ -19,10 +19,6 @@ interface PaceTableProps {
   plan: Plan;
 }
 
-function preventDefault(event: React.MouseEvent) {
-  event.preventDefault();
-}
-
 export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
   return (
     <React.Fragment>
@@ -30,19 +26,19 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Mile</TableCell>
+            <TableCell sx={{ padding: "0 0 0 3px" }}>Mile</TableCell>
             <TableCell>Pace</TableCell>
-            <TableCell>Profile</TableCell>
-            <TableCell>Avg.</TableCell>
-            <TableCell align="left">Gain</TableCell>
-            <TableCell>Loss</TableCell>
-            <TableCell>Elapsed</TableCell>
+            <TableCell sx={{ padding: "0" }}>Profile</TableCell>
+            <TableCell sx={{ padding: "5px" }}>Avg.</TableCell>
+            <TableCell sx={{ padding: "10px" }} align="left">Gain</TableCell>
+            <TableCell sx={{ padding: "0 5px 0 0" }}>Loss</TableCell>
+            <TableCell sx={{ padding: "0 3px 0 5px" }}>Elapsed</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {plan.mileData.map((md, i) => (
             <TableRow key={md.index}>
-              <TableCell>
+              <TableCell sx={{ padding: "0 0 0 3px" }}>
                 {i === plan.mileData.length - 1 ? plan.lastMileDistance : i + 1}
               </TableCell>
               <TableCell>
@@ -53,10 +49,10 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
                   : // for all other miles return the pace in minutes
                   toHHMMSS(md.pace)}
               </TableCell>
-              <TableCell>
+              <TableCell sx={{ padding: "0" }}>
                 <MileProfile mileData={md}></MileProfile>
               </TableCell>
-              <TableCell>
+              <TableCell sx={{ padding: "5px" }}>
                 {averagePaces(
                   plan.mileData.slice(0, i + 1),
                   plan.lastMileDistance,
@@ -66,10 +62,10 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
               <TableCell align="right">
                 {Math.round(md.elevationGain * 3.28084)}
               </TableCell>
-              <TableCell align="right">
+              <TableCell align="right" sx={{ padding: "0 5px 0 0" }}>
                 {Math.round(md.elevationLoss * 3.28084)}
               </TableCell>
-              <TableCell align="right">
+              <TableCell align="right" sx={{ padding: "0 3px 0 0" }}>
                 {calcTime(plan.mileData.slice(0, i + 1), plan.startTime)}
               </TableCell>
             </TableRow>

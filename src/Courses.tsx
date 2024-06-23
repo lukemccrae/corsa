@@ -9,6 +9,9 @@ import Title from "./Title";
 import { fetchPlans } from "./services/fetchPlans.service";
 import { averagePaces } from "./helpers/avgPace.helper";
 import Card from "@mui/material/Card";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { deletePlanById } from './services/deletePlan.service'
+
 
 import { Plan, User } from "./types";
 import {
@@ -17,10 +20,12 @@ import {
   CardActions,
   CardContent,
   Grid,
+  IconButton,
   Paper,
   Typography,
 } from "@mui/material";
 import { PaceTable } from "./PaceTable";
+import { makeStyles } from "@mui/styles";
 
 const mockPlans = () => {
   return JSON.parse(
@@ -65,13 +70,26 @@ export default function Courses({ userId }: { userId: string }) {
                 variant="outlined"
               >
                 <CardContent>
-                  <Typography
-                    sx={{ fontSize: 14 }}
-                    color="text.secondary"
-                    gutterBottom
-                  >
-                    {plan.name}
-                  </Typography>
+                  <div style={{
+                    display: "flex",
+                    justifyContent: "space-between"
+                  }}>
+                    <Typography
+                      sx={{ fontSize: 14 }}
+                      color="text.secondary"
+                      gutterBottom
+                    >
+                      {plan.name}
+                    </Typography>
+                    <IconButton aria-label="delete" size="small">
+                      <DeleteIcon onClick={async () => {
+                        const planId = plan.id;
+                        const userId = plan.userId;
+                        const deleteResult = await deletePlanById({ planId, userId })
+                        if (deleteResult) setPlans(plans.splice(i))
+                      }} fontSize="inherit" />
+                    </IconButton>
+                  </div>
                   <Typography component="div">
                     Distance: {plan.mileData.length - 1 + plan.lastMileDistance}
                     {" mi."}

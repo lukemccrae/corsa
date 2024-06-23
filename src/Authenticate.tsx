@@ -138,7 +138,7 @@ export const Authenticate = (props: AuthenticationProps) => {
                   <li><h3>Create pacing plan</h3></li>
                   <li><h3>Target performance goals</h3></li>
                 </ol>
-                <img style={{ width: '180px', height: '120px' }} src="https://via.placeholder.com/500" alt="Application example" />
+                <img style={{ width: '400px', height: '275px' }} src="https://i.postimg.cc/QtP6qHj4/Screenshot-2024-06-22-214158.png" alt="Application example" />
               </div>
             </Grid>
           </Grid>

@@ -1,4 +1,4 @@
-export const handleFileUpload = async (gpx: string, userId: string) => {
+export const handleFileUpload = async (gpx: string, userId: string, setProgress: Function, setAddCourseOpen: Function) => {
   console.log(gpx, userId, '<< gpx, userId')
   const formMutationQuery = (uuid: string) => {
     const query = `
@@ -8,10 +8,10 @@ export const handleFileUpload = async (gpx: string, userId: string) => {
       }
     }
   `;
-    console.log(query, '<< query')
     return query;
   };
   try {
+    setProgress(10)
     // retrieve presigned URL for uploading object to S3
     const presignedResponse = await fetch(
       "https://85fn1e2pyk.execute-api.us-west-1.amazonaws.com/prod/gpx-presigned",
@@ -19,6 +19,7 @@ export const handleFileUpload = async (gpx: string, userId: string) => {
         method: "GET",
       }
     );
+    setProgress(25)
 
     // resources for uploading to s3
     const { url, uuid } = await presignedResponse.json();
@@ -29,7 +30,8 @@ export const handleFileUpload = async (gpx: string, userId: string) => {
       },
       body: gpx,
     });
-    console.log(uuid, '<< uuid')
+    setProgress(55)
+
 
     if (!uploadResult.ok) throw new Error("Failed to upload to S3");
 
@@ -50,8 +52,11 @@ export const handleFileUpload = async (gpx: string, userId: string) => {
       }
     );
 
+
     const data = await response.json();
     console.log(data);
+    setAddCourseOpen(false)
+    setProgress(0)
     return data;
   } catch (e) {
     console.log(e);
