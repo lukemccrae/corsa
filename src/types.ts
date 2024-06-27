@@ -64,6 +64,7 @@ export type MileData = {
   elevationLoss: number;
   pace: number;
   mileVertProfile: number[];
+  stopTime: number;
 };
 
 export interface FeatureCollection {

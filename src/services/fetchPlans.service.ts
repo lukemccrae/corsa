@@ -12,6 +12,7 @@ export const fetchPlans = async (props: FetchPlanProps) => {
               elevationLoss
               pace
               mileVertProfile
+              stopTime
             }
             name
             startTime
