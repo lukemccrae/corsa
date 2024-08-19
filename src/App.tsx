@@ -52,12 +52,6 @@ export default function Dashboard() {
   const [user, setUser] = React.useState({ email: "", exp: 123, userId: "" });
   const [addCourseOpen, setAddCourseOpen] = React.useState(false);
 
-  React.useEffect(() => {
-    // Check local storage for login status on component mount
-    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-    setIsLoggedIn(loggedIn);
-  }, []);
-
   const logout = () => {
     setUser({ email: "", exp: 123, userId: "" });
     setIsLoggedIn(false);
@@ -116,7 +110,7 @@ export default function Dashboard() {
         <Box
           component="main"
           sx={{
-            backgroundImage: `url('../public/splash.min.jpg');`,
+            backgroundImage: `url('../splash.min.jpg');`,
             flexGrow: 1,
             backgroundSize: "cover",
             backgroundPosition: "center",

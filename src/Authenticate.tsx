@@ -12,6 +12,7 @@ import {
   InputLabel,
   useMediaQuery,
 } from "@mui/material";
+import React from "react";
 
 interface AuthenticationProps {
   setUser: Function;
@@ -44,6 +45,16 @@ export const Authenticate = (props: AuthenticationProps) => {
   const [registerPassword, setRegisterPassword] = useState("");
   const isSmallScreen = useMediaQuery('(max-width:600px)');
 
+  React.useEffect(() => {
+    let token = localStorage.getItem("user")
+    if (token) {
+      const decodedToken = jwtdecode(token) as CognitoToken;
+      const { email, exp, sub } = decodedToken;
+
+      if (decodedToken.exp - Date.now() / 1000 > 0) setLoginState(email, exp, sub)
+    }
+  }, []);
+
   const onSubmitRegister = (event: any) => {
     event.preventDefault();
 
@@ -54,6 +65,11 @@ export const Authenticate = (props: AuthenticationProps) => {
       console.log(data);
     });
   };
+
+  const setLoginState = async (email: string, exp: number, userId: string) => {
+    props.setUser({ email, userId, exp });
+    props.setIsLoggedIn(true);
+  }
 
   const onSubmitLogin = (event: any) => {
     event.preventDefault();
@@ -73,13 +89,13 @@ export const Authenticate = (props: AuthenticationProps) => {
 
         const idToken = result.getIdToken().getJwtToken();
         const decodedToken = jwtdecode(idToken) as CognitoToken;
-        console.log(idToken, "<< idToken");
 
         const { email, exp, sub } = decodedToken;
-        const userId = sub;
 
-        props.setUser({ email, userId, exp });
-        props.setIsLoggedIn(true);
+        // set token in storage for auto login
+        localStorage.setItem('user', idToken);
+
+        setLoginState(email, exp, sub)
       },
 
       onFailure: function (err) {
@@ -126,6 +142,7 @@ export const Authenticate = (props: AuthenticationProps) => {
                     id="my-password-input"
                     aria-describedby="my-helper-text"
                     placeholder="Password"
+                    type="password"
                   />
                 </FormControl>
                 <button type="submit">Register</button>
@@ -165,7 +182,7 @@ export const Authenticate = (props: AuthenticationProps) => {
                   id="my-password-input"
                   aria-describedby="my-helper-text"
                   placeholder="Password"
-
+                  type="password"
                 />
               </FormControl>
               <button type="submit">Sign in</button>

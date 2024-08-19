@@ -52,7 +52,6 @@ export default function Courses({ userId }: { userId: string }) {
       <Box>
         <Title>{"My Courses"}</Title>
         {plans.map((plan: Plan, i: number) => {
-          console.log(plan.id)
           return (
             <React.Fragment key={plan.id}>
               <Card
