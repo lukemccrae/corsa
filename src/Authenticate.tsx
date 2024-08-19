@@ -36,8 +36,8 @@ type CognitoToken = {
 };
 
 export const Authenticate = (props: AuthenticationProps) => {
-  const [loginEmail, setLoginEmail] = useState("w33ble@gmail.com");
-  const [loginPassword, setLoginPassword] = useState("Eeeee4444$$$$");
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   const [needToRegister, setNeedToRegister] = useState(false);
 
   const [registerEmail, setRegisterEmail] = useState("");

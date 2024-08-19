@@ -116,7 +116,7 @@ export default function Dashboard() {
         <Box
           component="main"
           sx={{
-            backgroundImage: `url("https://i.postimg.cc/jd5W4p0w/greg-rosenke-4-OBZRv-L9v3-Y-unsplash-1-min.jpg")`,
+            backgroundImage: `url('../public/splash.min.jpg');`,
             flexGrow: 1,
             backgroundSize: "cover",
             backgroundPosition: "center",
