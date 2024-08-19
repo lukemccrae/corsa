@@ -54,6 +54,7 @@ export default function Dashboard() {
 
   const logout = () => {
     setUser({ email: "", exp: 123, userId: "" });
+    localStorage.clear()
     setIsLoggedIn(false);
   };
 
