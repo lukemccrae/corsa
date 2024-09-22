@@ -48,8 +48,9 @@ export const Authenticate = (props: AuthenticationProps) => {
   React.useEffect(() => {
     let token = localStorage.getItem("user")
     if (token) {
+      // check for outdated token
       const decodedToken = jwtdecode(token) as CognitoToken;
-      const { email, exp, sub } = decodedToken;
+      const { exp, email, sub } = decodedToken;
 
       if (decodedToken.exp - Date.now() / 1000 > 0) setLoginState(email, exp, sub)
     }
