@@ -8,9 +8,10 @@ import { deletePlanById } from "./services/deletePlan.service";
 
 interface DeleteCourseProps {
     plan: Plan
-    deletePlan: Function
     setPlans: Function
     plans: Plan[]
+    setExpandedPlan: Function
+
 }
 
 export const DeleteCourse = (props: DeleteCourseProps) => {
@@ -19,10 +20,11 @@ export const DeleteCourse = (props: DeleteCourseProps) => {
     const deletePlan = async () => {
         const planId = props.plan.id;
         const userId = props.plan.userId;
-        const result = await deletePlanById({ userId, planId })
-        // remove plans from local array
         const updatedPlans = props.plans.filter(p => p.id !== props.plan.id);
         props.setPlans(updatedPlans)
+        props.setExpandedPlan(undefined)
+        const result = await deletePlanById({ userId, planId })
+        // remove plans from local array
     }
 
     return (

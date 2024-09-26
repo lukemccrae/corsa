@@ -47,11 +47,6 @@ export default function Courses(props: CourseProps) {
 
   };
 
-  const deletePlan = async (userId: string, planId: string) => {
-    // const result = await deletePlanById({ userId, planId })
-    console.log(userId, planId)
-  }
-
   return (
     <Grid justifyContent="center" item xs={12} sm={12} container spacing={1}>
       <Box>
@@ -85,7 +80,7 @@ export default function Courses(props: CourseProps) {
                     </Typography>
                     <div style={{ display: props.expandedPlan == i ? "flex" : "none" }}>
                       {/* <WorkoutGeneratorButton generatorOpen={generatorOpen} setGeneratorOpen={setGeneratorOpen}></WorkoutGeneratorButton> */}
-                      <DeleteCourse deletePlan={deletePlan} plan={plan} plans={plans} setPlans={setPlans}></DeleteCourse>
+                      <DeleteCourse setExpandedPlan={props.setExpandedPlan} plan={plan} plans={plans} setPlans={setPlans}></DeleteCourse>
                     </div>
                   </div>
                   <Typography component="div">
