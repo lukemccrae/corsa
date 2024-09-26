@@ -13,7 +13,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import React from "react";
-
+import { retrieveUserToken } from "./helpers/token.helper";
 interface AuthenticationProps {
   setUser: Function;
   isLoggedIn: Boolean;
@@ -46,13 +46,16 @@ export const Authenticate = (props: AuthenticationProps) => {
   const isSmallScreen = useMediaQuery('(max-width:600px)');
 
   React.useEffect(() => {
-    let token = localStorage.getItem("user")
+    const token = retrieveUserToken()
     if (token) {
       // check for outdated token
       const decodedToken = jwtdecode(token) as CognitoToken;
       const { exp, email, sub } = decodedToken;
 
-      if (decodedToken.exp - Date.now() / 1000 > 0) setLoginState(email, exp, sub)
+      if (decodedToken.exp - Date.now() / 1000 > 0) {
+        setLoginState(email, exp, sub)
+      }
+
     }
   }, []);
 

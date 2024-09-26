@@ -1,3 +1,5 @@
+import { retrieveUserToken } from "../helpers/token.helper";
+
 interface FetchPlanProps {
   userId: string;
 }
@@ -31,8 +33,7 @@ export const fetchPlans = async (props: FetchPlanProps) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // 'x-api-key': `${process.env.NEXT_PUBLIC_X_API_KEY}`
-          "Authorization": `Bearer ${token}`,
+          "Authorization": `Bearer ${retrieveUserToken()}`,
 
           // Authorization: `Bearer ${JSON.stringify(token)}`,
         },

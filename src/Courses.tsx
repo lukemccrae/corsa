@@ -3,9 +3,6 @@ import Title from "./Title";
 import { fetchPlans } from "./services/fetchPlans.service";
 import Card from "@mui/material/Card";
 import { deletePlanById } from "./services/deletePlan.service";
-
-
-
 import { Plan, User } from "./types";
 import {
   Box,
@@ -17,27 +14,35 @@ import {
 } from "@mui/material";
 import { PaceTable } from "./PaceTable";
 import { DeleteCourse } from "./DeleteCourse";
+import { WorkoutGeneratorButton } from "./WorkoutGeneratorButton"
+import { WorkoutGenerator } from "./WorkoutGenerator";
 
-export default function Courses({ userId }: { userId: string }) {
+interface CourseProps {
+  userId: string
+  expandedPlan: number | undefined
+  setExpandedPlan: Function
+}
+
+export default function Courses(props: CourseProps) {
   const [plans, setPlans] = React.useState<Plan[]>([]);
-  const [expandedPlan, setExpandedPlan] = React.useState<number | undefined>();
+  const [generatorOpen, setGeneratorOpen] = React.useState<boolean>(false)
 
   React.useEffect(() => {
     const fetchPlansData = async () => {
-      const retrievedPlans = await fetchPlans({ userId });
+      const retrievedPlans = await fetchPlans({ userId: props.userId });
 
       if (retrievedPlans && retrievedPlans.length > 0) {
         setPlans(retrievedPlans);
       }
     };
     fetchPlansData();
-  }, [userId]);
+  }, [props.userId]);
 
   const handleClick = (index: number) => {
-    if (expandedPlan === index) {
-      setExpandedPlan(undefined)
+    if (props.expandedPlan === index) {
+      props.setExpandedPlan(undefined)
     } else {
-      setExpandedPlan(index);
+      props.setExpandedPlan(index);
     }
 
   };
@@ -58,7 +63,7 @@ export default function Courses({ userId }: { userId: string }) {
                 sx={{
                   minWidth: 300,
                   maxWidth: 600,
-                  display: typeof expandedPlan === 'undefined' || expandedPlan === i ? "block" : "none"
+                  display: typeof props.expandedPlan === 'undefined' || props.expandedPlan === i ? "block" : "none"
                 }}
                 onClick={() => {
                   handleClick(i);
@@ -78,8 +83,9 @@ export default function Courses({ userId }: { userId: string }) {
                     >
                       {plan.name}
                     </Typography>
-                    <div style={{ display: expandedPlan == i ? "block" : "none" }}>
-                      <DeleteCourse deletePlan={deletePlan} plan={plan}></DeleteCourse>
+                    <div style={{ display: props.expandedPlan == i ? "flex" : "none" }}>
+                      <WorkoutGeneratorButton generatorOpen={generatorOpen} setGeneratorOpen={setGeneratorOpen}></WorkoutGeneratorButton>
+                      <DeleteCourse deletePlan={deletePlan} plan={plan} plans={plans} setPlans={setPlans}></DeleteCourse>
                     </div>
                   </div>
                   <Typography component="div">
@@ -93,12 +99,13 @@ export default function Courses({ userId }: { userId: string }) {
         })}
 
         {/* If a plan has been selected show the table */}
-        {typeof expandedPlan === "number" ? (
+        {typeof props.expandedPlan === "number" ? (
           <div>
             <div style={{ margin: "10px" }}></div>
             <Grid item xs={12} sm={12} justifyContent="center">
+              <WorkoutGenerator plan={plans[props.expandedPlan]} setGeneratorOpen={setGeneratorOpen} generatorOpen={generatorOpen}></WorkoutGenerator>
               <Paper sx={{ minWidth: 200, maxWidth: 600 }}>
-                <PaceTable plan={plans[expandedPlan]}></PaceTable>
+                <PaceTable plan={plans[props.expandedPlan]}></PaceTable>
               </Paper>
             </Grid>
           </div>

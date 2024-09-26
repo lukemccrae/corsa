@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
@@ -26,7 +26,6 @@ import { AddCourse } from "./AddCourse";
 import ProfileDropdown from "./ProfileDropdown";
 
 import Courses from "./Courses";
-import { Button, Menu, MenuItem } from "@mui/material";
 import { AddButton } from "./AddButton";
 
 interface AppBarProps extends MuiAppBarProps {
@@ -51,6 +50,7 @@ export default function Dashboard() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [user, setUser] = React.useState({ email: "", exp: 123, userId: "" });
   const [addCourseOpen, setAddCourseOpen] = React.useState(false);
+  const [expandedPlan, setExpandedPlan] = React.useState<number | undefined>();
 
   const logout = () => {
     setUser({ email: "", exp: 123, userId: "" });
@@ -134,7 +134,7 @@ export default function Dashboard() {
                     {addCourseOpen ? (
                       <AddCourse setAddCourseOpen={setAddCourseOpen} userId={user.userId}></AddCourse>
                     ) : (
-                      <Courses userId={user.userId}></Courses>
+                      <Courses expandedPlan={expandedPlan} setExpandedPlan={setExpandedPlan} userId={user.userId}></Courses>
                     )}
                   </Paper>
                 </Grid>

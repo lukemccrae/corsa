@@ -1,3 +1,5 @@
+import { retrieveUserToken } from "../helpers/token.helper";
+
 interface DeletePlanProps {
     userId: string;
     planId: string;
@@ -18,10 +20,9 @@ export const deletePlanById = async (props: DeletePlanProps) => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    // 'x-api-key': `${process.env.NEXT_PUBLIC_X_API_KEY}`
-                    "x-api-key": "da2-uo4bjy5ah5akdljbau3r4gxwmi",
+                    "Authorization": `Bearer ${retrieveUserToken()}`,
 
-                    // Authorization: `Bearer ${JSON.stringify(token)}`,
+
                 },
                 body: JSON.stringify({ query }),
             }

@@ -1,3 +1,5 @@
+import { retrieveUserToken } from "../helpers/token.helper";
+
 export const handleFileUpload = async (gpx: string, userId: string, setProgress: Function, setAddCourseOpen: Function) => {
   console.log(gpx, userId, '<< gpx, userId')
   const formMutationQuery = (uuid: string) => {
@@ -45,9 +47,7 @@ export const handleFileUpload = async (gpx: string, userId: string, setProgress:
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": `da2-uo4bjy5ah5akdljbau3r4gxwmi`,
-          // 'x-api-key': `${process.env.NEXT_PUBLIC_X_API_KEY}`
-          // Authorization: `Bearer ${JSON.stringify(token)}`,
+          "Authorization": `Bearer ${retrieveUserToken()}`,
         },
         body: JSON.stringify({ query }),
       }

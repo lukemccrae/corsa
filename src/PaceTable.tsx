@@ -23,7 +23,7 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
   return (
     <React.Fragment>
       <Title>{"Course Details"}</Title>
-      <Table size="small">
+      <Table size="small" id="paceTable">
         <TableHead>
           <TableRow>
             <TableCell sx={{ padding: "0 0 0 3px" }}>Mile</TableCell>
@@ -32,6 +32,8 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
             <TableCell sx={{ padding: "5px" }}>Avg.</TableCell>
             <TableCell sx={{ padding: "10px" }} align="left">Gain</TableCell>
             <TableCell sx={{ padding: "0 5px 0 0" }}>Loss</TableCell>
+            <TableCell sx={{ padding: "0 5px 0 0" }}>GAP</TableCell>
+
             {/* <TableCell sx={{ padding: "0 3px 0 5px" }}>Stop Time</TableCell> */}
 
             <TableCell sx={{ padding: "0 3px 0 5px" }}>Elapsed</TableCell>
@@ -66,6 +68,10 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
               </TableCell>
               <TableCell align="right" sx={{ padding: "0 5px 0 0" }}>
                 {Math.round(md.elevationLoss * 3.28084)}
+              </TableCell>
+              {/* GAP */}
+              <TableCell sx={{ padding: "5px" }}>
+                {toHHMMSS(Math.round(md.pace / Math.pow(1.1, md.elevationGain / 100)))}
               </TableCell>
               {/* <TableCell>
                 {toHHMMSS(md.stopTime)}
