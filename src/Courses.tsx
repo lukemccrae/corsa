@@ -84,7 +84,7 @@ export default function Courses(props: CourseProps) {
                       {plan.name}
                     </Typography>
                     <div style={{ display: props.expandedPlan == i ? "flex" : "none" }}>
-                      <WorkoutGeneratorButton generatorOpen={generatorOpen} setGeneratorOpen={setGeneratorOpen}></WorkoutGeneratorButton>
+                      {/* <WorkoutGeneratorButton generatorOpen={generatorOpen} setGeneratorOpen={setGeneratorOpen}></WorkoutGeneratorButton> */}
                       <DeleteCourse deletePlan={deletePlan} plan={plan} plans={plans} setPlans={setPlans}></DeleteCourse>
                     </div>
                   </div>
