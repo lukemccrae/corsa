@@ -10,7 +10,10 @@ This repository contains frontend React code for the application. It talks throu
 
 # How it's being used in the wild
 
-The initial ambition of the project was to build a tool that could predict ideal pacing times given data about the course - number of miles, elevation, length of race, etc. The first iteration of the site had a lot more features and tried to do a lot more. This version functions as a pace calculator and per-mile breakdown of GPX track data. I've found the elevation profile of each mile along with the cumulative average pace features to be the most useful. 
+The initial ambition of the project was to build a tool that could predict ideal pacing times given data about the course - number of miles, elevation, length of race, etc. The first iteration of the site had a lot more features and tried to do a lot more. This version functions as a pace calculator and per-mile breakdown of GPX track data. I've found the elevation profile of each mile along with the cumulative average pace features to be the most useful.
+
+# Stack
+The most recent feature is an AI workout generator built with OpenAI's Assistants API. This system analyzes the selected course and collects some athlete information to generate workouts aimed at preparing runners to race this course. 
 
 # Future plans
 
