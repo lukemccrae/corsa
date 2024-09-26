@@ -321,7 +321,9 @@ export const WorkoutGenerator = (props: WorkoutGeneratorProps) => {
                     {activeStep === 3 && (
                         <Box mt={2}>
                             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                Add further information about the course here. Details like the difficulty of the terrain, max elevation, and average temperature will help produce better results.
+                                Add further information about the course here.
+                                Details like the difficulty of the terrain, max elevation, and average temperature will help produce better results.
+                                If there is only a section of the course you intending include the mile range as well.
                             </Typography>
                             <TextField
                                 label="Description"

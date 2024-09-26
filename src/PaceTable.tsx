@@ -1,5 +1,4 @@
 import * as React from "react";
-import Link from "@mui/material/Link";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -19,6 +18,29 @@ interface PaceTableProps {
   plan: Plan;
 }
 
+const calcGap = (pace: number, gain: number, loss: number) => {
+  // weight gain more than loss for gap, then convert meters to feet
+  const weightedVert = (gain + (loss * .2)) * 3.28084
+
+  // if gain is positive use pacing formula
+  if (weightedVert > 0) {
+    // divide weighted gain exponent by 100 for pacing equation
+    const gainExponent = weightedVert / 100;
+    const gap = pace / Math.round(Math.pow(1.1, gainExponent))
+
+    return toHHMMSS(gap)
+  } else {
+    // pacing formula seems to break for downhill splits
+    // not sure how to effectively modify pace for downhill splits, just subtracting for now
+    return toHHMMSS(pace - weightedVert / 1.5)
+  }
+}
+
+const calcLastMileGap = (pace: number, gain: number, loss: number, lmd: number) => {
+  const gap = percentageOfPace(lmd, pace)
+  return toHHMMSS(gap)
+}
+
 export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
   return (
     <React.Fragment>
@@ -33,9 +55,7 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
             <TableCell sx={{ padding: "10px" }} align="left">Gain</TableCell>
             <TableCell sx={{ padding: "0 5px 0 0" }}>Loss</TableCell>
             <TableCell sx={{ padding: "0 5px 0 0" }}>GAP</TableCell>
-
             {/* <TableCell sx={{ padding: "0 3px 0 5px" }}>Stop Time</TableCell> */}
-
             <TableCell sx={{ padding: "0 3px 0 5px" }}>Elapsed</TableCell>
           </TableRow>
         </TableHead>
@@ -71,7 +91,13 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
               </TableCell>
               {/* GAP */}
               <TableCell sx={{ padding: "5px" }}>
-                {toHHMMSS(Math.round(md.pace / Math.pow(1.1, md.elevationGain / 100)))}
+                {i === plan.mileData.length - 1
+                  ?
+                  calcLastMileGap(md.pace, md.elevationGain, md.elevationLoss, plan.lastMileDistance)
+                  :
+                  calcGap(md.pace, md.elevationGain, md.elevationLoss)}
+
+                {/* {toHHMMSS(md.pace / Math.round(Math.pow(1.1, (md.elevationGain * 3.28084) / 100)))} */}
               </TableCell>
               {/* <TableCell>
                 {toHHMMSS(md.stopTime)}

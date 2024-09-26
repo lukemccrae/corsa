@@ -4,9 +4,10 @@ export const percentageOfPace = (distance: number, secs: number) => {
   return Math.round((1 / distance) * secs);
 };
 export const toHHMMSS = (secs: number) => {
-  var hours = Math.floor(secs / 3600);
-  var minutes = Math.floor(secs / 60) % 60;
-  var seconds = secs % 60;
+  const roundedSecs = Math.round(secs)
+  var hours = Math.floor(roundedSecs / 3600);
+  var minutes = Math.floor(roundedSecs / 60) % 60;
+  var seconds = roundedSecs % 60;
 
   const formattedHours = hours > 0 ? hours.toString() : "";
   const formattedMinutes = hours > 0 ? minutes.toString().padStart(2, "0") : minutes.toString();
