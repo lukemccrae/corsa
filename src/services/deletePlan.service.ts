@@ -1,3 +1,4 @@
+import { domain } from "../context/domain.context";
 import { retrieveUserToken } from "../helpers/token.helper";
 
 interface DeletePlanProps {
@@ -15,7 +16,7 @@ export const deletePlanById = async (props: DeletePlanProps) => {
         `;
     try {
         const result = await fetch(
-            "https://kgqcfb54prhcvdbezgbmfh2qi4.appsync-api.us-west-1.amazonaws.com/graphql",
+            domain.appsync,
             {
                 method: "POST",
                 headers: {

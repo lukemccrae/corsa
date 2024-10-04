@@ -1,3 +1,4 @@
+import { domain } from "../context/domain.context";
 import { retrieveUserToken } from "../helpers/token.helper";
 
 interface FetchPlanProps {
@@ -28,7 +29,7 @@ export const fetchPlans = async (props: FetchPlanProps) => {
     console.log(token, '<< token')
     if (typeof token !== 'string') throw new Error("token not valid")
     const result = await fetch(
-      "https://kgqcfb54prhcvdbezgbmfh2qi4.appsync-api.us-west-1.amazonaws.com/graphql",
+      domain.appsync,
       {
         method: "POST",
         headers: {

@@ -1,3 +1,4 @@
+import { domain } from "../context/domain.context";
 import { retrieveUserToken } from "../helpers/token.helper";
 
 export const handleFileUpload = async (gpx: string, userId: string, setProgress: Function, setAddCourseOpen: Function) => {
@@ -16,7 +17,7 @@ export const handleFileUpload = async (gpx: string, userId: string, setProgress:
     setProgress(10)
     // retrieve presigned URL for uploading object to S3
     const presignedResponse = await fetch(
-      "https://85fn1e2pyk.execute-api.us-west-1.amazonaws.com/prod/gpx-presigned",
+      `${domain.utilityApi}/gpx-presigned`,
       {
         method: "GET",
       }
@@ -42,7 +43,7 @@ export const handleFileUpload = async (gpx: string, userId: string, setProgress:
 
     const response = await fetch(
       // "http://localhost:8008/graphql",
-      "https://kgqcfb54prhcvdbezgbmfh2qi4.appsync-api.us-west-1.amazonaws.com/graphql",
+      domain.appsync,
       {
         method: "POST",
         headers: {
