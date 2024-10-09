@@ -18,7 +18,10 @@ export const WorkoutGeneratorButton = (props: WorkoutGeneratorProps) => {
     return (
         <div>
             <IconButton
-                onClick={(event) => event.stopPropagation()}
+                onClick={(event) => {
+                    event.stopPropagation()
+                    toggleGeneratorWindow()
+                }}
                 aria-label="magic"
                 size="small"
                 sx={{
@@ -27,7 +30,7 @@ export const WorkoutGeneratorButton = (props: WorkoutGeneratorProps) => {
                         backgroundColor: 'white', // Change the background color on hover
                     },
                 }}>
-                <AutoFixHighIcon onClick={() => toggleGeneratorWindow()} fontSize="inherit" />
+                <AutoFixHighIcon fontSize="inherit" />
             </IconButton>
         </div>
     )

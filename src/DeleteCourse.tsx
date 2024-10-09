@@ -32,7 +32,10 @@ export const DeleteCourse = (props: DeleteCourseProps) => {
             {deleteConfirm ?
                 <div>
                     <IconButton
-                        onClick={(event) => event.stopPropagation()}
+                        onClick={(event) => {
+                            event.stopPropagation()
+                            setDeleteConfirm(false)
+                        }}
                         sx={{
                             border: '1px solid #ccc',
                             '&:hover': {
@@ -52,12 +55,15 @@ export const DeleteCourse = (props: DeleteCourseProps) => {
                                 backgroundColor: 'white', // Change the background color on hover
                             },
                         }}>
-                        <CloseIcon onClick={() => { setDeleteConfirm(false) }}></CloseIcon>
+                        <CloseIcon></CloseIcon>
                     </IconButton>
                 </div>
                 :
                 (<IconButton
-                    onClick={(event) => event.stopPropagation()}
+                    onClick={(event) => {
+                        event.stopPropagation()
+                        setDeleteConfirm(true)
+                    }}
                     aria-label="delete"
                     size="small"
                     sx={{
@@ -66,7 +72,7 @@ export const DeleteCourse = (props: DeleteCourseProps) => {
                             backgroundColor: 'white', // Change the background color on hover
                         },
                     }}>
-                    <DeleteIcon onClick={() => setDeleteConfirm(true)} fontSize="inherit" />
+                    <DeleteIcon fontSize="inherit" />
                 </IconButton>)}
         </div>
     )

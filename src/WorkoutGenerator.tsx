@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { FormControl, Grid, InputLabel, MenuItem, Select, Step, StepLabel, Stepper, TextField } from '@mui/material';
 import { Plan } from './types';
+import { handleAssistantCall } from './services/assistant.service';
 
 interface WorkoutGeneratorProps {
     generatorOpen: boolean
@@ -30,6 +31,8 @@ export const WorkoutGenerator = (props: WorkoutGeneratorProps) => {
         pr2Time: '',
     });
     const [activeStep, setActiveStep] = React.useState(0);
+    const [assistantResult, setAssistantResult] = React.useState("Loading...");
+
     const [formData, setFormData] = React.useState({
         // name: props.plan.name,
         experienceLevel: 0,
@@ -40,7 +43,9 @@ export const WorkoutGenerator = (props: WorkoutGeneratorProps) => {
         pr2Time: "",
     });
 
-    const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
+    // const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
+    const steps = ['Step 1', 'Step 2', 'Step 3'];
+
 
     const experienceLevels = [
         "",
@@ -98,8 +103,11 @@ export const WorkoutGenerator = (props: WorkoutGeneratorProps) => {
         gap: string;
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         console.log(props.plan.mileData[0]);
+
+        const calcdCumulativeTime = props.plan.mileData.reduce((accumulator, m) => accumulator + m.pace, 0)
+        const calcdCumulativeGap = props.plan.mileData.reduce((accumulator, m) => accumulator + m.gap, 0)
 
         // grab calculated pace table data from table
         // grabbing it from table because it would be repetitive to recalculate it
@@ -136,7 +144,6 @@ export const WorkoutGenerator = (props: WorkoutGeneratorProps) => {
                     case (5):
                         obj['loss'] = cellVal;
                         cumulativeLoss += Number(cellVal)
-
                         break; ''
                     case (6):
                         obj['gap'] = cellVal
@@ -149,18 +156,99 @@ export const WorkoutGenerator = (props: WorkoutGeneratorProps) => {
             return obj;
         });
 
+        const determineGrade = (length: number, gain: number, loss: number) => {
+            const grade = Math.round(((gain) / (length * 5280)) * 100);
+            // flat
+            if (grade < 2) return `This route has LOW avg grade of ${grade}%`
+
+            // med gain
+            if (grade < 4) return `This route has MEDIUM avg grade of ${grade}%`
+
+            // high gain
+            if (grade < 7) return `This route has HIGH avg grade of ${grade}%`
+
+            // downhill
+            if (grade < 0) return `This route has NEGATIVE avg grade of ${grade}%`
+
+            return `This route has an EXTREME avg grade of ${grade}%`
+        }
+
+        const determineThirdWorkout = () => {
+            const message = `Workout 3: Tailor this workout to the specifics of the race course.
+            If EXTREME or HIGH avg grade give a hill workout. Prescribe effort levels and specific time for rest.
+            If under an hour prescribe 1 mile repeats and target faster than flat race pace.
+            If over 6 hours prescribe a time-on-feet session.
+            Pretend the runner does not know what a workout is.
+            Provide instructions as if the runner was a computer and will only follow highly tailored instructions.`
+            return message;
+        }
+
+        const determineEquivilantDistance = (length: number, vert: number) => {
+            if (length < 4 && vert > 1500) return 'Vertical Kilometer'
+            if (length < 7) return '5k';
+            if (length < 15) return 'half marathon';
+            if (length < 28) return 'marathon';
+            if (length < 40) return '50k';
+            return 'extreme ultra marathon'
+
+        }
+
         // Numbers coming in as strings from table
         const routeLengthInMiles = Number(tableData.length - 1) + Number(tableData[tableData.length - 1].mile);
 
         // closeModal();
-        const result = {
-            tableData,
-            routeLengthInMiles,
-            formData,
-            cumulativeGain,
-            cumulativeLoss
+        // const result = {
+        //     milePaceData: tableData,
+        //     routeLengthInMiles,
+        //     calcdCumulativeTime,
+        //     calcdCumulativeGap,
+        //     formData,
+        //     cumulativeGain,
+        //     cumulativeLoss
+        // }
 
-        }
+        const messages = [
+            `The goal here is to provide workouts with SPECIFIC pacing details targetting demands of this race time`,
+            `Give me three workouts according to the style of jack daniels.`,
+            // length of racee
+            `Length: ${length} miles.`,
+            // time
+            `I need to run this in ${Math.round(calcdCumulativeTime / 60)} minutes.`,
+            // describe grade
+            `${determineGrade(routeLengthInMiles, cumulativeGain, cumulativeLoss)}`,
+            // user description
+            `This is a user-supplied description of the route: ${formData.description}`,
+            // return format description
+            `Now generate me three workouts that target the fitness required. This race effort is 
+            very similar to: ${determineEquivilantDistance(routeLengthInMiles, cumulativeGain)}.`,
+            // describe GAP
+            `The equivilant flat paces for this run are: 
+            ${(calcdCumulativeGap / 60) / routeLengthInMiles} min. per mile`,
+            // workout description 1
+            `Workout 1 fartlek in the style of Jack Daniels.\
+            Prescribe length of the run and period of harder effort. 
+            GIVE SPECIFIC MILE INSTRUCTIONS.
+            Make the paces challenging, at least 10% faster than goal flat race pace.
+            Give specific times. Do the math for me.`,
+            // workout description 2
+            `Workout 2 threshold repeats in the style of Jack Daniels.
+            Prescribe length of the run and period of harder effort. 
+            GIVE SPECIFIC MILE INSTRUCTIONS.
+            3 sets of 2 mile tempo. Make paces 15% faster than goal flat pace.
+            Specific paces. Do the math for me.`,
+            // workout description 3
+            `${determineThirdWorkout()}`,
+            `Give a brief description of the race in two or three sentences. 
+            Give a brief description of the workouts in 2 or 3 sentences.
+            Don't mention Jack Daniels.
+            Don't reference "5% faster" or "flat pace" other specific prompt words.
+            Focus on the run, not methodology.
+            Don't say "the target pace", give a precise target, you are the coach.
+            `
+        ]
+        setActiveStep(2)
+        const result = await handleAssistantCall(messages);
+        setAssistantResult(result.message.content)
         console.log(result, '<< result')
     };
 
@@ -191,54 +279,58 @@ export const WorkoutGenerator = (props: WorkoutGeneratorProps) => {
                     </Stepper>
 
                     {/* Step Content */}
-                    {activeStep === 0 && (
-                        <Box mt={2}>
-                            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    {
+                        activeStep === 0 && (
+                            <Box mt={2}>
                                 <h2>Welcome to CorsaAI</h2>
                                 <p style={{ marginBottom: '16px' }}>
                                     The purpose of this tool is to help you prepare for racing this course.
                                 </p>
                                 <p style={{ marginBottom: '16px' }}>
-                                    We will collect some more information and then return a training plan, including workouts designed to target the specific challenges of this course.
+                                    The AI assistant will generate workouts aimed to prepare you to match the times in this GPX file.
                                 </p>
                                 <p style={{ marginBottom: '16px' }}>
-                                    Click Next to provide information about the course and help us provide the most accurate results.
+                                    Use these workouts as fitness benchmarks to gauge your readiness.
                                 </p>
-                            </Typography>
-                        </Box>
-                    )}
+                                <p style={{ marginBottom: '16px' }}>
+                                    Click Next to provide information about the course and help us give the most accurate results.
+                                </p>
+                            </Box>
+                        )}
 
-                    {activeStep === 1 && (
-                        <Box mt={2}>
-                            {/* <TextField
-                                label="Race Name"
-                                type="string"
-                                variant="outlined"
-                                name="name"
-                                fullWidth
-                                value={formData.name}
-                                onChange={handleInputChange}
-                                sx={{ mt: 2 }}
-                            /> */}
-                            <FormControl fullWidth sx={{ mt: 2 }}>
-                                <InputLabel id="demo-simple-select-label">Level of Experience</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    name="experienceLevel"
-                                    value={formData.experienceLevel}
-                                    label="Experience Level"
-                                    onChange={handleInputChange}
-                                >
-                                    <MenuItem value={experienceLevels[1]}>{experienceLevels[1]}</MenuItem>
-                                    <MenuItem value={experienceLevels[2]}>{experienceLevels[2]}</MenuItem>
-                                    <MenuItem value={experienceLevels[3]}>{experienceLevels[3]}</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Box>
-                    )}
+                    {
+                        // activeStep === 1 && (
+                        //     <Box mt={2}>
+                        //         {/* <TextField
+                        //             label="Race Name"
+                        //             type="string"
+                        //             variant="outlined"
+                        //             name="name"
+                        //             fullWidth
+                        //             value={formData.name}
+                        //             onChange={handleInputChange}
+                        //             sx={{ mt: 2 }}
+                        //         /> */}
+                        //         <FormControl fullWidth sx={{ mt: 2 }}>
+                        //             <InputLabel id="demo-simple-select-label">Level of Experience</InputLabel>
+                        //             <Select
+                        //                 labelId="demo-simple-select-label"
+                        //                 id="demo-simple-select"
+                        //                 name="experienceLevel"
+                        //                 value={formData.experienceLevel}
+                        //                 label="Experience Level"
+                        //                 onChange={handleInputChange}
+                        //             >
+                        //                 <MenuItem value={experienceLevels[1]}>{experienceLevels[1]}</MenuItem>
+                        //                 <MenuItem value={experienceLevels[2]}>{experienceLevels[2]}</MenuItem>
+                        //                 <MenuItem value={experienceLevels[3]}>{experienceLevels[3]}</MenuItem>
+                        //             </Select>
+                        //         </FormControl>
+                        //     </Box>
+                        // )
+                    }
 
-                    {activeStep === 2 && (
+                    {/* {activeStep === 2 && (
                         <Box mt={2}>
                             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                 Enter two of your flat-running PRs. This will help the system create a helpful tailored to your fitness abilities.
@@ -316,14 +408,12 @@ export const WorkoutGenerator = (props: WorkoutGeneratorProps) => {
                                 </Grid>
                             </Grid>
                         </Box>
-                    )}
+                    )} */}
 
-                    {activeStep === 3 && (
+                    {activeStep === 1 && (
                         <Box mt={2}>
                             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                Add further information about the course here.
-                                Details like the difficulty of the terrain, max elevation, and average temperature will help produce better results.
-                                If there is only a section of the course you intending include the mile range as well.
+                                Details like difficulty of terrain, max elevation, and average temperature will help produce better results.
                             </Typography>
                             <TextField
                                 label="Description"
@@ -339,21 +429,31 @@ export const WorkoutGenerator = (props: WorkoutGeneratorProps) => {
                         </Box>
                     )}
 
+                    {activeStep === 2 && (
+                        <Box mt={2}>
+                            {assistantResult}
+                        </Box>
+                    )}
+
                     {/* Navigation Buttons */}
                     <Box mt={2} display="flex" justifyContent="space-between">
-                        <Button disabled={activeStep === 0} onClick={handleBack}>
-                            Back
-                        </Button>
+                        {activeStep === 0 ? (
+                            <Button disabled={activeStep === 0} onClick={handleBack}>
+                                Back
+                            </Button>
+                        ) : <div></div>}
 
-                        {activeStep === steps.length - 1 ? (
+                        {activeStep === 1 ? (
                             <Button variant="contained" color="primary" onClick={handleSubmit}>
                                 Submit
                             </Button>
-                        ) : (
+                        ) : <div></div>}
+
+                        {activeStep === 0 ? (
                             <Button variant="contained" color="primary" onClick={handleNext}>
                                 Next
                             </Button>
-                        )}
+                        ) : <div></div>}
                     </Box>
                 </Box>
             </Modal>

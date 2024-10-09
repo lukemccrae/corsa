@@ -11,6 +11,7 @@ export const handleFileUpload = async (gpx: string, userId: string, setProgress:
       }
     }
   `;
+  console.log(query, '<< query')
     return query;
   };
   try {
@@ -20,6 +21,9 @@ export const handleFileUpload = async (gpx: string, userId: string, setProgress:
       `${domain.utilityApi}/gpx-presigned`,
       {
         method: "GET",
+        headers: {
+          "Authorization": `Bearer ${retrieveUserToken()}`,
+        },
       }
     );
     console.log(presignedResponse, '<< presignedResponse')
@@ -27,10 +31,11 @@ export const handleFileUpload = async (gpx: string, userId: string, setProgress:
 
     // resources for uploading to s3
     const { url, uuid } = await presignedResponse.json();
+    console.log(url, uuid, '<< url uuid')
     const uploadResult = await fetch(url, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/xml",
+        "Content-Type": "application/xml"
       },
       body: gpx,
     });

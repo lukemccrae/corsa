@@ -16,17 +16,20 @@ export const fetchPlans = async (props: FetchPlanProps) => {
               pace
               mileVertProfile
               stopTime
+              gap
             }
             name
             startTime
             userId
             lastMileDistance
+            gainInMeters
+            distanceInMiles
+            durationInSeconds
           }
         }
       `;
   try {
     let token = localStorage.getItem("user")
-    console.log(token, '<< token')
     if (typeof token !== 'string') throw new Error("token not valid")
     const result = await fetch(
       domain.appsync,
