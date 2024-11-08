@@ -9,6 +9,8 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MapIcon from "@mui/icons-material/Map";
+import { MileProfile } from "./MileProfile";
+
 
 
 import Container from "@mui/material/Container";
@@ -66,20 +68,31 @@ export default function Dashboard() {
     <ThemeProvider theme={defaultTheme}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <Box sx={{ flexGrow: 1 }}>
-          <AppBar position="fixed">
-            <Toolbar style={{ display: isLoggedIn ? "flex" : "none" }}>
-              <Typography
-                component="h1"
-                variant="h6"
-                color="inherit"
-                noWrap
-                sx={{ flexGrow: 1 }}
-              >
-                CORSA
-              </Typography>
-
-              {isLoggedIn ? (
+        {isLoggedIn && (
+          <Box sx={{ flexGrow: 1 }}>
+            <AppBar position="fixed">
+              <Toolbar>
+                <Typography
+                  component="h1"
+                  variant="h6"
+                  color="inherit"
+                  noWrap
+                  sx={{ flexGrow: 1 }}
+                >
+                  CORSA
+                </Typography>
+                <Typography
+                  component="h4"
+                  color="inherit"
+                  noWrap
+                  sx={{ flexGrow: 1 }}
+                >Reports</Typography>
+                <Typography
+                  component="h4"
+                  color="inherit"
+                  noWrap
+                  sx={{ flexGrow: 1 }}
+                >App</Typography>
                 <div style={{ display: "flex" }}>
                   <div
                     style={{
@@ -95,19 +108,20 @@ export default function Dashboard() {
                   <ProfileDropdown logout={logout}></ProfileDropdown>
                   <AddButton addCourseOpen={addCourseOpen} setAddCourseOpen={setAddCourseOpen}></AddButton>
                 </div>
-              ) : (
-                <div></div>
-              )}
-            </Toolbar>
-          </AppBar>
-          {/* <Box sx={{ display: isLoggedIn ? "flex" : "none" }}>
+              </Toolbar>
+            </AppBar>
+          </Box>
+        )}
+
+
+        {/* <Box sx={{ display: isLoggedIn ? "flex" : "none" }}>
             <List>
               {mainListItems({ setAddCourseOpen })}
               <Divider sx={{ my: 1 }} />
               {secondaryListItems}
             </List>
           </Box> */}
-        </Box>
+
         <Box
           component="main"
           sx={{
@@ -123,22 +137,19 @@ export default function Dashboard() {
             justifyContent: "center"
           }}
         >
-          <Toolbar />
           <Container maxWidth="lg" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             {checkValidTokenExp() ? (
-              <div>
-                <Grid item xs={12} sm={6}>
-                  <Paper
-                    sx={{ p: 5, display: "flex", flexDirection: "column" }}
-                  >
-                    {addCourseOpen ? (
-                      <AddCourse setAddCourseOpen={setAddCourseOpen} userId={user.userId}></AddCourse>
-                    ) : (
-                      <Courses expandedPlan={expandedPlan} setExpandedPlan={setExpandedPlan} userId={user.userId}></Courses>
-                    )}
-                  </Paper>
-                </Grid>
-              </div>
+              <Grid item xs={12} sm={6}>
+                <Paper
+                  sx={{ p: 5, display: "flex", flexDirection: "column" }}
+                >
+                  {addCourseOpen ? (
+                    <AddCourse setAddCourseOpen={setAddCourseOpen} userId={user.userId}></AddCourse>
+                  ) : (
+                    <Courses expandedPlan={expandedPlan} setExpandedPlan={setExpandedPlan} userId={user.userId}></Courses>
+                  )}
+                </Paper>
+              </Grid>
             ) : (
               <Authenticate
                 isLoggedIn={isLoggedIn}

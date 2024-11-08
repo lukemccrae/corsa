@@ -45,7 +45,11 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
                 {toHHMMSS(md.pace)}
               </TableCell>
               <TableCell sx={{ padding: "0" }}>
-                <MileProfile mileData={md}></MileProfile>
+                <MileProfile 
+                  multiplyPadding={1} 
+                  color={"black"} 
+                  mileVertProfile={md.mileVertProfile}>
+                </MileProfile>
               </TableCell>
               <TableCell sx={{ padding: "5px" }}>
                 {averagePaces(
