@@ -75,10 +75,9 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 interface AuthenticationProps {
-  setUser: Function;
-  isLoggedIn: Boolean;
-  setIsLoggedIn: Function;
-  disableCustomTheme?: boolean
+  isLoggedIn: boolean;
+  login: Function;
+  logout: Function;
 }
 
 export const Authenticate = (props: AuthenticationProps) => {
@@ -131,8 +130,7 @@ export const Authenticate = (props: AuthenticationProps) => {
   };
 
   const setLoginState = async (email: string, exp: number, userId: string) => {
-    props.setUser({ email, userId, exp });
-    props.setIsLoggedIn(true);
+    props.login({ email, userId, exp })
   }
 
   const onSubmitLogin = (event: any) => {
