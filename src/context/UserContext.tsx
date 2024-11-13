@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import jwtdecode from "jwt-decode";
+
 
 type User = {
   email: string;
@@ -12,6 +14,22 @@ type UserContextType = {
   login: (userData: User) => void;
   logout: () => void;
   checkValidTokenExp: () => boolean;
+};
+
+type CognitoToken = {
+  aud: string;
+  auth_time: number;
+  "cognito:username": string;
+  email: string;
+  email_verified: boolean;
+  event_id: string;
+  exp: number;
+  iat: number;
+  iss: string;
+  jti: string;
+  origin_jti: string;
+  sub: string;
+  token_use: string;
 };
 
 // Create a Context with an initial value of undefined
@@ -38,8 +56,12 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
+
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      const decodedToken = jwtdecode(storedUser) as CognitoToken;
+      const { exp, email, sub } = decodedToken;
+      const userId = sub;
+      login({email, userId, exp})
       setIsLoggedIn(true);
     }
   }, []);
@@ -47,7 +69,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const login = (userData: User) => {
     setUser(userData);
     setIsLoggedIn(true);
-    // localStorage.setItem("user", JSON.stringify(userData));
   };
 
   const logout = () => {
@@ -57,9 +78,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   const checkValidTokenExp = (): boolean => {
-    if(user) return user.exp - Date.now() / 1000 > 0;
+    if (user) return user.exp - Date.now() / 1000 > 0;
     return false;
-};
+  };
 
   return (
     <UserContext.Provider value={{ user, isLoggedIn, checkValidTokenExp, login, logout }}>

@@ -2,7 +2,6 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { IconButton } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 interface ProfileDropdownProps {
@@ -43,8 +42,6 @@ export default function ProfileDropdown(props: ProfileDropdownProps) {
           "aria-labelledby": "basic-button",
         }}
       >
-        {/* <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem> */}
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>

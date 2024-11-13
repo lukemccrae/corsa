@@ -1,6 +1,4 @@
 import { styled } from "styled-components";
-import React from "react";
-import { MileData } from "./types";
 
 const ProfileBox = styled.div`
   display: inline-flex;

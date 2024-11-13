@@ -1,23 +1,31 @@
 import * as React from "react";
 import Title from "./Title";
 import { handleFileUpload } from "./services/addCourse.service.ts";
+import { useUser } from './context/UserContext';
+import { useNavigate } from 'react-router-dom';
+
 
 import UploadProgress from "./UploadProgress.tsx";
+import { Button } from "@mui/material";
 
-interface AddCourseProps {
-  userId: string;
-  setAddCourseOpen: Function;
-}
-export const AddCourse = (props: AddCourseProps) => {
+export const AddCourse = () => {
+  const { user } = useUser()
+
   const [gpx, setGpx] = React.useState<string>("");
   const [valid, setValid] = React.useState<boolean>(false);
   const [progress, setProgress] = React.useState(0);
+  const navigate = useNavigate();
+
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
     setProgress(10)
 
-    handleFileUpload(gpx, props.userId, setProgress, props.setAddCourseOpen);
+    if(user) {
+      handleFileUpload(gpx, user.userId, setProgress, navigate);
+    } else {
+      alert('There is a problem with your login, please relog then try again.')
+    }
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +71,7 @@ export const AddCourse = (props: AddCourseProps) => {
         (
           <div>
             <input type="file" accept=".gpx" onChange={handleFileChange} />
-            <button disabled={!valid} onClick={handleSubmit}>Submit</button>
+            <Button disabled={!valid} onClick={handleSubmit}>Submit</Button>
             <UploadProgress progress={progress}></UploadProgress>
           </div>
         )

@@ -6,6 +6,7 @@ import { App } from './App.tsx'
 import './index.css'
 import { Articles } from './Articles.tsx';
 import { UserProvider } from './context/UserContext.tsx';
+import { AddCourse } from './AddCourse.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -16,6 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/" element={<Articles />}></Route>
         <Route path="/app" element={<App />}></Route>
         <Route path="/articles" element={<Articles />}></Route>
+        <Route path="add-course" element={<AddCourse />}></Route>
       </Routes>
       </UserProvider>
     </Router>

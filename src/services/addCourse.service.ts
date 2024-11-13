@@ -1,8 +1,7 @@
 import { domain } from "../context/domain.context";
 import { retrieveUserToken } from "../helpers/token.helper";
 
-export const handleFileUpload = async (gpx: string, userId: string, setProgress: Function, setAddCourseOpen: Function) => {
-  console.log(gpx, userId, '<< gpx, userId')
+export const handleFileUpload = async (gpx: string, userId: string, setProgress: Function, navigate: Function) => {
   const formMutationQuery = (uuid: string) => {
     const query = `
     mutation MyMutation {
@@ -11,7 +10,6 @@ export const handleFileUpload = async (gpx: string, userId: string, setProgress:
       }
     }
   `;
-  console.log(query, '<< query')
     return query;
   };
   try {
@@ -26,12 +24,10 @@ export const handleFileUpload = async (gpx: string, userId: string, setProgress:
         },
       }
     );
-    console.log(presignedResponse, '<< presignedResponse')
     setProgress(25)
 
     // resources for uploading to s3
     const { url, uuid } = await presignedResponse.json();
-    console.log(url, uuid, '<< url uuid')
     const uploadResult = await fetch(url, {
       method: "PUT",
       headers: {
@@ -59,11 +55,10 @@ export const handleFileUpload = async (gpx: string, userId: string, setProgress:
       }
     );
 
-
     const data = await response.json();
-    console.log(data);
-    setAddCourseOpen(false)
+    
     setProgress(0)
+    navigate('/app');
     return data;
   } catch (e) {
     console.log(e);

@@ -1,14 +1,12 @@
 import * as React from "react";
 import Title from "./Title";
-import { fetchPlans } from "./services/fetchPlans.service";
+import { getPlansByUserId, getPlanById } from "./services/fetchPlans.service";
 import Card from "@mui/material/Card";
-import { deletePlanById } from "./services/deletePlan.service";
-import { Plan, User } from "./types";
+import { Plan } from "./types";
 import {
   Box,
   CardContent,
   Grid,
-
   Paper,
   Typography,
 } from "@mui/material";
@@ -29,7 +27,7 @@ export default function Courses(props: CourseProps) {
 
   React.useEffect(() => {
     const fetchPlansData = async () => {
-      const retrievedPlans = await fetchPlans({ userId: props.userId });
+      const retrievedPlans = await getPlansByUserId({ userId: props.userId });
 
       if (retrievedPlans && retrievedPlans.length > 0) {
         setPlans(retrievedPlans);
@@ -38,11 +36,28 @@ export default function Courses(props: CourseProps) {
     fetchPlansData();
   }, [props.userId]);
 
-  const handleClick = (index: number) => {
+  const handleClick = async (index: number) => {
+    // if we are closing a plan set expanded index to undefined
     if (props.expandedPlan === index) {
       props.setExpandedPlan(undefined)
     } else {
-      props.setExpandedPlan(index);
+      // if we're getting a new plan, first check if we already have the details
+      if (plans[index].mileData) {
+        // if we have the mile data, set the new index
+        props.setExpandedPlan(index);
+      } else {
+        // if we dont have the mile data retrieve plan info and append
+        const planId = plans[index].id
+        const userId = props.userId;
+        const planDetails = await getPlanById({ userId, planId })
+
+        // add expanded plan info to existsing array
+        const currentPlans = plans;
+        currentPlans[index] = planDetails;
+        setPlans(currentPlans)
+        props.setExpandedPlan(index);
+      }
+
     }
 
   };
@@ -84,7 +99,7 @@ export default function Courses(props: CourseProps) {
                     </div>
                   </div>
                   <Typography component="div">
-                    Distance: {plan.mileData.length - 1 + plan.lastMileDistance}
+                    Distance: {plan.distanceInMiles + plan.lastMileDistance}
                     {" mi."}
                   </Typography>
                 </CardContent>
@@ -94,7 +109,7 @@ export default function Courses(props: CourseProps) {
         })}
 
         {/* If a plan has been selected show the table */}
-        {typeof props.expandedPlan === "number" ? (
+        {typeof props.expandedPlan === "number" && (
           <div>
             <div style={{ margin: "10px" }}></div>
             <Grid item xs={12} sm={12} justifyContent="center">
@@ -104,14 +119,8 @@ export default function Courses(props: CourseProps) {
               </Paper>
             </Grid>
           </div>
-        ) : (
-          <div></div>
         )}
       </Box>
     </Grid>
-
-
-
-
   );
 }

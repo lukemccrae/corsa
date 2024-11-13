@@ -13,6 +13,7 @@ export type Plan = {
   startTime: number;
   userId: string;
   lastMileDistance: number;
+  distanceInMiles: number;
 };
 
 export interface getPlansByUserId {
