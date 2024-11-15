@@ -9,7 +9,7 @@ interface UploadProgressProps {
 export default function UploadProgress(props: UploadProgressProps) {
 
     return (
-        <Box sx={{ width: '100%', display: props.progress !== 0 ? "block" : "none" }}>
+        <Box sx={{ margin: "10px 10px 0 10px", width: '100%', display: props.progress !== 0 ? "block" : "none" }}>
             <LinearProgress variant="determinate" value={props.progress} />
         </Box>
     );

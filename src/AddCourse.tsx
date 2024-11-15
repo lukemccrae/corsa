@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 import UploadProgress from "./UploadProgress.tsx";
-import { Button } from "@mui/material";
+import { Box, Button, Card, Typography } from "@mui/material";
 
 export const AddCourse = () => {
   const { user } = useUser()
@@ -65,17 +65,43 @@ export const AddCourse = () => {
   };
 
   return (
-    <div>
-      <Title>{"Add Course"}</Title>
-      {
-        (
-          <div>
-            <input type="file" accept=".gpx" onChange={handleFileChange} />
-            <Button disabled={!valid} onClick={handleSubmit}>Submit</Button>
-            <UploadProgress progress={progress}></UploadProgress>
-          </div>
-        )
-      }
-    </div >
+  <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '20px',
+        borderRadius: 2,
+        boxShadow: 3,
+        backgroundColor: 'background.paper',
+        width: '100%',
+        maxWidth: 500, // Make the form more compact
+        margin: 'auto',
+      }}
+    >
+      <Typography variant="h4" sx={{ marginBottom: 2 }}>
+        Add Course
+      </Typography>
+
+      <input type="file" accept=".gpx" onChange={handleFileChange} style={{ marginBottom: '16px' }} />
+
+      <Button
+        disabled={!valid}
+        onClick={handleSubmit}
+        sx={{
+          backgroundColor: 'primary.main',
+          color: 'white',
+          padding: '10px 20px',
+          '&:hover': {
+            backgroundColor: 'primary.dark',
+          },
+        }}
+      >
+        Submit
+      </Button>
+
+      <UploadProgress progress={progress} />
+    </Box>
   );
 };

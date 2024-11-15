@@ -85,3 +85,14 @@ export interface GraphQLFeatureCollection {
 export interface GetGeoJsonBySortKey {
   getGeoJsonBySortKey: FeatureCollection;
 }
+
+export interface Article {
+  id: number;
+  title: string;
+  destination: string;
+  author: string;
+  date: string;
+  image: string;
+  tags: string[];
+  content: string;
+}

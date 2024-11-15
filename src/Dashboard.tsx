@@ -51,6 +51,11 @@ export const Dashboard = () => {
     Logout: () => logout(),
   };
 
+  function returnDestination(page: string) {
+    console.log(page)
+    return "/" + page.toLowerCase()
+  }
+
   return (
     <AppBar position="fixed">
       <Container maxWidth="xl">
@@ -137,13 +142,13 @@ export const Dashboard = () => {
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "end" }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                <Link style={{ color: 'white' }} to={"/" + page.toLowerCase()}>{page}</Link>
-              </Button>
+              // <Button
+              //   key={page}
+              //   onClick={handleCloseNavMenu}
+              //   sx={{ my: 2, color: 'white', display: 'block' }}
+              // >
+                <Link style={{ color: 'white', margin: "5px"}} to={page.toLowerCase()}>{page}</Link>
+              // </Button>
             ))}
           </Box>
           {(isLoggedIn && user) && (

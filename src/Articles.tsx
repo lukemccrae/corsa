@@ -1,78 +1,88 @@
 import React from 'react';
-import { Container, Grid, Typography, Card, CardContent, CardMedia } from '@mui/material';
+import { Container, Grid, Typography, Card, CardContent, CardMedia, Box, CardActionArea } from '@mui/material';
+import { posts } from './assets/posts'
+import { Tags } from './Tags';
+import { Link } from 'react-router-dom';
+import { Article } from './types';
 
-// Sample seed data for blog posts
-const blogPosts = [
-  {
-    id: 1,
-    title: "Exploring the Beauty of Nature",
-    author: "Jane Doe",
-    date: "October 20, 2024",
-    image: "https://source.unsplash.com/random/800x400?nature", // Random image from Unsplash
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada."
-  },
-  {
-    id: 2,
-    title: "The Rise of AI in Everyday Life",
-    author: "John Smith",
-    date: "October 21, 2024",
-    image: "https://source.unsplash.com/random/800x400?technology", // Random image from Unsplash
-    content:
-      "Aliquam fermentum, metus eget volutpat ultricies, ligula urna bibendum ipsum, nec luctus orci ligula at justo. Sed sed nulla ut tellus lobortis aliquam."
-  },
-  {
-    id: 3,
-    title: "Understanding Quantum Computing",
-    author: "Alice Johnson",
-    date: "October 22, 2024",
-    image: "https://source.unsplash.com/random/800x400?quantum", // Random image from Unsplash
-    content:
-      "Phasellus a nisi non ante bibendum condimentum. Nunc sed turpis sit amet nulla placerat hendrerit. Ut accumsan consequat nulla, et convallis neque."
-  },
-  {
-    id: 4,
-    title: "The Future of Space Exploration",
-    author: "Robert White",
-    date: "October 23, 2024",
-    image: "https://source.unsplash.com/random/800x400?space", // Random image from Unsplash
-    content:
-      "Sed auctor ligula ipsum, sit amet porttitor libero gravida ac. Phasellus sit amet lectus ac urna sollicitudin hendrerit in id elit."
-  },
-  // Additional posts can be added here
-];
 
 export const Articles = () => {
   return (
-    <Container maxWidth="lg" sx={{ py: 5 }}>
-      <Typography variant="h4" gutterBottom align="center">
-        Latest Blog Posts
-      </Typography>
-      <Grid container spacing={4} justifyContent="center">
-        {blogPosts.map((post) => (
-          <Grid item key={post.id} xs={12} sm={6} md={3}>
-            <Card sx={{ maxWidth: 345, display: 'flex', flexDirection: 'column' }}>
-              <CardMedia
-                component="img"
-                height="140"
-                image={post.image}
-                alt={post.title}
-              />
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  {post.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  By {post.author} | {post.date}
-                </Typography>
-                <Typography variant="body2" sx={{ mt: 2 }}>
-                  {post.content}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
+    <Box
+        component="main"
+        sx={{
+            // backgroundImage: `url('../splash.min.jpg');`,
+            flexGrow: 1,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundAttachment: "fixed", /* This keeps the background image fixed while scrolling */
+            backgroundRepeat: "no-repeat",
+            height: "100vh",
+            overflow: "auto",
+            width: '100vw',
+            justifyContent: "center"
+        }}
+    >
+      <Container maxWidth="lg" sx={{ py: 10, justifyContent: "center" }}>
+        <Typography variant="h4" gutterBottom align="left">
+          Latest Articles
+        </Typography>
+        <Grid container spacing={4} justifyContent="start">
+          {posts.map((post: Article) => (
+            <Grid item key={post.id} xs={12} sm={6} md={4}>
+              <Card sx={{ 
+                  maxWidth: 345, 
+                  display: 'flex', 
+                  flexDirection: 'column',
+                  '&:hover': {
+                    boxShadow: 12, // Adds elevation on hover
+                  }
+                }}>
+                  <CardActionArea
+                  component={Link}
+                  to={`/article/${post.destination}`} // Replace with your route
+                  sx={{
+                    '&:hover .MuiCardMedia-root': {
+                      filter: 'grayscale(100%)', // Grayscale effect
+                    },
+                    cursor: 'pointer', // Ensures the pointer cursor
+                  }}
+                >
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={post.image}
+                  alt={post.title}
+                />
+                <CardContent>
+                  <Tags tags={post.tags}></Tags>
+                  <Typography sx={{margin: "10px 0 10px 0"}} variant="h6" gutterBottom>
+                    {post.title}
+                  </Typography>
+                  {/* <Typography variant="body2" sx={{ mt: 2 }}>
+                    {post.content}
+                  </Typography> */}
+                  <Typography
+                    component="span"
+                    sx={{
+                      textDecoration: 'underline',
+                      color: 'black',
+                      cursor: 'pointer',
+                      textUnderlineOffset:'8px',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    READ
+                  </Typography>
+                </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+    </Box>
+
   );
 };
+
