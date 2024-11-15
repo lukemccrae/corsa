@@ -20,11 +20,11 @@ export const DeleteCourse = (props: DeleteCourseProps) => {
     const deletePlan = async () => {
         const planId = props.plan.id;
         const userId = props.plan.userId;
+        // remove plans from local array
         const updatedPlans = props.plans.filter(p => p.id !== props.plan.id);
         props.setPlans(updatedPlans)
         props.setExpandedPlan(undefined)
         const result = await deletePlanById({ userId, planId })
-        // remove plans from local array
     }
 
     return (

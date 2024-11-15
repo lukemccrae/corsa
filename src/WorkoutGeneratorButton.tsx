@@ -35,4 +35,3 @@ export const WorkoutGeneratorButton = (props: WorkoutGeneratorProps) => {
         </div>
     )
 }
-

@@ -1,12 +1,14 @@
 import AddIcon from "@mui/icons-material/Add";
 import { IconButton } from "@mui/material";
 import Button from "@mui/material/Button";
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
+interface AddButtonProps {
+  location: string;
+}
 
-export const AddButton = () => {
-    const location = useLocation();
-    const buttonClicked = location.pathname === '/add-course';
+export const AddButton = (props: AddButtonProps) => {
+    const buttonClicked = props.location === '/add-course';
 
     return (
         <IconButton

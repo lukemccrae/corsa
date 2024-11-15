@@ -43,6 +43,23 @@ return (
           marginBottom: '20px',
         }}
       >
+        <Box
+          sx={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            background: 'rgba(0, 0, 0, 0.3)',
+            borderRadius: '8px',
+            color: 'white',
+            textAlign: 'center',
+          }}
+        >
+          <Typography variant="h3" gutterBottom>
+            {article?.title}
+          </Typography>
+        </Box>
       </Box>
       <Box
           sx={{

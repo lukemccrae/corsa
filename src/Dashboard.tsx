@@ -8,11 +8,10 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useUser } from './context/UserContext';
 import { AddButton } from "./AddButton";
 import { ListItemText } from '@mui/material';
@@ -25,6 +24,7 @@ export const Dashboard = () => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const { isLoggedIn, logout, user } = useUser()
 
+  const location = useLocation();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -45,16 +45,11 @@ export const Dashboard = () => {
   // Switch to onClick?  
   type Setting = "Logout";
   const settings: Setting[] = ["Logout"];
-  
+
   // Map each setting to its corresponding function
   const settingActions: Record<Setting, () => void> = {
     Logout: () => logout(),
   };
-
-  function returnDestination(page: string) {
-    console.log(page)
-    return "/" + page.toLowerCase()
-  }
 
   return (
     <AppBar position="fixed">
@@ -74,7 +69,7 @@ export const Dashboard = () => {
               letterSpacing: '.2rem',
               color: 'inherit',
               textDecoration: 'none',
-              alignItems: 'center', // Center-align text and icon
+              alignItems: 'center',
             }}
           >
             CORSA.
@@ -110,8 +105,9 @@ export const Dashboard = () => {
               {pages.map((page) => (
 
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  {/* <Typography to={page.toLowerCase()} sx={{ textAlign: 'center' }}>{page}</Typography> */}
-                  <Link style={{ color: 'black' }} to={page.toLowerCase()}>{page}</Link>
+                  <Link style={{
+                    color: 'black',
+                  }} to={page.toLowerCase()}>{page}</Link>
 
                 </MenuItem>
               ))}
@@ -141,15 +137,22 @@ export const Dashboard = () => {
           </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "end" }}>
-            {pages.map((page) => (
-              // <Button
-              //   key={page}
-              //   onClick={handleCloseNavMenu}
-              //   sx={{ my: 2, color: 'white', display: 'block' }}
-              // >
-                <Link style={{ color: 'white', margin: "5px"}} to={page.toLowerCase()}>{page}</Link>
-              // </Button>
-            ))}
+            {pages.map((page) => {
+
+              return (
+                <Link style={{ 
+                  color: 'white', 
+                  margin: "5px", 
+                  textDecoration: location.pathname === `/${page.toLowerCase()}` ? "underline" : "none",
+                  textUnderlineOffset: "8px"
+                }} 
+                  to={page.toLowerCase()}
+
+                >
+                  {page}
+                </Link>
+              )
+            })}
           </Box>
           {(isLoggedIn && user) && (
             <div style={{ display: "flex" }}>
@@ -177,8 +180,8 @@ export const Dashboard = () => {
                 >
                   {settings.map((setting: string) => (
                     <MenuItem key={setting} onClick={() => {
-                      handleCloseUserMenu(); // Close the menu
-                      settingActions[setting as Setting](); // Execute the matched function if it exists
+                      handleCloseUserMenu();
+                      settingActions[setting as Setting]();
                     }}>
                       <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
                     </MenuItem>
@@ -188,7 +191,7 @@ export const Dashboard = () => {
 
                 </Menu>
               </Box>
-              <AddButton></AddButton>
+              <AddButton location={location.pathname}></AddButton>
             </div>
           )}
 
