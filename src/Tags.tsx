@@ -7,7 +7,7 @@ interface TagsProps {
 export const Tags = (props: TagsProps) => {
     return props.tags.map(tag => {
         return (
-            <Typography sx={{
+            <Typography key={tag} sx={{
                 borderRadius: "50px",
                 borderWidth: "1px",
                 borderStyle: "solid",

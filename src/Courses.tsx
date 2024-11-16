@@ -28,7 +28,7 @@ export default function Courses(props: CourseProps) {
   React.useEffect(() => {
     const fetchPlansData = async () => {
       const retrievedPlans = await getPlansByUserId({ userId: props.userId });
-
+      console.log(JSON.stringify(retrievedPlans, null, 2), '<< retrievedPlans')
       if (retrievedPlans && retrievedPlans.length > 0) {
         setPlans(retrievedPlans);
       }

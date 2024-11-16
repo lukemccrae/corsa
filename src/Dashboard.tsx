@@ -52,7 +52,7 @@ export const Dashboard = () => {
   };
 
   return (
-    <AppBar position="fixed">
+    <AppBar sx={{backgroundColor: "#515B63"}} position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -70,6 +70,9 @@ export const Dashboard = () => {
               color: 'inherit',
               textDecoration: 'none',
               alignItems: 'center',
+              '&:hover': {
+                color: '#E3A446',
+              },  
             }}
           >
             CORSA.
@@ -131,7 +134,7 @@ export const Dashboard = () => {
                 alignItems: 'center', // Center-align text and icon
               }}
             >
-              <div>CORSA.</div>
+              <Typography>CORSA.</Typography>
               <DirectionsRunIcon sx={{ ml: 1, margin: 0 }} />
             </Typography>
           </Box>
@@ -140,11 +143,13 @@ export const Dashboard = () => {
             {pages.map((page) => {
 
               return (
-                <Link style={{ 
+                <Link key={page} style={{ 
                   color: 'white', 
                   margin: "5px", 
                   textDecoration: location.pathname === `/${page.toLowerCase()}` ? "underline" : "none",
-                  textUnderlineOffset: "8px"
+                  textUnderlineOffset: "6px",
+                  textDecorationColor: location.pathname === `/${page.toLowerCase()}` ? "#E3A446" : "none",
+                  textDecorationThickness: location.pathname === `/${page.toLowerCase()}` ? "4px" : "none",
                 }} 
                   to={page.toLowerCase()}
 

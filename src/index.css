@@ -29,12 +29,17 @@ body {
   min-width: 320px;
   min-height: 100vh;
   justify-content: center;
+  background-color: #B0B0B0;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
+
+/* h4 {
+  color: ""
+} */
 
 button {
   border-radius: 8px;
@@ -64,6 +69,16 @@ button:focus-visible {
     color: #747bff;
   }
   button {
-    background-color: #f9f9f9;
+    background-color: black;
   }
 }
+
+/* 
+colors
+
+grey #515B63
+brown #8E7A5B
+blue #469CE3
+grey blue #5B83A3
+acceent orange #E3A446
+*/

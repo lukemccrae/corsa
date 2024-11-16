@@ -20,7 +20,6 @@ interface PaceTableProps {
 export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
   return (
     <React.Fragment>
-      <Title>{"Course Details"}</Title>
       <Table size="small" id="paceTable">
         <TableHead>
           <TableRow>

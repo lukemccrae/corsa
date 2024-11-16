@@ -3,10 +3,9 @@ import Courses from "./Courses";
 import React from "react";
 import { Authenticate } from "./Authenticate";
 import { useUser } from './context/UserContext';
+import { UI } from "./UI";
 
 export const App = () => {
-    const [expandedPlan, setExpandedPlan] = React.useState<number | undefined>();
-
     const {checkValidTokenExp, isLoggedIn, login, logout, user} = useUser()
 
     return (
@@ -30,7 +29,8 @@ export const App = () => {
                 {checkValidTokenExp() && user ? (
                     <Grid item xs={12} sm={6}>
                         <Paper sx={{ p: 5, display: "flex", flexDirection: "column" }}>
-                            <Courses expandedPlan={expandedPlan} setExpandedPlan={setExpandedPlan} userId={user.userId}></Courses>
+                            <UI></UI>
+                            {/* <Courses expandedPlan={expandedPlan} setExpandedPlan={setExpandedPlan} userId={user.userId}></Courses> */}
                         </Paper>
                     </Grid>
                 ) : (
