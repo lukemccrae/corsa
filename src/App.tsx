@@ -6,7 +6,7 @@ import { useUser } from './context/UserContext';
 import { UI } from "./UI";
 
 export const App = () => {
-    const {checkValidTokenExp, isLoggedIn, login, logout, user} = useUser()
+    const { checkValidTokenExp, isLoggedIn, login, logout, user } = useUser()
 
     return (
         <Box
@@ -27,12 +27,10 @@ export const App = () => {
 
             <Container maxWidth="lg" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {checkValidTokenExp() && user ? (
-                    <Grid item xs={12} sm={6}>
-                        <Paper sx={{ p: 5, display: "flex", flexDirection: "column" }}>
-                            <UI></UI>
-                            {/* <Courses expandedPlan={expandedPlan} setExpandedPlan={setExpandedPlan} userId={user.userId}></Courses> */}
-                        </Paper>
-                    </Grid>
+                    <Paper sx={{ p: 5, display: "flex", flexDirection: "column", marginTop: '96px', overflow: 'auto' }}>
+                        <UI></UI>
+                        {/* <Courses expandedPlan={expandedPlan} setExpandedPlan={setExpandedPlan} userId={user.userId}></Courses> */}
+                    </Paper>
                 ) : (
                     <Authenticate
                         isLoggedIn={isLoggedIn}

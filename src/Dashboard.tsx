@@ -146,10 +146,6 @@ export const Dashboard = () => {
                 <Link key={page} style={{ 
                   color: 'white', 
                   margin: "5px", 
-                  textDecoration: location.pathname === `/${page.toLowerCase()}` ? "underline" : "none",
-                  textUnderlineOffset: "6px",
-                  textDecorationColor: location.pathname === `/${page.toLowerCase()}` ? "#E3A446" : "none",
-                  textDecorationThickness: location.pathname === `/${page.toLowerCase()}` ? "4px" : "none",
                 }} 
                   to={page.toLowerCase()}
 
