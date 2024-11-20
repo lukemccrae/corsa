@@ -1,75 +1,83 @@
-import React from 'react';
-import { Line } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-} from 'chart.js';
+import React from "react";
+import { styled } from "styled-components";
 
-// Register Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
-// Data and options for the chart
-const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June'], // X-axis labels
-  datasets: [
-    {
-      label: 'Sales', // Name of the dataset
-      data: [10, 20, 30, 40, 50, 60], // Data points for the Y-axis
-      borderColor: 'rgba(75, 192, 192, 1)', // Line color
-      backgroundColor: 'rgba(75, 192, 192, 0.2)', // Fill color under the line
-      borderWidth: 2,
-    },
-  ],
-};
+interface ElevationProps {
+  points: number[][] | undefined
+  multiplyPadding: number
+  setHoveredPoint: Function
+}
 
-const options = {
-  responsive: true,
-  plugins: [{
-    beforeInit: (chart: { data: { datasets: { data: any; }[]; labels: any; }; options: { scales: { x: { min: number; max: number; }; y: { max: number; }; y1: { max: number; }; }; }; }) => {
-      const maxHeight = Math.max(...chart.data.datasets[0].data);
-      chart.options.scales.x.min = Math.min(...chart.data.labels);
-      chart.options.scales.x.max = Math.max(...chart.data.labels);
-      chart.options.scales.y.max = maxHeight + Math.round(maxHeight * 0.2);
-      chart.options.scales.y1.max = maxHeight + Math.round(maxHeight * 0.2);
+const ProfileBox = styled.div`
+  display: flex;
+  align-items: end;
+  max-width: calc(100vw - 64px);
+  height: 220px;
+  overflow: hidden;
+`;
+
+const Point = styled.div`
+  width: 1px;
+  height: 10px;
+  margin-right: 0px;
+  background-color: #E3A446;
+
+  &:hover {
+    background-color: white;
+  }
+`;
+export const Elevation = (props: ElevationProps) => {
+  const [min, setMin] = React.useState<number>();
+  const [max, setMax] = React.useState<number>();
+  const [points, setPoints] = React.useState<number[]>();
+
+  React.useEffect(() => {
+    if (props.points) {
+
+      // calculate number to use for % to arrive at 500 points for graph
+      const condensedPointIndex = Math.round(props.points.length / 500);
+
+      const elevationPoints: number[] = props.points
+      .flatMap((arr, index) => {
+        if (index === 0 || index % condensedPointIndex === 0) {
+          return arr.slice(2, 3);
+        }
+        return [];
+      });
+
+      setMin(Math.min(...elevationPoints));
+      setMax(Math.max(...elevationPoints));
+      setPoints(elevationPoints)
+
     }
-  }],
-scales: {
-      x: { type: 'linear', position: 'bottom' },
-      y: { type: 'linear', beginAtZero: true , position: 'left',  id: 'y'},
-      y1: { type: 'linear', display: true, position: 'right', beginAtZero: true, grid: { drawOnChartArea: false }}, id: 'y1',
-    },
-};
+  }, [props.points]);
 
-// LineChart Component
-const LineChart = () => {
+  if (!props.points || !max || !min) {
+    return <div></div>;
+  }
+    
+  const handleMouseEnter = (index: number) => {
+    props.setHoveredPoint(index)
+  }
+
+  const handleMouseLeave = () => {
+    props.setHoveredPoint(0)
+  };
+
   return (
-    <div style={{ width: '80%', margin: '0 auto' }}>
-      <Line data={data} options={options} />
-    </div>
+    <ProfileBox>
+      {points && points.map((p, index) => {
+          return (
+            <Point
+              key={index}
+              style={{
+                paddingBottom: `${((p - min) / (max - min)) * 200 + 1}px`,
+              }}
+              onMouseEnter={() => handleMouseEnter(index)} // Handle mouse enter
+              onMouseLeave={handleMouseLeave} // Handle mouse leave
+            ><div style={{color: "#e3e3e3"}}></div></Point>
+          )
+      })}
+    </ProfileBox>
   );
 };
-
-// App Component
-const App = () => {
-  return (
-    <div>
-      <LineChart />
-    </div>
-  );
-};
-
-export default App;

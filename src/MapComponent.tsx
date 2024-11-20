@@ -10,7 +10,6 @@ interface MapComponentProps {
 export const MapComponent = (props: MapComponentProps) => {
   const mapRef = React.useRef<mapboxgl.Map | null>(null);
   const mapContainerRef = React.useRef<HTMLDivElement | null>(null);
-  console.log(props.map, '<< map')
 
   let geojsonData: GeoJSON.FeatureCollection;
   let points: any[] = [];
