@@ -4,16 +4,11 @@ import { Link, useParams } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import { getPlanById } from "./services/fetchPlans.service";
 import { Plan } from "./types";
-import { Box, Grid, Paper, Typography } from "@mui/material";
-import { MileProfile } from "./MileProfile";
+import { Box, Grid } from "@mui/material";
 import { MapComponent } from "./MapComponent";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { getGeoJsonBySortKey } from "./services/fetchMap.service";
-
-interface DetailsProps {
-  setSelectedPlan: Function;
-  selectedPlan: Plan
-}
+import Elevation from "./Elevation";
 
 export const Details = () => {
   const { id } = useParams();
@@ -47,7 +42,18 @@ export const Details = () => {
 
   if (plan) {
     return (
-      <Box sx={{ p: 5, display: "flex", flexDirection: "column", overflow: 'auto' }}>
+      <Box component="main"
+        sx={{ 
+          p: 5, 
+          display: "flex", 
+          flexDirection: "column", 
+          overflow: 'auto', 
+          padding: 0, 
+          mt: "64px", 
+          alignItems: 'flex-start',
+          height: "calc(100vh - 64px)"
+        }}
+      >
         <Grid
           container
           item
@@ -92,7 +98,20 @@ export const Details = () => {
           >
             {/* <MileProfile mileVertProfile={fullMapProfile} multiplyPadding={5} color={"black"}></MileProfile> */}
             <MapComponent map={map}></MapComponent>
+
           </Box>
+          {/* <Box
+            sx={{
+              flex: 1,
+              backgroundColor: '#e3e3e3',
+              borderRadius: 2,
+              padding: 2,
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+            }}
+          >
+            <Elevation></Elevation>            
+          </Box> */}
         </Grid>
       </Box>
     )

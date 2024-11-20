@@ -13,11 +13,11 @@ export const App = () => {
             component="main"
             sx={{
                 // backgroundImage: `url('../splash.min.jpg');`,
-                flexGrow: 1,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundAttachment: "fixed", /* This keeps the background image fixed while scrolling */
-                backgroundRepeat: "no-repeat",
+                // flexGrow: 1,
+                // backgroundSize: "cover",
+                // backgroundPosition: "center",
+                // backgroundAttachment: "fixed", /* This keeps the background image fixed while scrolling */
+                // backgroundRepeat: "no-repeat",
                 height: "100vh",
                 overflow: "auto",
                 width: '100vw',
@@ -25,9 +25,9 @@ export const App = () => {
             }}
         >
 
-            <Container maxWidth="lg" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Container maxWidth="lg" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: 0, marginTop: '64px' }}>
                 {checkValidTokenExp() && user ? (
-                    <Paper sx={{ p: 5, display: "flex", flexDirection: "column", marginTop: '96px', overflow: 'auto' }}>
+                    <Paper sx={{ p: 5, display: "flex", flexDirection: "column", overflow: 'auto' }}>
                         <UI></UI>
                         {/* <Courses expandedPlan={expandedPlan} setExpandedPlan={setExpandedPlan} userId={user.userId}></Courses> */}
                     </Paper>

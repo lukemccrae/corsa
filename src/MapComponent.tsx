@@ -40,7 +40,7 @@ export const MapComponent = (props: MapComponentProps) => {
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current,
         style: 'mapbox://styles/mapbox/outdoors-v11', // Default style
-        center: points[(points.length - 1 ) / 2],
+        center: points[(points.length - 1 )],
         zoom: 12
       });
 
