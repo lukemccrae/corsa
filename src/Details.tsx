@@ -89,7 +89,7 @@ export const Details = () => {
             {map && <Typography>{Math.round(map[hoveredPoint][2] * 3.28084) + " ft."}</Typography>}
             <Elevation setHoveredPoint={setHoveredPoint} multiplyPadding={1} points={map}></Elevation>
           </Box>
-          
+
           <Box
             sx={{
               flex: 1,

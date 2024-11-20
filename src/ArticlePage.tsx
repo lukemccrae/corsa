@@ -16,19 +16,7 @@ export const ArticlePage = () => {
       if(post) setArticle(posts[index])
     }
 
-    // Use the `id` to fetch the article from an API or database
-    // const fetchArticle = async () => {
-    //   const response = await fetch(`https://api.example.com/articles/${id}`);
-    //   const data = await response.json();
-    //   setArticle(data);
-    // };
-
-    // fetchArticle();
-  }, [id]); // Re-fetch data whenever `id` changes
-
-//   if (!article) {
-//     return <div>Loading...</div>;
-//   }
+  }, [id]); 
 
 return (
     <Container maxWidth="lg">
