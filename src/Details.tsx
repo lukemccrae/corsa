@@ -1,10 +1,10 @@
 import React from "react";
-import { PaceTable } from "./PaceTable"
+import { PaceTable } from "./PaceTable";
 import { Link, useParams } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import { getPlanById } from "./services/fetchPlans.service";
 import { Plan } from "./types";
-import { Box, Grid, Tooltip, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { MapComponent } from "./MapComponent";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { getGeoJsonBySortKey } from "./services/fetchMap.service";
@@ -14,9 +14,8 @@ export const Details = () => {
   const { id } = useParams();
   const { user } = useUser();
   const [plan, setPlan] = React.useState<Plan>();
-  const [map, setMap] = React.useState<number[][]>()
+  const [map, setMap] = React.useState<number[][]>();
   const [hoveredPoint, setHoveredPoint] = React.useState<number>(0);
-
 
   React.useEffect(() => {
     if (id && user) {
@@ -25,27 +24,27 @@ export const Details = () => {
 
       const fetchPlan = async () => {
         const planResult: Plan = await getPlanById({ userId, planId });
-        const mapResult = await getGeoJsonBySortKey({ planId })
+        const mapResult = await getGeoJsonBySortKey({ planId });
 
-        setPlan(planResult)
-        setMap(mapResult.features[0].geometry.coordinates)
-      }
-      fetchPlan()
+        setPlan(planResult);
+        setMap(mapResult.features[0].geometry.coordinates);
+      };
+      fetchPlan();
     }
   }, [id, user]);
 
   if (plan) {
     return (
-      <Box component="main"
+      <Box
+        component="main"
         sx={{
           p: 5,
           display: "flex",
           flexDirection: "column",
-          overflow: 'auto',
           padding: 0,
           mt: "64px",
           alignItems: 'flex-start',
-          height: "calc(100vh - 64px)",
+          overflow: "auto",
         }}
       >
         <Grid
@@ -58,16 +57,16 @@ export const Details = () => {
             flexDirection: 'column',
             gap: 1,
             padding: 1,
+            height: '100%',
+            overflowY: "auto", 
           }}
         >
-          <Link
-            to="/app"
-            style={{ color: '#515B63' }}>
+          <Link to="/app" style={{ color: '#515B63' }}>
             <ArrowBackIcon />
           </Link>
+
           <Box
             sx={{
-              flex: 1,
               backgroundColor: '#e3e3e3',
               borderRadius: 2,
               padding: 2,
@@ -77,9 +76,9 @@ export const Details = () => {
           >
             <PaceTable plan={plan}></PaceTable>
           </Box>
+          
           <Box
             sx={{
-              flex: 1,
               backgroundColor: '#e3e3e3',
               borderRadius: 2,
               padding: 2,
@@ -88,8 +87,9 @@ export const Details = () => {
             }}
           >
             {map && <Typography>{Math.round(map[hoveredPoint][2] * 3.28084) + " ft."}</Typography>}
-            <Elevation setHoveredPoint={setHoveredPoint} multiplyPadding= {1} points={map}></Elevation>
+            <Elevation setHoveredPoint={setHoveredPoint} multiplyPadding={1} points={map}></Elevation>
           </Box>
+          
           <Box
             sx={{
               flex: 1,
@@ -102,11 +102,10 @@ export const Details = () => {
           >
             <MapComponent map={map}></MapComponent>
           </Box>
-
         </Grid>
       </Box>
-    )
+    );
   } else {
-    return (<div></div>)
+    return <div></div>;
   }
-}
+};

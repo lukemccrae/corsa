@@ -43,29 +43,27 @@ export const MapComponent = (props: MapComponentProps) => {
         zoom: 12
       });
 
-      // Wait until the map is loaded
       mapRef.current.on('load', () => {
-        // Add GeoJSON data as a source
+        // resize the map to make it fill width
+        // current behavior is glitchy
+        mapRef.current?.resize()
         mapRef.current?.addSource('geojson-data', {
           type: 'geojson',
           data: geojsonData,
         });
         
-
-        // Add a layer to display the GeoJSON
         mapRef.current?.addLayer({
           id: 'geojson-layer',
-          type: 'line', // Use a circle for points, you can also use 'line' or 'fill' for other geometry types
+          type: 'line',
           source: 'geojson-data',
           paint: {
             'circle-radius': 8,
-            'circle-color': '#ff0000', // Red color for the point
+            'circle-color': '#ff0000',
           },
         });
       });
     }
 
-    // Cleanup the map when component unmounts
     return () => {
       if (mapRef.current) {
         mapRef.current.remove();
