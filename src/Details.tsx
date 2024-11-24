@@ -94,7 +94,7 @@ export const Details = () => {
   }
 
 
-  const shorten = (map: number[][]) => {
+  function shorten(map: number[][]) {
     let tempMap = map.map(innerArray => [...innerArray]);
 
     let range = 1
