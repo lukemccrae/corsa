@@ -51,50 +51,50 @@ export const Details = () => {
   }
 
   // Cross Product method
-  // function isCollinear(
-  //   point1: { lat: number, lon: number },
-  //   point2: { lat: number, lon: number },
-  //   point3: { lat: number, lon: number },
-  //   tolerance: number = .00001 // Adjust for tolerable collinearity
-  // ) {
-  //   const lat1 = point1.lat, lon1 = point1.lon;
-  //   const lat2 = point2.lat, lon2 = point2.lon;
-  //   const lat3 = point3.lat, lon3 = point3.lon;
-
-  //   // Compute the differences in latitudes and longitudes
-  //   const dx1 = lon2 - lon1;
-  //   const dy1 = lat2 - lat1;
-  //   const dx2 = lon3 - lon1;
-  //   const dy2 = lat3 - lat1;
-
-  //   // Calculate the cross product (dx1 * dy2 - dy1 * dx2)
-  //   const crossProduct = dx1 * dy2 - dy1 * dx2;
-
-  //   // Check if the cross product is close to zero within the tolerance
-  //   return Math.abs(crossProduct) <= tolerance;
-  // }
-
-  // Triangle method
   function isCollinear(
     point1: { lat: number, lon: number },
     point2: { lat: number, lon: number },
     point3: { lat: number, lon: number },
     tolerance: number = .00001 // Adjust for tolerable collinearity
-  ): boolean {
-    const { lat: lat1, lon: lon1 } = point1;
-    const { lat: lat2, lon: lon2 } = point2;
-    const { lat: lat3, lon: lon3 } = point3;
+  ) {
+    const lat1 = point1.lat, lon1 = point1.lon;
+    const lat2 = point2.lat, lon2 = point2.lon;
+    const lat3 = point3.lat, lon3 = point3.lon;
 
-    // Calculate the area of the triangle formed by the three points
-    const area = Math.abs(
-      lat1 * (lon2 - lon3) +
-      lat2 * (lon3 - lon1) +
-      lat3 * (lon1 - lon2)
-    );
+    // Compute the differences in latitudes and longitudes
+    const dx1 = lon2 - lon1;
+    const dy1 = lat2 - lat1;
+    const dx2 = lon3 - lon1;
+    const dy2 = lat3 - lat1;
 
-    // If the area is less than the tolerance, the points are considered approximately collinear
-    return area < tolerance;
+    // Calculate the cross product (dx1 * dy2 - dy1 * dx2)
+    const crossProduct = dx1 * dy2 - dy1 * dx2;
+
+    // Check if the cross product is close to zero within the tolerance
+    return Math.abs(crossProduct) <= tolerance;
   }
+
+  // Triangle method
+  // function isCollinear(
+  //   point1: { lat: number, lon: number },
+  //   point2: { lat: number, lon: number },
+  //   point3: { lat: number, lon: number },
+  //   tolerance: number = .00001 // Adjust for tolerable collinearity
+  // ): boolean {
+  //   const { lat: lat1, lon: lon1 } = point1;
+  //   const { lat: lat2, lon: lon2 } = point2;
+  //   const { lat: lat3, lon: lon3 } = point3;
+
+  //   // Calculate the area of the triangle formed by the three points
+  //   const area = Math.abs(
+  //     lat1 * (lon2 - lon3) +
+  //     lat2 * (lon3 - lon1) +
+  //     lat3 * (lon1 - lon2)
+  //   );
+
+  //   // If the area is less than the tolerance, the points are considered approximately collinear
+  //   return area < tolerance;
+  // }
 
   // calculate the overall length of the points to compare fidelity of the GPX tracks
   function length(mapPoints: number[][]) {
