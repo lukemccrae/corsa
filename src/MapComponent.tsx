@@ -13,7 +13,8 @@ export const MapComponent = (props: MapComponentProps) => {
 
   let geojsonData: GeoJSON.FeatureCollection;
   let points: any[] = [];
-  if(props.map) {
+  if (props.map) {
+    // remove the elevation value, probably better to have this in separate array
     points = props.map.map(arr => arr.slice(0, 2))
     // Type for GeoJSON FeatureCollection
     geojsonData = {
@@ -39,7 +40,7 @@ export const MapComponent = (props: MapComponentProps) => {
       mapRef.current = new mapboxgl.Map({
         container: mapContainerRef.current,
         style: 'mapbox://styles/mapbox/outdoors-v11', // Default style
-        center: points[(points.length - 1 )],
+        center: points[(points.length - 1)],
         zoom: 12
       });
 
@@ -51,7 +52,7 @@ export const MapComponent = (props: MapComponentProps) => {
           type: 'geojson',
           data: geojsonData,
         });
-        
+
         mapRef.current?.addLayer({
           id: 'geojson-layer',
           type: 'line',
@@ -59,6 +60,7 @@ export const MapComponent = (props: MapComponentProps) => {
           paint: {
             'circle-radius': 8,
             'circle-color': '#ff0000',
+            'line-width': 2,
           },
         });
       });

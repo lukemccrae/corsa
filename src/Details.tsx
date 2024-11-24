@@ -33,45 +33,89 @@ export const Details = () => {
     }
   }, [id, user]);
 
-  function haversine(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  function haversineInFeet(lat1: number, lon1: number, lat2: number, lon2: number): number {
     const toRadians = (degree: number) => degree * (Math.PI / 180);
 
-    const R = 6371; // Radius of the Earth in kilometers
+    const R = 20902688; // Earth's radius in feet
     const dLat = toRadians(lat2 - lat1);
     const dLon = toRadians(lon2 - lon1);
 
     const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-    return R * c; // Distance in kilometers
-}
-
-  const length = (map: number[][]) => {
-    let distance = 0;
-    let i = 500;
-    
-    while(i < map.length - 2) {
-      console.log(distance)
-      let lat1: number = map[i][0]
-      let lat2: number = map[i][1]
-      let long1: number = map[i + 1][0]
-      let long2: number = map[i + 1][1]
-
-      
-      distance += haversine(lat1, long1, lat2, long2)
-    }
-    return distance;
+    return R * c; // Distance in feet
   }
 
-  const shorten = (map: number[]) => {
-    console.log(map, '<< map')
-    // shorten points
-    // return map;
-    return 5;
+  function isCollinear(
+    point1: { lat: number, lon: number },
+    point2: { lat: number, lon: number },
+    point3: { lat: number, lon: number },
+    tolerance: number = .00001 // Adjust for tolerable collinearity
+  ): boolean {
+    const { lat: lat1, lon: lon1 } = point1;
+    const { lat: lat2, lon: lon2 } = point2;
+    const { lat: lat3, lon: lon3 } = point3;
+
+    // Calculate the area of the triangle formed by the three points
+    const area = Math.abs(
+      lat1 * (lon2 - lon3) +
+      lat2 * (lon3 - lon1) +
+      lat3 * (lon1 - lon2)
+    );
+
+    // If the area is less than the tolerance, the points are considered approximately collinear
+    return area < tolerance;
+  }
+
+  // calculate the overall length of the points to compare fidelity of the GPX tracks
+  function length(mapPoints: number[][]) {
+    let distance = 0;
+    let i = 0
+
+    while (i < mapPoints.length - 1) {
+      let lat1: number = mapPoints[i][1]
+      let long1: number = mapPoints[i][0]
+      let lat2: number = mapPoints[i + 1][1]
+      let long2: number = mapPoints[i + 1][0]
+
+      distance += haversineInFeet(lat1, long1, lat2, long2)
+      i++;
+    }
+    return (
+      <div>
+        <div style={{ color: 'black' }}>Points: {mapPoints?.length}</div>
+        <div style={{ color: 'black' }}>Length:{(Math.round(distance) / 5280).toFixed(2)} mi.</div>
+      </div>
+    )
+  }
+
+
+  const shorten = (map: number[][]) => {
+    let tempMap = map.map(innerArray => [...innerArray]);
+
+    let range = 1
+    let i = range;
+    let collinear = []
+
+    while (i < tempMap.length - range) {
+      if (i % ((range * 2) + 1) === 0) {
+        let isStraight: boolean = isCollinear(
+          { lat: map[i - range][1], lon: map[i - range][0] },
+          { lat: map[i][1], lon: map[i][0] },
+          { lat: map[i + range][1], lon: map[i + range][0] })
+        if (isStraight) {
+          collinear.push(i)
+        }
+      }
+      i++;
+    }
+    const returnMap = tempMap.filter((_, index) => collinear.includes(index));
+
+    return returnMap;
   }
 
   if (plan) {
@@ -99,7 +143,7 @@ export const Details = () => {
             gap: 1,
             padding: 1,
             height: '100%',
-            overflowY: "auto", 
+            overflowY: "auto",
           }}
         >
           <Link to="/app" style={{ color: '#515B63' }}>
@@ -117,7 +161,7 @@ export const Details = () => {
           >
             <PaceTable plan={plan}></PaceTable>
           </Box>
-          
+
           <Box
             sx={{
               backgroundColor: '#e3e3e3',
@@ -141,8 +185,9 @@ export const Details = () => {
               alignItems: 'flex-start',
             }}
           >
-          <div>Points: {map?.length}</div>
-          <div>Length:4 {length(map as number [][])}</div>
+            <h3 style={{ color: 'black' }}>Original Point Array</h3>
+
+            {map && length(map)}
 
             <MapComponent map={map}></MapComponent>
           </Box>
@@ -158,10 +203,10 @@ export const Details = () => {
               alignItems: 'flex-start',
             }}
           >
-            <div>Points: {map?.length}</div>
-            {/* <div>Length: {shorten(map)}</div> */}
+            <h3 style={{ color: 'black' }}>Modified Point Array</h3>
+            {map && length(shorten(map))}
 
-            <MapComponent map={map}></MapComponent>
+            <MapComponent map={map && shorten(map)}></MapComponent>
           </Box>
         </Grid>
       </Box>
