@@ -1,10 +1,11 @@
 import React from 'react';
-import mapboxgl from 'mapbox-gl';
+import mapboxgl, { GeoJSONSource } from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Box } from '@mui/material';
 
 interface MapComponentProps {
   map: number[][] | undefined
+  hoverPoint: number[] | undefined
 }
 
 export const MapComponent = (props: MapComponentProps) => {
@@ -61,6 +62,31 @@ export const MapComponent = (props: MapComponentProps) => {
             'circle-color': '#ff0000',
           },
         });
+
+        if(props.hoverPoint) {
+          mapRef.current?.addSource('dot-source', {
+            type: 'geojson',
+            data: {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: props.hoverPoint,
+              },
+              properties: {},
+            },
+          });
+    
+          // Add a circle layer to display the dot
+          mapRef.current?.addLayer({
+            id: 'dot-layer',
+            type: 'circle',
+            source: 'dot-source',
+            paint: {
+              'circle-radius': 10, // Size of the dot
+              'circle-color': 'orange', // Color of the dot
+            },
+          });
+        }
       });
     }
 
@@ -70,6 +96,22 @@ export const MapComponent = (props: MapComponentProps) => {
       }
     };
   }, []);
+
+  React.useEffect(() => {
+    if (mapRef.current?.getSource('dot-source') && props.hoverPoint) {
+      const source = mapRef.current.getSource('dot-source') as GeoJSONSource;
+      if(source) {
+        source.setData({
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: props.hoverPoint,
+          },
+          properties: {},
+        });
+      }
+    }
+  }, [props.hoverPoint]);
 
   return (
     <>

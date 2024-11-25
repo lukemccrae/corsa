@@ -55,9 +55,17 @@ export const Details = () => {
       return toHHMMSS(timeInSeconds / (distance / 5280))
     }
 
+    function calcElapsed() {
+      if (coordTimes) {
+        let time1 = new Date(coordTimes[0]).getTime();
+        let time2 = new Date(coordTimes[hoveredPoint]).getTime();
+        return toHHMMSS((time2 - time1) / 1000);
+      }
+    }
+
     if (map && coordTimes) {
       // get distance
-      const range = 5;
+      const range = 10;
       const pace = getTime(
         map.slice(hoveredPoint - range, hoveredPoint + range),
         coordTimes.slice(hoveredPoint - range, hoveredPoint + range)
@@ -65,7 +73,8 @@ export const Details = () => {
 
       return (
         <div>
-          <div>{pace}</div>
+          <div>{pace} min / mile</div>
+          <div>{calcElapsed()} elapsed time</div>
         </div>
       )
     }
@@ -140,7 +149,7 @@ export const Details = () => {
               alignItems: 'flex-start',
             }}
           >
-            <MapComponent map={map}></MapComponent>
+            <MapComponent hoverPoint={map && map[hoveredPoint]} map={map}></MapComponent>
           </Box>
         </Grid>
       </Box>
