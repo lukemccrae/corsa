@@ -108,7 +108,7 @@ export const Details = () => {
     let shortenedPoints = removePoints(map, tolerance);
     let shortenedLength = Number.parseFloat((length(shortenedPoints) / 5280).toFixed(4))
 
-    // do loop that makes new shortened point arrays if shortenedLength is less than .001 % of original
+    // do loop that makes new shortened point arrays if shortenedLength is outside of acceptable ratio to original
     while (iterations < maxIterations) {
       shortenedPoints = removePoints(map, tolerance);
       shortenedLength = Number.parseFloat((length(shortenedPoints) / 5280).toFixed(4))
