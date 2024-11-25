@@ -219,11 +219,11 @@ export const Details = () => {
           >
             <h3 style={{ color: 'black' }}>Modified Point Array</h3>
             <div>
-              <div style={{ color: 'black' }}>Points: {map && shorten(map).length}</div>
-              <div style={{ color: 'black' }}>Length:{map && (length(shorten(map)) / 5280).toFixed(2)} mi.</div>
+              <div style={{ color: 'black' }}>Points: {map && shortenIteratively(map).length}</div>
+              <div style={{ color: 'black' }}>Length:{map && (length(shortenIteratively(map)) / 5280).toFixed(2)} mi.</div>
             </div>
 
-            <MapComponent map={map && shorten(map)}></MapComponent>
+            <MapComponent map={map && shortenIteratively(map)}></MapComponent>
           </Box>
         </Grid>
       </Box>
