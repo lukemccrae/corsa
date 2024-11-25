@@ -30,12 +30,13 @@ export const Elevation = (props: ElevationProps) => {
   const [min, setMin] = React.useState<number>();
   const [max, setMax] = React.useState<number>();
   const [points, setPoints] = React.useState<number[]>();
+  const [condensedPointIndex, setCondensedPointIndex] = React.useState<number>(0);
 
   React.useEffect(() => {
     if (props.points) {
 
       // calculate number to use for % to arrive at 500 points for graph
-      const condensedPointIndex = Math.round(props.points.length / 500);
+      setCondensedPointIndex(Math.round(props.points.length / 500));
 
       const elevationPoints: number[] = props.points
       .flatMap((arr, index) => {
@@ -57,7 +58,7 @@ export const Elevation = (props: ElevationProps) => {
   }
     
   const handleMouseEnter = (index: number) => {
-    props.setHoveredPoint(index)
+    props.setHoveredPoint(index * condensedPointIndex)
   }
 
   const handleMouseLeave = () => {

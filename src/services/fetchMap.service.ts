@@ -10,10 +10,13 @@ export const getGeoJsonBySortKey = async (props: GetGeoJsonBySortKeyProps) => {
         query MyQuery {
             getGeoJsonBySortKey(sortKey: "${props.planId}") {
                 features {
-                geometry {
-                    coordinates
-                    type
-                }
+                    geometry {
+                        coordinates
+                        type
+                    }
+                    properties {
+                        coordTimes
+                    }
                 }
             }
         }
