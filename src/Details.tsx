@@ -200,7 +200,7 @@ export const Details = () => {
 
             <div>
               <div style={{ color: 'black' }}>Points: {map?.length}</div>
-              <div style={{ color: 'black' }}>Length:{(length(map) / 5280).toFixed(2)} mi.</div>
+              <div style={{ color: 'black' }}>Length:{map && (length(map) / 5280).toFixed(2)} mi.</div>
             </div>
 
             <MapComponent map={map}></MapComponent>
@@ -219,8 +219,8 @@ export const Details = () => {
           >
             <h3 style={{ color: 'black' }}>Modified Point Array</h3>
             <div>
-              <div style={{ color: 'black' }}>Points: {shorten(map).length}</div>
-              <div style={{ color: 'black' }}>Length:{(length(shorten(map)) / 5280).toFixed(2)} mi.</div>
+              <div style={{ color: 'black' }}>Points: {map && shorten(map).length}</div>
+              <div style={{ color: 'black' }}>Length:{map && (length(shorten(map)) / 5280).toFixed(2)} mi.</div>
             </div>
 
             <MapComponent map={map && shorten(map)}></MapComponent>
