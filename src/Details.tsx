@@ -99,7 +99,7 @@ export const Details = () => {
     return map.filter((_, index) => !collinearIndices.has(index));
   }
 
-  function shorten(map: number[][]) {
+  function shortenIteratively(map: number[][]) {
     // start with base tolerance value that will be decreased in loop iterations
     let tolerance = .000001;
     let iterations = 0;
