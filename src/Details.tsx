@@ -50,52 +50,6 @@ export const Details = () => {
     return R * c; // Distance in feet
   }
 
-  // Cross Product method
-  function isCollinear(
-    point1: { lat: number, lon: number },
-    point2: { lat: number, lon: number },
-    point3: { lat: number, lon: number },
-    tolerance: number = .00001 // Adjust for tolerable collinearity
-  ) {
-    const lat1 = point1.lat, lon1 = point1.lon;
-    const lat2 = point2.lat, lon2 = point2.lon;
-    const lat3 = point3.lat, lon3 = point3.lon;
-
-    // Compute the differences in latitudes and longitudes
-    const dx1 = lon2 - lon1;
-    const dy1 = lat2 - lat1;
-    const dx2 = lon3 - lon1;
-    const dy2 = lat3 - lat1;
-
-    // Calculate the cross product (dx1 * dy2 - dy1 * dx2)
-    const crossProduct = dx1 * dy2 - dy1 * dx2;
-
-    // Check if the cross product is close to zero within the tolerance
-    return Math.abs(crossProduct) <= tolerance;
-  }
-
-  // Triangle method
-  // function isCollinear(
-  //   point1: { lat: number, lon: number },
-  //   point2: { lat: number, lon: number },
-  //   point3: { lat: number, lon: number },
-  //   tolerance: number = .00001 // Adjust for tolerable collinearity
-  // ): boolean {
-  //   const { lat: lat1, lon: lon1 } = point1;
-  //   const { lat: lat2, lon: lon2 } = point2;
-  //   const { lat: lat3, lon: lon3 } = point3;
-
-  //   // Calculate the area of the triangle formed by the three points
-  //   const area = Math.abs(
-  //     lat1 * (lon2 - lon3) +
-  //     lat2 * (lon3 - lon1) +
-  //     lat3 * (lon1 - lon2)
-  //   );
-
-  //   // If the area is less than the tolerance, the points are considered approximately collinear
-  //   return area < tolerance;
-  // }
-
   // calculate the overall length of the points to compare fidelity of the GPX tracks
   function length(mapPoints: number[][]) {
     let distance = 0;
@@ -110,39 +64,69 @@ export const Details = () => {
       distance += haversineInFeet(lat1, long1, lat2, long2)
       i++;
     }
-    return (
-      <div>
-        <div style={{ color: 'black' }}>Points: {mapPoints?.length}</div>
-        <div style={{ color: 'black' }}>Length:{(Math.round(distance) / 5280).toFixed(2)} mi.</div>
-      </div>
-    )
+    return Math.round(distance);
+
   }
 
+  function isCollinear(
+    p1: { lat: number; lon: number },
+    p2: { lat: number; lon: number },
+    p3: { lat: number; lon: number },
+    tolerance: number
+  ): boolean {
+    // make a triangle out of three points and compare the area
+    const area = p1.lat * (p2.lon - p3.lon) +
+      p2.lat * (p3.lon - p1.lon) +
+      p3.lat * (p1.lon - p2.lon);
+    return Math.abs(area) <= tolerance
+  }
+
+  function removePoints(map: number[][], tolerance: number) {
+    let collinearIndices = new Set<number>();
+    // Iterate through the points
+    for (let i = 0; i < map.length - 2; i++) {
+      const p1 = { lat: map[i][1], lon: map[i][0] };
+      const p2 = { lat: map[i + 1][1], lon: map[i + 1][0] };
+      const p3 = { lat: map[i + 2][1], lon: map[i + 2][0] };
+
+      // Check if these three points are collinear
+      if (isCollinear(p1, p2, p3, tolerance)) {
+        // Mark the middle point (p2) for removal
+        collinearIndices.add(i + 1);
+      }
+    }
+    // Filter out collinear points
+    return map.filter((_, index) => !collinearIndices.has(index));
+  }
 
   function shorten(map: number[][]) {
-    let tempMap = map.map(innerArray => [...innerArray]);
+    // start with base tolerance value that will be decreased in loop iterations
+    let tolerance = .000001;
+    let iterations = 0;
+    const maxIterations = 8;
+    const originalLength: number = Number.parseFloat((length(map) / 5280).toFixed(4))
+    let shortenedPoints = removePoints(map, tolerance);
+    let shortenedLength = Number.parseFloat((length(shortenedPoints) / 5280).toFixed(4))
 
-    let range = 1
-    let i = range;
-    let collinear = []
-    console.log(Date.now(), 1)
-    while (i < tempMap.length - range) {
-      if (i % ((range * 2) + 1) === 0) {
-        let isStraight: boolean = isCollinear(
-          { lat: map[i - range][1], lon: map[i - range][0] },
-          { lat: map[i][1], lon: map[i][0] },
-          { lat: map[i + range][1], lon: map[i + range][0] })
-        if (isStraight) {
-          collinear.push(i)
-        }
+    // do loop that makes new shortened point arrays if shortenedLength is less than .001 % of original
+    while (iterations < maxIterations) {
+      shortenedPoints = removePoints(map, tolerance);
+      shortenedLength = Number.parseFloat((length(shortenedPoints) / 5280).toFixed(4))
+
+      // degree of difference between route lengths as a percent
+      let ratio = (originalLength - shortenedLength) / originalLength;
+
+      // check for tolerable distance difference between shortened route and original
+      // increase comparison value to decrease points
+      // decrease comparison value to increase route accuracy
+      if (ratio > .01) {
+        tolerance /= 10;
+        iterations++
+      } else {
+        break;
       }
-      i++;
     }
-    console.log(Date.now(), 2)
-
-    const returnMap = tempMap.filter((_, index) => collinear.includes(index));
-
-    return returnMap;
+    return shortenedPoints;
   }
 
   if (plan) {
@@ -214,7 +198,10 @@ export const Details = () => {
           >
             <h3 style={{ color: 'black' }}>Original Point Array</h3>
 
-            {map && length(map)}
+            <div>
+              <div style={{ color: 'black' }}>Points: {map?.length}</div>
+              <div style={{ color: 'black' }}>Length:{(length(map) / 5280).toFixed(2)} mi.</div>
+            </div>
 
             <MapComponent map={map}></MapComponent>
           </Box>
@@ -231,7 +218,10 @@ export const Details = () => {
             }}
           >
             <h3 style={{ color: 'black' }}>Modified Point Array</h3>
-            {map && length(shorten(map))}
+            <div>
+              <div style={{ color: 'black' }}>Points: {shorten(map).length}</div>
+              <div style={{ color: 'black' }}>Length:{(length(shorten(map)) / 5280).toFixed(2)} mi.</div>
+            </div>
 
             <MapComponent map={map && shorten(map)}></MapComponent>
           </Box>
