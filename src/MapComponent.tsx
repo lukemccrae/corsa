@@ -13,7 +13,7 @@ export const MapComponent = (props: MapComponentProps) => {
 
   let geojsonData: GeoJSON.FeatureCollection;
   let points: any[] = [];
-  if (props.map) {
+  if(props.map) {
     // remove the elevation value, probably better to have this in separate array
     points = props.map.map(arr => arr.slice(0, 2))
     // Type for GeoJSON FeatureCollection
@@ -52,7 +52,6 @@ export const MapComponent = (props: MapComponentProps) => {
           type: 'geojson',
           data: geojsonData,
         });
-
         mapRef.current?.addLayer({
           id: 'geojson-layer',
           type: 'line',

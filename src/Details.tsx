@@ -154,7 +154,7 @@ export const Details = () => {
             gap: 1,
             padding: 1,
             height: '100%',
-            overflowY: "auto",
+            overflowY: "auto", 
           }}
         >
           <Link to="/app" style={{ color: '#515B63' }}>
@@ -172,7 +172,6 @@ export const Details = () => {
           >
             <PaceTable plan={plan}></PaceTable>
           </Box>
-
           <Box
             sx={{
               backgroundColor: '#e3e3e3',
