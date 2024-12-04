@@ -12,7 +12,7 @@ interface DeleteButtonProps {
 }
 
 
-export const DeleteButton = (props: DeleteButtonProps) => {
+export const DeleteCourse = (props: DeleteButtonProps) => {
     const [open, setOpen] = React.useState<boolean>(false)
     const navigate = useNavigate()
     const { user } = useUser()
@@ -77,5 +77,3 @@ export const DeleteButton = (props: DeleteButtonProps) => {
         </>
     );
 };
-
-export default DeleteButton;

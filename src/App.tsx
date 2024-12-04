@@ -1,6 +1,4 @@
 import { Box, Container, Grid, Paper } from "@mui/material"
-import Courses from "./Courses";
-import React from "react";
 import { Authenticate } from "./Authenticate";
 import { useUser } from './context/UserContext';
 import { UI } from "./UI";

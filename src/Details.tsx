@@ -11,7 +11,7 @@ import { getGeoJsonBySortKey } from "./services/fetchMap.service";
 import { Elevation } from "./Elevation";
 import { haversineInFeet } from './helpers/haversine.helper'
 import { toHHMMSS } from "./helpers/avgPace.helper";
-import DeleteButton from "./DeleteCourse";
+import { DeleteCourse } from "./DeleteCourse";
 
 export const Details = () => {
   const { id } = useParams();
@@ -114,7 +114,7 @@ export const Details = () => {
             <Link to="/app" style={{ color: '#515B63' }}>
               <ArrowBackIcon />
             </Link>
-            <DeleteButton planId={plan.id} label={"Delete"}></DeleteButton>
+            <DeleteCourse planId={plan.id} label={"Delete"}></DeleteCourse>
           </Box>
 
 
