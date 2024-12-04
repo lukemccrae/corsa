@@ -21,11 +21,21 @@ const Point = styled.div`
   height: 10px;
   margin-right: 0px;
   background-color: #E3A446;
+`;
 
+const ElevationColumn = styled.div`
+  background-color: transparent;
+  height: 100%;
   &:hover {
     background-color: white;
+    & > div {
+      background-color: white;
+    }
   }
-`;
+
+  display: flex;
+  flex-direction: column-reverse;
+`
 export const Elevation = (props: ElevationProps) => {
   const [min, setMin] = React.useState<number>();
   const [max, setMax] = React.useState<number>();
@@ -39,12 +49,12 @@ export const Elevation = (props: ElevationProps) => {
       setCondensedPointIndex(Math.round(props.points.length / 500));
 
       const elevationPoints: number[] = props.points
-      .flatMap((arr, index) => {
-        if (index === 0 || index % condensedPointIndex === 0) {
-          return arr.slice(2, 3);
-        }
-        return [];
-      });
+        .flatMap((arr, index) => {
+          if (index === 0 || index % condensedPointIndex === 0) {
+            return arr.slice(2, 3);
+          }
+          return [];
+        });
 
       setMin(Math.min(...elevationPoints));
       setMax(Math.max(...elevationPoints));
@@ -56,28 +66,31 @@ export const Elevation = (props: ElevationProps) => {
   if (!props.points || !max || !min) {
     return <div></div>;
   }
-    
+
   const handleMouseEnter = (index: number) => {
     props.setHoveredPoint(index * condensedPointIndex)
   }
 
   const handleMouseLeave = () => {
-    props.setHoveredPoint(0)
+    // props.setHoveredPoint(0)
   };
 
   return (
     <ProfileBox>
       {points && points.map((p, index) => {
-          return (
+        return (
+          <ElevationColumn onMouseEnter={() => handleMouseEnter(index)}
+            onMouseLeave={handleMouseLeave}>
             <Point
               key={index}
               style={{
                 paddingBottom: `${((p - min) / (max - min)) * 200 + 1}px`,
               }}
-              onMouseEnter={() => handleMouseEnter(index)} // Handle mouse enter
-              onMouseLeave={handleMouseLeave} // Handle mouse leave
-            ><div style={{color: "#e3e3e3"}}></div></Point>
-          )
+
+            ></Point>
+          </ElevationColumn>
+
+        )
       })}
     </ProfileBox>
   );

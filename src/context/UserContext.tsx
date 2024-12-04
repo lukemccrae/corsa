@@ -53,6 +53,8 @@ type UserProviderProps = {
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -64,6 +66,11 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       login({email, userId, exp})
       setIsLoggedIn(true);
     }
+
+    const userAgent = navigator.userAgent.toLowerCase();
+    const mobileRegex = /android|iphone|ipad|ipod|blackberry|windows phone/;
+    setIsMobile(mobileRegex.test(userAgent));
+    
   }, []);
 
   const login = (userData: User) => {
