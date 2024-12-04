@@ -16,6 +16,7 @@ export const getGeoJsonBySortKey = async (props: GetGeoJsonBySortKeyProps) => {
                     }
                     properties {
                         coordTimes
+                        cumulativeDistance
                     }
                 }
             }
@@ -38,6 +39,7 @@ export const getGeoJsonBySortKey = async (props: GetGeoJsonBySortKeyProps) => {
             }
         );
         const plans = await result.json();
+        console.log(plans, '<< plans')
         return plans.data.getGeoJsonBySortKey;
     } catch (e) {
         console.log(e, "<< error");

@@ -92,7 +92,7 @@ export const AddCourse = () => {
         sx={{
           backgroundColor: 'primary.main',
           color: 'white',
-          padding: '10px 20px',
+          padding: '10px 10px 10px 10px',
           '&:hover': {
             backgroundColor: 'primary.dark',
           },

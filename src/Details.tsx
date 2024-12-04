@@ -3,7 +3,7 @@ import { PaceTable } from "./PaceTable";
 import { Link, useParams } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import { getPlanById } from "./services/fetchPlans.service";
-import { Plan } from "./types";
+import { FeatureCollection, Plan } from "./types";
 import { Box, Grid, Typography } from "@mui/material";
 import { MapComponent } from "./MapComponent";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -20,6 +20,7 @@ export const Details = () => {
   const [map, setMap] = React.useState<number[][]>();
   const [coordTimes, setCoordTimes] = React.useState<string[]>();
   const [hoveredPoint, setHoveredPoint] = React.useState<number>(0);
+  const [cumulativeDistance, setCumulativeDistance] = React.useState<number[]>()
   // condensedPointIndex is a way for the pace calculations to be on the same index with the elevation profile
   // elevation profile is shortened version of points so this guides indexing the map array
 
@@ -30,11 +31,12 @@ export const Details = () => {
 
       const fetchPlan = async () => {
         const planResult: Plan = await getPlanById({ userId, planId });
-        const mapResult = await getGeoJsonBySortKey({ planId });
+        const mapResult: FeatureCollection = await getGeoJsonBySortKey({ planId });
 
         setPlan(planResult);
         setMap(mapResult.features[0].geometry.coordinates);
         setCoordTimes(mapResult.features[0].properties.coordTimes)
+        setCumulativeDistance(mapResult.features[0].properties.cumulativeDistance)
       };
       fetchPlan();
     }
@@ -74,8 +76,8 @@ export const Details = () => {
 
       return (
         <div>
-          <div>{pace} min / mile</div>
-          <div>{calcElapsed()} elapsed time</div>
+          <Typography sx={{color: 'black'}}>{pace} min / mile</Typography>
+          <Typography sx={{color: 'black'}}>{calcElapsed()} elapsed time</Typography>
         </div>
       )
     }
@@ -139,8 +141,10 @@ export const Details = () => {
               alignItems: 'flex-start'
             }}
           >
-            {map && <Typography>{Math.round(map[hoveredPoint][2] * 3.28084) + " ft."}</Typography>}
+            {map && <Typography sx={{color: 'black'}}>{Math.round(map[hoveredPoint][2] * 3.28084) + " ft."}</Typography>}
             {coordTimes && <Typography>{calcPace()}</Typography>}
+            {cumulativeDistance && <Typography sx={{color: 'black'}}>{(cumulativeDistance[hoveredPoint] / 5280).toFixed(3)} mi.</Typography>}
+            
             <Elevation setHoveredPoint={setHoveredPoint} multiplyPadding={1} points={map}></Elevation>
           </Box>
 

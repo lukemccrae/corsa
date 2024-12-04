@@ -16,6 +16,8 @@ import { useUser } from './context/UserContext';
 import { AddButton } from "./AddButton";
 import { ListItemText } from '@mui/material';
 import Divider from '@mui/material/Divider';
+import AddIcon from "@mui/icons-material/Add";
+
 
 const pages = ['Articles', 'App'];
 
@@ -132,6 +134,9 @@ export const Dashboard = () => {
                 color: 'inherit',
                 textDecoration: 'none',
                 alignItems: 'center', // Center-align text and icon
+                '&:hover': {
+                color: '#E3A446',
+              },  
               }}
             >
               <Typography>CORSA.</Typography>
@@ -158,7 +163,7 @@ export const Dashboard = () => {
           {(isLoggedIn && user) && (
             <div style={{ display: "flex" }}>
               <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
+                <Tooltip title="Account settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar alt={user.email} src="/static/images/avatar/2.jpg" />
                   </IconButton>
@@ -192,7 +197,24 @@ export const Dashboard = () => {
 
                 </Menu>
               </Box>
-              <AddButton location={location.pathname}></AddButton>
+              <Box sx={{}}>
+                <Tooltip title="Add Course">
+                  <IconButton
+                    component={Link}
+                    to={"/add-course"}
+                    size="small"
+                    sx={{
+                      borderRadius: '50%', // Circular button
+                      border: '1px solid #ccc',
+                      backgroundColor: '#469CE3'
+                    }}
+                  >
+                    <AddIcon></AddIcon>
+                  </IconButton>
+                </Tooltip>
+              </Box>
+              
+              {/* <AddButton location={location.pathname}></AddButton> */}
             </div>
           )}
 

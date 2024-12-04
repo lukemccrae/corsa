@@ -56,6 +56,8 @@ export interface Feature {
     name: string;
     mileData: MileData[];
     lastMileDistance: number;
+    cumulativeDistance: number[];
+    coordTimes: string[]
   };
 }
 
