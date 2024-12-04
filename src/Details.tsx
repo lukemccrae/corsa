@@ -11,6 +11,7 @@ import { getGeoJsonBySortKey } from "./services/fetchMap.service";
 import { Elevation } from "./Elevation";
 import { haversineInFeet } from './helpers/haversine.helper'
 import { toHHMMSS } from "./helpers/avgPace.helper";
+import DeleteButton from "./DeleteCourse";
 
 export const Details = () => {
   const { id } = useParams();
@@ -109,9 +110,13 @@ export const Details = () => {
             overflowX: 'auto'
           }}
         >
-          <Link to="/app" style={{ color: '#515B63' }}>
-            <ArrowBackIcon />
-          </Link>
+          <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+            <Link to="/app" style={{ color: '#515B63' }}>
+              <ArrowBackIcon />
+            </Link>
+            <DeleteButton planId={plan.id} label={"Delete"}></DeleteButton>
+          </Box>
+
 
           <Box
             sx={{

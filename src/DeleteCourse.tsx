@@ -1,80 +1,81 @@
-import { IconButton } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Plan } from "./types";
-import React from "react";
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
-import { deletePlanById } from "./services/deletePlan.service";
+import React from 'react';
+import Button from '@mui/material/Button';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { deletePlanById } from './services/deletePlan.service';
+import { useUser } from './context/UserContext';
 
-interface DeleteCourseProps {
-    plan: Plan
-    setPlans: Function
-    plans: Plan[]
-    setExpandedPlan: Function
-
+interface DeleteButtonProps {
+    label: string
+    planId: string
 }
 
-export const DeleteCourse = (props: DeleteCourseProps) => {
-    const [deleteConfirm, setDeleteConfirm] = React.useState<boolean>(false);
 
-    const deletePlan = async () => {
-        const planId = props.plan.id;
-        const userId = props.plan.userId;
-        // remove plans from local array
-        const updatedPlans = props.plans.filter(p => p.id !== props.plan.id);
-        props.setPlans(updatedPlans)
-        props.setExpandedPlan(undefined)
-        const result = await deletePlanById({ userId, planId })
+export const DeleteButton = (props: DeleteButtonProps) => {
+    const [open, setOpen] = React.useState<boolean>(false)
+    const navigate = useNavigate()
+    const { user } = useUser()
+
+
+    const onDelete = async () => {
+        if (user?.userId) {
+            const userId = user.userId
+            const planId = props.planId
+            await deletePlanById({userId, planId})
+        }
+        
+        navigate('/app')
     }
 
-    return (
-        <div>
-            {deleteConfirm ?
-                <div>
-                    <IconButton
-                        onClick={(event) => {
-                            event.stopPropagation()
-                            setDeleteConfirm(false)
-                        }}
-                        sx={{
-                            border: '1px solid #ccc',
-                            '&:hover': {
-                                backgroundColor: 'white', // Change the background color on hover
-                            },
-                        }}
-                    >
-                        <CheckIcon onClick={async () => {
-                            await deletePlan()
-                        }}></CheckIcon>
-                    </IconButton>
-                    <IconButton
-                        onClick={(event) => event.stopPropagation()}
-                        sx={{
-                            border: '1px solid #ccc',
-                            '&:hover': {
-                                backgroundColor: 'white', // Change the background color on hover
-                            },
-                        }}>
-                        <CloseIcon></CloseIcon>
-                    </IconButton>
-                </div>
-                :
-                (<IconButton
-                    onClick={(event) => {
-                        event.stopPropagation()
-                        setDeleteConfirm(true)
-                    }}
-                    aria-label="delete"
-                    size="small"
-                    sx={{
-                        border: '1px solid #ccc',
-                        '&:hover': {
-                            backgroundColor: 'white', // Change the background color on hover
-                        },
-                    }}>
-                    <DeleteIcon fontSize="inherit" />
-                </IconButton>)}
-        </div>
-    )
-}
+    const handleOpen = () => {
+        setOpen(true);
+    };
 
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleConfirmDelete = async () => {
+        await onDelete();
+        setOpen(false);
+    };
+
+    return (
+        <>
+            <Button
+                variant="contained"
+                color="error"
+                startIcon={<DeleteIcon />}
+                onClick={handleOpen}
+                sx={{ backgroundColor: '#469CE3', '&:hover': {} }}
+            >
+                {props.label}
+            </Button>
+
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="confirm-delete-title"
+                aria-describedby="confirm-delete-description"
+            >
+                <DialogTitle id="confirm-delete-title">Confirm Deletion</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="confirm-delete-description">
+                        Are you sure you want to delete this? This action cannot be undone.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleConfirmDelete} color="error" autoFocus>
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </>
+    );
+};
+
+export default DeleteButton;

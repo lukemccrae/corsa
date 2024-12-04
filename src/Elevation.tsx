@@ -20,22 +20,23 @@ const Point = styled.div`
   width: 1px;
   height: 10px;
   margin-right: 0px;
-  background-color: #E3A446;
+  background-color: #e3a446;
 `;
 
 const ElevationColumn = styled.div`
   background-color: transparent;
   height: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+
   &:hover {
     background-color: white;
+
     & > div {
       background-color: white;
     }
   }
-
-  display: flex;
-  flex-direction: column-reverse;
-`
+`;
 export const Elevation = (props: ElevationProps) => {
   const [min, setMin] = React.useState<number>();
   const [max, setMax] = React.useState<number>();
@@ -80,7 +81,9 @@ export const Elevation = (props: ElevationProps) => {
       {points && points.map((p, index) => {
         return (
           <ElevationColumn onMouseEnter={() => handleMouseEnter(index)}
-            onMouseLeave={handleMouseLeave}>
+            onMouseLeave={handleMouseLeave}
+            key={index}
+            >
             <Point
               key={index}
               style={{
