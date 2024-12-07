@@ -10,14 +10,23 @@ export const getGeoJsonBySortKey = async (props: GetGeoJsonBySortKeyProps) => {
         query MyQuery {
             getGeoJsonBySortKey(sortKey: "${props.planId}") {
                 features {
-                    geometry {
-                        coordinates
-                        type
-                    }
-                    properties {
-                        coordTimes
+                properties {
+                    minElevationInFeet
+                    maxElevationInFeet
+                    coordTimes
+                    id
+                    lastMileDistance
+                    pointMetadata {
+                        pace
+                        grade
                         cumulativeDistance
+                        elevation
+                        time
                     }
+                }
+                geometry {
+                    coordinates
+                }
                 }
             }
         }
@@ -39,7 +48,6 @@ export const getGeoJsonBySortKey = async (props: GetGeoJsonBySortKeyProps) => {
             }
         );
         const plans = await result.json();
-        console.log(plans, '<< plans')
         return plans.data.getGeoJsonBySortKey;
     } catch (e) {
         console.log(e, "<< error");

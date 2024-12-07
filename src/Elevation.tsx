@@ -6,6 +6,8 @@ interface ElevationProps {
   points: number[][] | undefined
   multiplyPadding: number
   setHoveredPoint: Function
+  min: number
+  max: number
 }
 
 const ProfileBox = styled.div`
@@ -38,8 +40,8 @@ const ElevationColumn = styled.div`
   }
 `;
 export const Elevation = (props: ElevationProps) => {
-  const [min, setMin] = React.useState<number>();
-  const [max, setMax] = React.useState<number>();
+  // const [min, setMin] = React.useState<number>();
+  // const [max, setMax] = React.useState<number>();
   const [points, setPoints] = React.useState<number[]>();
   const [condensedPointIndex, setCondensedPointIndex] = React.useState<number>(0);
 
@@ -56,15 +58,12 @@ export const Elevation = (props: ElevationProps) => {
           }
           return [];
         });
-
-      setMin(Math.min(...elevationPoints));
-      setMax(Math.max(...elevationPoints));
       setPoints(elevationPoints)
 
     }
   }, [props.points]);
 
-  if (!props.points || !max || !min) {
+  if (!props.points) {
     return <div></div>;
   }
 
@@ -87,7 +86,7 @@ export const Elevation = (props: ElevationProps) => {
             <Point
               key={index}
               style={{
-                paddingBottom: `${((p - min) / (max - min)) * 200 + 1}px`,
+                paddingBottom: `${((p - props.min) / (props.max - props.min)) * 200 + 1}px`,
               }}
 
             ></Point>

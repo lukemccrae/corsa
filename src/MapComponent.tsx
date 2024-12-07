@@ -4,7 +4,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { Box } from '@mui/material';
 
 interface MapComponentProps {
-  map: number[][] | undefined
+  coords: number[][] | undefined
   hoverPoint: number[] | undefined
 }
 
@@ -14,8 +14,8 @@ export const MapComponent = (props: MapComponentProps) => {
 
   let geojsonData: GeoJSON.FeatureCollection;
   let points: any[] = [];
-  if(props.map) {
-    points = props.map.map(arr => arr.slice(0, 2))
+  if(props.coords) {
+    points = props.coords.map(arr => arr.slice(0, 2))
     // Type for GeoJSON FeatureCollection
     geojsonData = {
       type: "FeatureCollection",

@@ -3,24 +3,26 @@ import { PaceTable } from "./PaceTable";
 import { Link, useParams } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import { getPlanById } from "./services/fetchPlans.service";
-import { FeatureCollection, Plan } from "./types";
-import { Box, Grid, Typography } from "@mui/material";
+import { FeatureCollection, FeatureProperties, Plan } from "./types";
+import { Box, Grid } from "@mui/material";
 import { MapComponent } from "./MapComponent";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { getGeoJsonBySortKey } from "./services/fetchMap.service";
-import { Elevation } from "./Elevation";
-import { haversineInFeet } from './helpers/haversine.helper'
-import { toHHMMSS } from "./helpers/avgPace.helper";
 import { DeleteCourse } from "./DeleteCourse";
+
+import AreaChart from "./testChart";
+
 
 export const Details = () => {
   const { id } = useParams();
   const { user } = useUser();
   const [plan, setPlan] = React.useState<Plan>();
-  const [map, setMap] = React.useState<number[][]>();
-  const [coordTimes, setCoordTimes] = React.useState<string[]>();
+  const [coords, setCoords] = React.useState<number[][]>();
+  const [properties, setProperties] = React.useState<FeatureProperties>();
   const [hoveredPoint, setHoveredPoint] = React.useState<number>(0);
-  const [cumulativeDistance, setCumulativeDistance] = React.useState<number[]>()
+
+
+
   // condensedPointIndex is a way for the pace calculations to be on the same index with the elevation profile
   // elevation profile is shortened version of points so this guides indexing the map array
 
@@ -32,54 +34,19 @@ export const Details = () => {
       const fetchPlan = async () => {
         const planResult: Plan = await getPlanById({ userId, planId });
         const mapResult: FeatureCollection = await getGeoJsonBySortKey({ planId });
-
         setPlan(planResult);
-        setMap(mapResult.features[0].geometry.coordinates);
-        setCoordTimes(mapResult.features[0].properties.coordTimes)
-        setCumulativeDistance(mapResult.features[0].properties.cumulativeDistance)
+        setCoords(mapResult.features[0].geometry.coordinates);
+        setProperties(mapResult.features[0].properties)
       };
       fetchPlan();
     }
   }, [id, user]);
 
-  const calcPace = () => {
-    function getTime(points: number[][], times: string[]) {
-      let distance = 0;
-      let time = 0;
+  const elevationWidth = 500;
 
-      for (let i = 0; i < points.length - 1; i++) {
-        let feetBetweenPoints = haversineInFeet(points[i][1], points[i][0], points[i + 1][1], points[i + 1][0])
-        distance += feetBetweenPoints;
-        let time1 = new Date(times[i]).getTime();
-        let time2 = new Date(times[i + 1]).getTime();
-        time += time2 - time1;
-      }
-      const timeInSeconds = time / 1000
-      return toHHMMSS(timeInSeconds / (distance / 5280))
-    }
-
-    function calcElapsed() {
-      if (coordTimes) {
-        let time1 = new Date(coordTimes[0]).getTime();
-        let time2 = new Date(coordTimes[hoveredPoint]).getTime();
-        return toHHMMSS((time2 - time1) / 1000);
-      }
-    }
-
-    if (map && coordTimes) {
-      // get distance
-      const range = 10;
-      const pace = getTime(
-        map.slice(hoveredPoint - range, hoveredPoint + range),
-        coordTimes.slice(hoveredPoint - range, hoveredPoint + range)
-      );
-
-      return (
-        <div>
-          <Typography sx={{color: 'black'}}>{pace} min / mile</Typography>
-          <Typography sx={{color: 'black'}}>{calcElapsed()} elapsed time</Typography>
-        </div>
-      )
+  const handleSetHoveredPoint = (x: number) => {
+    if(properties) {
+      setHoveredPoint(Math.round((x / elevationWidth) * properties.pointMetadata.length))
     }
   }
 
@@ -112,7 +79,7 @@ export const Details = () => {
             overflowX: 'auto'
           }}
         >
-          <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Link to="/app" style={{ color: '#515B63' }}>
               <ArrowBackIcon />
             </Link>
@@ -141,11 +108,16 @@ export const Details = () => {
               alignItems: 'flex-start'
             }}
           >
-            {map && <Typography sx={{color: 'black'}}>{Math.round(map[hoveredPoint][2] * 3.28084) + " ft."}</Typography>}
-            {coordTimes && <Typography>{calcPace()}</Typography>}
-            {cumulativeDistance && <Typography sx={{color: 'black'}}>{(cumulativeDistance[hoveredPoint] / 5280).toFixed(3)} mi.</Typography>}
-            
-            <Elevation setHoveredPoint={setHoveredPoint} multiplyPadding={1} points={map}></Elevation>
+            {/* {coords && <Typography sx={{ color: 'black' }}>{Math.round(coords[hoveredPoint][2] * 3.28084) + " ft."}</Typography>}
+            {cumulativeDistance && <Typography sx={{ color: 'black' }}>{(cumulativeDistance[hoveredPoint] / 5280).toFixed(2)} mi.</Typography>}
+            {pace && <Typography sx={{ color: 'black' }}>{toHHMMSS((pace[hoveredPoint]))} / mi.</Typography>}
+            {grade && <Typography sx={{ color: 'black' }}>{(grade[hoveredPoint] * 100).toFixed(2)}% grade</Typography>}
+            {coordTimes && <Typography sx={{ color: 'black' }}>{calcElapsed(coordTimes[0], coordTimes[hoveredPoint])} elapsed</Typography>}
+            {(min && max) && <Elevation min={min} max={max} setHoveredPoint={setHoveredPoint} multiplyPadding={1} points={coords}></Elevation>} */}
+            {properties && <AreaChart handleSetHoveredPoint={handleSetHoveredPoint} hoveredPoint={hoveredPoint} properties={properties} width={elevationWidth} height={300}></AreaChart>}
+            {/* <Box sx={{margin: "30px"}}></Box> */}
+            {/* {properties && <AreaChart2 properties={properties} width={500} height={500}></AreaChart2>} */}
+
           </Box>
 
           <Box
@@ -158,7 +130,7 @@ export const Details = () => {
               alignItems: 'flex-start',
             }}
           >
-            <MapComponent hoverPoint={map && map[hoveredPoint]} map={map}></MapComponent>
+            <MapComponent hoverPoint={coords && coords[hoveredPoint]} coords={coords}></MapComponent>
           </Box>
         </Grid>
       </Box>

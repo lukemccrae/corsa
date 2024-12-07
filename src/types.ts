@@ -14,6 +14,10 @@ export type Plan = {
   userId: string;
   lastMileDistance: number;
   distanceInMiles: number;
+  min: number;
+  max: number;
+  pace: number[];
+  grade: number[];
 };
 
 export interface getPlansByUserId {
@@ -51,15 +55,22 @@ export interface Feature {
     type: string;
     coordinates: LatLngAltitude[];
   };
-  properties: {
-    id: number;
-    name: string;
-    mileData: MileData[];
-    lastMileDistance: number;
-    cumulativeDistance: number[];
-    coordTimes: string[]
-  };
+  properties: FeatureProperties
 }
+
+export type FeatureProperties = {
+  id: number;
+  name: string;
+  mileData: MileData[];
+  lastMileDistance: number;
+  cumulativeDistance: number[];
+  coordTimes: string[]
+  grade: number[]
+  pace: number[]
+  maxElevationInFeet: number
+  minElevationInFeet: number
+  pointMetadata: PointMetadata[]
+};
 
 export type MileData = {
   index: number;
@@ -97,4 +108,12 @@ export interface Article {
   image: string;
   tags: string[];
   content: string;
+}
+
+export type PointMetadata = {
+  grade: number;
+  pace: number;
+  cumulativeDistance: number;
+  elevation: number;
+  time: string;
 }
