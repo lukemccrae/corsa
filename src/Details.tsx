@@ -11,6 +11,7 @@ import { getGeoJsonBySortKey } from "./services/fetchMap.service";
 import { DeleteCourse } from "./DeleteCourse";
 
 import AreaChart from "./testChart";
+import GradePaceChart from "./gradePaceChart"
 
 
 export const Details = () => {
@@ -115,6 +116,8 @@ export const Details = () => {
             {coordTimes && <Typography sx={{ color: 'black' }}>{calcElapsed(coordTimes[0], coordTimes[hoveredPoint])} elapsed</Typography>}
             {(min && max) && <Elevation min={min} max={max} setHoveredPoint={setHoveredPoint} multiplyPadding={1} points={coords}></Elevation>} */}
             {properties && <AreaChart handleSetHoveredPoint={handleSetHoveredPoint} hoveredPoint={hoveredPoint} properties={properties} width={elevationWidth} height={300}></AreaChart>}
+            {properties && <GradePaceChart pointMetadata={properties.pointMetadata} width={elevationWidth} height={300}></GradePaceChart>}
+
             {/* <Box sx={{margin: "30px"}}></Box> */}
             {/* {properties && <AreaChart2 properties={properties} width={500} height={500}></AreaChart2>} */}
 

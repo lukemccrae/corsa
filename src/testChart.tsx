@@ -19,8 +19,6 @@ type TooltipData = {
   elevation: number;
 };
 
-console.log(appleStock.slice(800))
-
 export const background = '#3b6978';
 export const background2 = '#204051';
 export const accentColor = '#edffea';
@@ -31,9 +29,6 @@ const tooltipStyles = {
   border: '1px solid white',
   color: 'white',
 };
-
-// util
-const formatDate = timeFormat("%b %d, '%y");
 
 // accessors
 const getDate = (d: PointMetadata) => new Date(d.time);
