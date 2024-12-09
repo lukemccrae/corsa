@@ -46,7 +46,7 @@ export const Details = () => {
   const elevationWidth = 500;
 
   const handleSetHoveredPoint = (x: number) => {
-    if(properties) {
+    if (properties) {
       setHoveredPoint(Math.round((x / elevationWidth) * properties.pointMetadata.length))
     }
   }
@@ -109,17 +109,19 @@ export const Details = () => {
               alignItems: 'flex-start'
             }}
           >
-            {/* {coords && <Typography sx={{ color: 'black' }}>{Math.round(coords[hoveredPoint][2] * 3.28084) + " ft."}</Typography>}
-            {cumulativeDistance && <Typography sx={{ color: 'black' }}>{(cumulativeDistance[hoveredPoint] / 5280).toFixed(2)} mi.</Typography>}
-            {pace && <Typography sx={{ color: 'black' }}>{toHHMMSS((pace[hoveredPoint]))} / mi.</Typography>}
-            {grade && <Typography sx={{ color: 'black' }}>{(grade[hoveredPoint] * 100).toFixed(2)}% grade</Typography>}
-            {coordTimes && <Typography sx={{ color: 'black' }}>{calcElapsed(coordTimes[0], coordTimes[hoveredPoint])} elapsed</Typography>}
-            {(min && max) && <Elevation min={min} max={max} setHoveredPoint={setHoveredPoint} multiplyPadding={1} points={coords}></Elevation>} */}
             {properties && <AreaChart handleSetHoveredPoint={handleSetHoveredPoint} hoveredPoint={hoveredPoint} properties={properties} width={elevationWidth} height={300}></AreaChart>}
-            {properties && <GradePaceChart pointMetadata={properties.pointMetadata} width={elevationWidth} height={300}></GradePaceChart>}
+          </Box>
 
-            {/* <Box sx={{margin: "30px"}}></Box> */}
-            {/* {properties && <AreaChart2 properties={properties} width={500} height={500}></AreaChart2>} */}
+          <Box
+            sx={{
+              backgroundColor: '#e3e3e3',
+              borderRadius: 2,
+              padding: 2,
+              justifyContent: 'center',
+              alignItems: 'flex-start'
+            }}
+          >
+            {properties && <GradePaceChart properties={properties} width={elevationWidth} height={300}></GradePaceChart>}
 
           </Box>
 

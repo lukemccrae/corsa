@@ -7,13 +7,13 @@ import { withTooltip, Tooltip } from '@visx/tooltip';
 import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
 import { voronoi } from '@visx/voronoi';
 import { localPoint } from '@visx/event';
-import { PointMetadata } from './types';
+import { FeatureProperties, PointMetadata } from './types';
 
 export type DotsProps = {
   width: number;
   height: number;
   showControls?: boolean;
-  pointMetadata: PointMetadata[]
+  properties: FeatureProperties
 };
 
 let tooltipTimeout: number;
@@ -23,7 +23,7 @@ export default withTooltip<DotsProps, PointMetadata>(
     width,
     height,
     showControls = true,
-    pointMetadata,
+    properties,
     hideTooltip,
     showTooltip,
     tooltipOpen,
@@ -33,7 +33,7 @@ export default withTooltip<DotsProps, PointMetadata>(
   }: DotsProps & WithTooltipProvidedProps<PointMetadata>) => {
     if (width < 10) return null;
 
-    const points: PointMetadata[] = pointMetadata
+    const points: PointMetadata[] = properties.pointMetadata
 
     const x = (d: PointMetadata) => d.grade;
     const y = (d: PointMetadata) => d.pace;
@@ -42,7 +42,7 @@ export default withTooltip<DotsProps, PointMetadata>(
     const xScale = useMemo(
       () =>
         scaleLinear<number>({
-          domain: [-20, 70],
+          domain: [properties.minGrade, properties.maxGrade],
           range: [0, width],
           clamp: true,
         }),
@@ -52,7 +52,7 @@ export default withTooltip<DotsProps, PointMetadata>(
     const yScale = useMemo(
       () =>
         scaleLinear<number>({
-          domain: [250, 5000], // y data range
+          domain: [properties.minPace, properties.maxPace], // y data range (pace)
           range: [height, 0], // Map to the chart's height (inverted for top-down rendering)
           clamp: true, // Prevent values from exceeding the range
         }),

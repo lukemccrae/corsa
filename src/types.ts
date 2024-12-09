@@ -67,6 +67,10 @@ export type FeatureProperties = {
   coordTimes: string[]
   grade: number[]
   pace: number[]
+  minGrade: number;
+  maxGrade: number;
+  minPace: number;
+  maxPace: number; 
   maxElevationInFeet: number
   minElevationInFeet: number
   pointMetadata: PointMetadata[]
