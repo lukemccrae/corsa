@@ -47,7 +47,7 @@ export const Details = () => {
 
   const handleSetHoveredPoint = (x: number) => {
     if (properties) {
-      setHoveredPoint(Math.round((x / elevationWidth) * properties.pointMetadata.length))
+      setHoveredPoint(Math.floor((x / elevationWidth) * properties.pointMetadata.length))
     }
   }
 

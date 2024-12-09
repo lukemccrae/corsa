@@ -8,6 +8,7 @@ import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withToolti
 import { voronoi } from '@visx/voronoi';
 import { localPoint } from '@visx/event';
 import { FeatureProperties, PointMetadata } from './types';
+import { toHHMMSS } from './helpers/avgPace.helper';
 
 export type DotsProps = {
   width: number;
@@ -35,14 +36,15 @@ export default withTooltip<DotsProps, PointMetadata>(
 
     const points: PointMetadata[] = properties.pointMetadata
 
-    const x = (d: PointMetadata) => d.grade;
-    const y = (d: PointMetadata) => d.pace;
+    const grade = (d: PointMetadata) => d.grade;
+    const pace = (d: PointMetadata) => d.pace;
+    const distance = (d: PointMetadata) => d.cumulativeDistance;
 
     const svgRef = useRef<SVGSVGElement>(null);
     const xScale = useMemo(
       () =>
         scaleLinear<number>({
-          domain: [properties.minGrade, properties.maxGrade],
+          domain: [properties.minGrade - 3, properties.maxGrade + 3],
           range: [0, width],
           clamp: true,
         }),
@@ -52,7 +54,7 @@ export default withTooltip<DotsProps, PointMetadata>(
     const yScale = useMemo(
       () =>
         scaleLinear<number>({
-          domain: [properties.minPace, properties.maxPace], // y data range (pace)
+          domain: [properties.minPace - 100, properties.maxPace + 100], // y data range (pace)
           range: [height, 0], // Map to the chart's height (inverted for top-down rendering)
           clamp: true, // Prevent values from exceeding the range
         }),
@@ -61,8 +63,8 @@ export default withTooltip<DotsProps, PointMetadata>(
     const voronoiLayout = useMemo(
       () =>
         voronoi<PointMetadata>({
-          x: (d) => xScale(x(d)) ?? 0,
-          y: (d) => yScale(y(d)) ?? 0,
+          x: (d) => xScale(grade(d)) ?? 0,
+          y: (d) => yScale(pace(d)) ?? 0,
           width,
           height,
         })(points),
@@ -82,8 +84,8 @@ export default withTooltip<DotsProps, PointMetadata>(
         const closest = voronoiLayout.find(point.x, point.y, neighborRadius);
         if (closest) {
           showTooltip({
-            tooltipLeft: xScale(x(closest.data)),
-            tooltipTop: yScale(y(closest.data)),
+            tooltipLeft: xScale(grade(closest.data)),
+            tooltipTop: yScale(pace(closest.data)),
             tooltipData: closest.data,
           });
         }
@@ -117,8 +119,8 @@ export default withTooltip<DotsProps, PointMetadata>(
               <Circle
                 key={`${i}`}
                 className="dot"
-                cx={xScale(x(point))}
-                cy={yScale(y(point))}
+                cx={xScale(grade(point))}
+                cy={yScale(pace(point))}
                 r={i % 3 === 0 ? 2 : 3}
                 fill={tooltipData === point ? 'white' : '#f6c431'}
               />
@@ -128,10 +130,13 @@ export default withTooltip<DotsProps, PointMetadata>(
         {tooltipOpen && tooltipData && tooltipLeft != null && tooltipTop != null && (
           <Tooltip left={tooltipLeft + 10} top={tooltipTop + 10}>
             <div>
-              <strong>grade:</strong> {x(tooltipData)}
+              <strong>grade:</strong> {grade(tooltipData)}
             </div>
             <div>
-              <strong>pace:</strong> {y(tooltipData)}
+              <strong>pace:</strong> {toHHMMSS(pace(tooltipData))}
+            </div>
+            <div>
+              <strong>distance:</strong> {(distance(tooltipData) / 5280).toFixed(2)}
             </div>
           </Tooltip>
         )}
