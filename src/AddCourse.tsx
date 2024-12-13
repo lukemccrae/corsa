@@ -21,7 +21,7 @@ export const AddCourse = () => {
     event.preventDefault();
     setProgress(10)
 
-    if(user) {
+    if (user) {
       handleFileUpload(gpx, user.userId, setProgress, navigate);
     } else {
       alert('There is a problem with your login, please relog then try again.')
@@ -51,7 +51,7 @@ export const AddCourse = () => {
           if (timeElements.length > 0) {
             setValid(true)
             setGpx(contents);
-
+            
           } else {
             setValid(false)
             alert("GPX timestamps are required")
@@ -65,7 +65,7 @@ export const AddCourse = () => {
   };
 
   return (
-  <Box
+    <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -80,11 +80,12 @@ export const AddCourse = () => {
         margin: 'auto',
       }}
     >
-      <Typography variant="h4" sx={{ marginBottom: 2 }}>
+      <Typography variant="h4" sx={{ marginBottom: 2, color: 'black' }}>
         Add Course
       </Typography>
-
-      <input type="file" accept=".gpx" onChange={handleFileChange} style={{ marginBottom: '16px' }} />
+      <Box sx={{display: 'flex', color: 'black'}}>
+        <input type="file" accept=".gpx" onChange={handleFileChange} style={{ marginBottom: '16px' }} />
+      </Box>
 
       <Button
         disabled={!valid}
