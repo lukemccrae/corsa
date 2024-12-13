@@ -10,7 +10,8 @@ export type Plan = {
   id: string;
   name: string;
   mileData: MileData[];
-  startTime: number;
+  startTime: Date;
+  timezone: string;
   userId: string;
   lastMileDistance: number;
   distanceInMiles: number;
@@ -18,6 +19,8 @@ export type Plan = {
   max: number;
   pace: number[];
   grade: number[];
+  gainInMeters: number;
+  lossInMeters: number;
 };
 
 export interface getPlansByUserId {

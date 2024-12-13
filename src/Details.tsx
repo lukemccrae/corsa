@@ -114,6 +114,19 @@ export const Details = () => {
 
           <Box
             sx={{
+              flex: 1,
+              backgroundColor: '#e3e3e3',
+              borderRadius: 2,
+              padding: 2,
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+            }}
+          >
+            <MapComponent hoverPoint={coords && coords[hoveredPoint]} coords={coords}></MapComponent>
+          </Box>
+
+          <Box
+            sx={{
               backgroundColor: '#e3e3e3',
               borderRadius: 2,
               padding: 2,
@@ -125,18 +138,7 @@ export const Details = () => {
 
           </Box>
 
-          <Box
-            sx={{
-              flex: 1,
-              backgroundColor: '#e3e3e3',
-              borderRadius: 2,
-              padding: 2,
-              justifyContent: 'center',
-              alignItems: 'flex-start',
-            }}
-          >
-            <MapComponent hoverPoint={coords && coords[hoveredPoint]} coords={coords}></MapComponent>
-          </Box>
+
         </Grid>
       </Box>
     );

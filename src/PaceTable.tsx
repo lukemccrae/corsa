@@ -44,9 +44,10 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
                 {toHHMMSS(md.pace)}
               </TableCell>
               <TableCell sx={{ padding: "0" }}>
-                <MileProfile 
-                  multiplyPadding={1} 
-                  color={"black"} 
+                <MileProfile
+                  marginRight={1}
+                  multiplyPadding={1}
+                  color={"black"}
                   mileVertProfile={md.mileVertProfile}>
                 </MileProfile>
               </TableCell>
@@ -65,10 +66,10 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
               </TableCell>
               {/* GAP */}
               <TableCell sx={{ padding: "5px" }}>
-              {toHHMMSS(md.gap)}
+                {toHHMMSS(md.gap)}
               </TableCell>
               <TableCell align="right" sx={{ padding: "0 3px 0 0" }}>
-                {calcTime(plan.mileData.slice(0, i + 1), plan.startTime)}
+                {calcTime(plan.mileData.slice(0, i + 1))}
               </TableCell>
             </TableRow>
           ))}

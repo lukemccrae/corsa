@@ -37,10 +37,10 @@ export const averagePaces = (
   return result;
 };
 
-export const calcTime = (md: MileData[], start: number) => {
+export const calcTime = (md: MileData[]) => {
   const sum = md.reduce(
     (accumulator, currentValue) => accumulator + currentValue.pace,
     0
   );
-  return toHHMMSS(sum + start);
+  return toHHMMSS(sum);
 };

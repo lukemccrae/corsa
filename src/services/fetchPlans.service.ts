@@ -19,6 +19,14 @@ export const getPlansByUserId = async (props: GetPlansByUserIdProps) => {
             userId
             lastMileDistance
             distanceInMiles
+            gainInMeters
+            lossInMeters
+            mileData {
+              mileVertProfile
+              pace
+            }
+            startTime
+            timezone
           }
         }
       `;
@@ -39,6 +47,7 @@ export const getPlansByUserId = async (props: GetPlansByUserIdProps) => {
       }
     );
     const plans = await result.json();
+    console.log(plans, '<< plans')
     return plans.data.getPlansByUserId;
   } catch (e) {
     console.log(e, "<< error");
@@ -46,7 +55,7 @@ export const getPlansByUserId = async (props: GetPlansByUserIdProps) => {
 };
 
 export const getPlanById = async (props: GetPlanByIdProps) => {
-    const query = ` 
+  const query = ` 
     query MyQuery {
       getPlanById(userId: "${props.userId}" planId: "${props.planId}") {
         distanceInMiles
@@ -71,25 +80,25 @@ export const getPlanById = async (props: GetPlanByIdProps) => {
     }
   `;
   try {
-  let token = localStorage.getItem("user")
-  if (typeof token !== 'string') throw new Error("token not valid")
-  const result = await fetch(
-  domain.appsync,
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${retrieveUserToken()}`,
+    let token = localStorage.getItem("user")
+    if (typeof token !== 'string') throw new Error("token not valid")
+    const result = await fetch(
+      domain.appsync,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${retrieveUserToken()}`,
 
-      // Authorization: `Bearer ${JSON.stringify(token)}`,
-    },
-    body: JSON.stringify({ query }),
-  }
-  );
-  const plans = await result.json();
+          // Authorization: `Bearer ${JSON.stringify(token)}`,
+        },
+        body: JSON.stringify({ query }),
+      }
+    );
+    const plans = await result.json();
 
-  return plans.data.getPlanById;
+    return plans.data.getPlanById;
   } catch (e) {
-  console.log(e, "<< error");
+    console.log(e, "<< error");
   }
 }

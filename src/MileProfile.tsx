@@ -6,9 +6,8 @@ const ProfileBox = styled.div`
 `;
 
 const Point = styled.div`
-  width: 1px;
+  width: 2px;
   height: 1px;
-  margin-right: 2px;
   /* Media query for screens between 769px and 1024px */
   @media (max-width: 630px) {
     margin-right: 1px;
@@ -19,6 +18,7 @@ interface MileProfileProps {
   mileVertProfile: number[];
   multiplyPadding: number;
   color: string;
+  marginRight: number;
 }
 
 export const MileProfile = (props: MileProfileProps) => {
@@ -27,7 +27,7 @@ export const MileProfile = (props: MileProfileProps) => {
       {props.mileVertProfile.map((p) => (
         <Point
           key={Math.random()}
-          style={{ backgroundColor: props.color, paddingBottom: p * props.multiplyPadding + "px" }}
+          style={{ backgroundColor: props.color, paddingBottom: p * props.multiplyPadding + "px", marginRight: props.marginRight + "px" }}
         ></Point>
       ))}
     </ProfileBox>

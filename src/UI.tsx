@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Card, CardContent, Typography, CardActionArea } from '@mui/material';
+import { Grid, Card, CardContent, Typography, CardActionArea, Box } from '@mui/material';
 import { Link, useParams } from 'react-router-dom';
-import { getPlanById, getPlansByUserId } from './services/fetchPlans.service';
+import { getPlansByUserId } from './services/fetchPlans.service';
 import { useUser } from './context/UserContext';
 import { Plan } from './types';
-import { PaceTable } from './PaceTable';
-import { DeleteCourse } from './DeleteCourse';
-import { Details } from './Details';
 import { shortenName } from './helpers/substring.helper'
+import { MileProfile } from './MileProfile';
+import { createMiniProfile } from './helpers/miniVertProfile.helpter';
+import { calculateStartWithTZ } from './helpers/strartTime.helper';
+import { toHHMMSS } from './helpers/avgPace.helper';
 
 export const UI = () => {
-  const { id } = useParams();
   const { user } = useUser();
-  const [selectedPlan, setSelectedPlan] = React.useState<Plan>();
   const [plans, setPlans] = React.useState<Plan[]>([]);
 
   useEffect(() => {
@@ -26,18 +25,19 @@ export const UI = () => {
     }
   }, [user]);
   return (
-      <Grid
+    <Grid
       container
-        item
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 1,
-          padding: 1,
-          width: "50vw"
-        }}
-      >
-        {plans.map((record, index) => (
+      item
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 0,
+        padding: 0,
+        // width: "100vw"
+      }}
+    >
+      {plans.map((record, index) => (
+        <Box>
           <CardActionArea
             key={index}
             component={Link}
@@ -47,24 +47,46 @@ export const UI = () => {
                 filter: 'grayscale(100%)',
               },
               cursor: 'pointer',
+              display: 'inline-block',
+              marginBottom: '10px',
+              mx: '2px',
+              transform: 'scale(.92)',
+
             }}
           >
-            <Card key={index} sx={{
-              backgroundColor: '#f5f5f5',
-              '&:hover': {
-                boxShadow: 12,
-              },
-              marginBottom: '10px'
-            }}>
+            <Card
+              key={index}
+              sx={{
+                backgroundColor: '#f5f5f5',
+                '&:hover': {
+                  boxShadow: 12,
+                }
+              }}>
               <CardContent>
-                <Typography variant="h6">{shortenName(record.name)}</Typography>
+                <Typography>{shortenName(record.name)}</Typography>
+                {/* <Typography>{record.startTime.toLocaleString('en-US', options)}</Typography> */}
                 <Typography variant="body2" color="text.secondary">
-                  Distance: {record.distanceInMiles + record.lastMileDistance}{ } mi
+                  {calculateStartWithTZ(record.startTime, record.timezone)}
                 </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {record.distanceInMiles + record.lastMileDistance}{ } mi
+                </Typography>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Box>
+                    <Typography variant="body2" color="text.secondary">
+                      +{Math.round(record.gainInMeters * 3.28084)} ft.
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {toHHMMSS(record.mileData.reduce((sum, item) => sum + item.pace, 0))}
+                    </Typography>
+                  </Box>
+                  <MileProfile marginRight={3} mileVertProfile={createMiniProfile(record.mileData)} multiplyPadding={40} color={'black'} />
+                </Box>
               </CardContent>
             </Card>
           </CardActionArea>
-        ))}
-      </Grid>
+        </Box>
+      ))}
+    </Grid>
   );
 };
