@@ -104,7 +104,6 @@ export const WorkoutGenerator = (props: WorkoutGeneratorProps) => {
     }
 
     const handleSubmit = async () => {
-        console.log(props.plan.mileData[0]);
 
         const calcdCumulativeTime = props.plan.mileData.reduce((accumulator, m) => accumulator + m.pace, 0)
         const calcdCumulativeGap = props.plan.mileData.reduce((accumulator, m) => accumulator + m.gap, 0)
@@ -249,7 +248,6 @@ export const WorkoutGenerator = (props: WorkoutGeneratorProps) => {
         setActiveStep(2)
         const result = await handleAssistantCall(messages);
         setAssistantResult(result.message.content)
-        console.log(result, '<< result')
     };
 
     const closeModal = () => {

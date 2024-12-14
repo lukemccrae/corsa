@@ -7,7 +7,6 @@ interface DeletePlanProps {
 }
 
 export const deletePlanById = async (props: DeletePlanProps) => {
-    console.log(props)
     const query = `
         mutation MyMutation {
             deletePlanById(bucketKey: "${props.planId}", userId: "${props.userId}") {
@@ -31,10 +30,8 @@ export const deletePlanById = async (props: DeletePlanProps) => {
         );
         const jsonResult = await result.json();
         if (jsonResult.success) {
-            console.log("hello")
             return true;
         } else {
-            console.log("goodbye")
             return false
         }
 

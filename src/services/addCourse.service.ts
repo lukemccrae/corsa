@@ -56,7 +56,6 @@ export const handleFileUpload = async (gpx: string, userId: string, setProgress:
     );
 
     const data = await response.json();
-    console.log(data, '<<< dat')
     
     setProgress(0)
     navigate('/app');
