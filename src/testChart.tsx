@@ -210,7 +210,6 @@ export default withTooltip<AreaProps, PointMetadata>(
               left={tooltipLeft}
               style={{
                 ...defaultStyles,
-                minWidth: 72,
                 textAlign: 'center',
                 transform: 'translateX(-50%)',
               }}

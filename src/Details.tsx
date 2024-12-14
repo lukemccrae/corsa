@@ -4,14 +4,15 @@ import { Link, useParams } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import { getPlanById } from "./services/fetchPlans.service";
 import { FeatureCollection, FeatureProperties, Plan } from "./types";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, useMediaQuery, useTheme } from "@mui/material";
 import { MapComponent } from "./MapComponent";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { getGeoJsonBySortKey } from "./services/fetchMap.service";
 import { DeleteCourse } from "./DeleteCourse";
 
-import AreaChart from "./testChart";
-import GradePaceChart from "./gradePaceChart"
+
+import { ChartWrapper } from "./ChartWrapper";
+import { useScreenSize } from "./helpers/screensize.helper";
 
 
 export const Details = () => {
@@ -22,6 +23,35 @@ export const Details = () => {
   const [properties, setProperties] = React.useState<FeatureProperties>();
   const [hoveredPoint, setHoveredPoint] = React.useState<number>(0);
 
+  const screenSize = useScreenSize();
+
+  let elevationWidth: number;
+
+  switch (screenSize) {
+    case 'sm':
+      elevationWidth = window.innerWidth - 100;
+      console.log(screenSize)
+
+      break;
+    case 'md':
+      elevationWidth = 500;
+      console.log(screenSize)
+
+      break;
+    case 'lg':
+      elevationWidth = 700;
+      console.log(screenSize)
+
+      break;
+    case 'xl':
+      elevationWidth = 700;
+      console.log(screenSize)
+
+      break;
+    default:
+      elevationWidth = 700;
+      break;
+  }
 
 
   // condensedPointIndex is a way for the pace calculations to be on the same index with the elevation profile
@@ -43,8 +73,6 @@ export const Details = () => {
     }
   }, [id, user]);
 
-  const elevationWidth = 500;
-
   const handleSetHoveredPoint = (x: number) => {
     if (properties) {
       setHoveredPoint(Math.floor((x / elevationWidth) * properties.pointMetadata.length))
@@ -62,7 +90,6 @@ export const Details = () => {
           padding: 0,
           mt: "64px",
           alignItems: 'flex-start',
-          overflow: "auto",
         }}
       >
         <Grid
@@ -75,9 +102,7 @@ export const Details = () => {
             flexDirection: 'column',
             gap: 1,
             padding: 1,
-            height: '100%',
-            overflowY: "auto",
-            overflowX: 'auto'
+            height: '100%'
           }}
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -88,55 +113,7 @@ export const Details = () => {
           </Box>
 
 
-          <Box
-            sx={{
-              backgroundColor: '#e3e3e3',
-              borderRadius: 2,
-              padding: 2,
-              justifyContent: 'center',
-              alignItems: 'flex-start',
-            }}
-          >
-            <PaceTable plan={plan}></PaceTable>
-          </Box>
-
-          <Box
-            sx={{
-              backgroundColor: '#e3e3e3',
-              borderRadius: 2,
-              padding: 2,
-              justifyContent: 'center',
-              alignItems: 'flex-start'
-            }}
-          >
-            {properties && <AreaChart handleSetHoveredPoint={handleSetHoveredPoint} hoveredPoint={hoveredPoint} properties={properties} width={elevationWidth} height={300}></AreaChart>}
-          </Box>
-
-          <Box
-            sx={{
-              flex: 1,
-              backgroundColor: '#e3e3e3',
-              borderRadius: 2,
-              padding: 2,
-              justifyContent: 'center',
-              alignItems: 'flex-start',
-            }}
-          >
-            <MapComponent hoverPoint={coords && coords[hoveredPoint]} coords={coords}></MapComponent>
-          </Box>
-
-          <Box
-            sx={{
-              backgroundColor: '#e3e3e3',
-              borderRadius: 2,
-              padding: 2,
-              justifyContent: 'center',
-              alignItems: 'flex-start'
-            }}
-          >
-            {properties && <GradePaceChart properties={properties} width={elevationWidth} height={300}></GradePaceChart>}
-
-          </Box>
+          {(properties && coords) && <ChartWrapper elevationWidth={elevationWidth} coords={coords} hoveredPoint={hoveredPoint} handleSetHoveredPoint={handleSetHoveredPoint} properties={properties} plan={plan}></ChartWrapper>}
 
 
         </Grid>

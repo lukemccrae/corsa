@@ -6,6 +6,7 @@ import { Box } from '@mui/material';
 interface MapComponentProps {
   coords: number[][] | undefined
   hoverPoint: number[] | undefined
+  width: number
 }
 
 export const MapComponent = (props: MapComponentProps) => {
@@ -115,7 +116,7 @@ export const MapComponent = (props: MapComponentProps) => {
 
   return (
     <>
-      <Box id="map-container" ref={mapContainerRef} style={{ height: '50vh', width: '100%' }} />
+      <Box id="map-container" ref={mapContainerRef} style={{ height: '50vh', width: props.width + 'px' }} />
     </>
   );
 };

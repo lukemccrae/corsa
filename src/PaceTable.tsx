@@ -58,17 +58,17 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
                   i === plan.mileData.length - 1
                 )}
               </TableCell>
-              <TableCell align="right">
+              <TableCell align="left">
                 {Math.round(md.elevationGain * 3.28084)}
               </TableCell>
-              <TableCell align="right" sx={{ padding: "0 5px 0 0" }}>
+              <TableCell align="left" sx={{ padding: "0 5px 0 0" }}>
                 {Math.round(md.elevationLoss * 3.28084)}
               </TableCell>
               {/* GAP */}
               <TableCell sx={{ padding: "5px" }}>
                 {toHHMMSS(md.gap)}
               </TableCell>
-              <TableCell align="right" sx={{ padding: "0 3px 0 0" }}>
+              <TableCell align="left" sx={{ padding: "0 3px 0 0" }}>
                 {calcTime(plan.mileData.slice(0, i + 1))}
               </TableCell>
             </TableRow>

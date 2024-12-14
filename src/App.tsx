@@ -17,17 +17,14 @@ export const App = () => {
                 // backgroundAttachment: "fixed", /* This keeps the background image fixed while scrolling */
                 // backgroundRepeat: "no-repeat",
                 height: "100vh",
-                overflow: "auto",
-                width: '100vw',
                 justifyContent: "center"
             }}
         >
 
             <Container maxWidth="lg" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: 0, marginTop: '64px' }}>
                 {checkValidTokenExp() && user ? (
-                    <Paper sx={{ p: 5, display: "flex", flexDirection: "column", overflow: 'auto' }}>
+                    <Paper sx={{ p: 5, display: "flex", flexDirection: "column" }}>
                         <UI></UI>
-                        {/* <Courses expandedPlan={expandedPlan} setExpandedPlan={setExpandedPlan} userId={user.userId}></Courses> */}
                     </Paper>
                 ) : (
                     <Authenticate
