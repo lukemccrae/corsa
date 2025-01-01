@@ -26,17 +26,6 @@ export const ChartWrapper = (props: ChartWrapperProps) => {
                     borderRadius: 2,
                     padding: 2,
                     justifyContent: 'center',
-                    alignItems: 'flex-start',
-                }}
-            >
-                <PaceTable plan={props.plan}></PaceTable>
-            </Box>
-            <Box
-                sx={{
-                    backgroundColor: '#e3e3e3',
-                    borderRadius: 2,
-                    padding: 2,
-                    justifyContent: 'center',
                     alignItems: 'flex-start'
                 }}
             >
@@ -56,7 +45,7 @@ export const ChartWrapper = (props: ChartWrapperProps) => {
                 <MapComponent hoverPoint={props.coords[props.hoveredPoint]} width={props.elevationWidth} coords={props.coords}></MapComponent>
             </Box>
 
-            <Box
+            {/* <Box
                 sx={{
                     backgroundColor: '#e3e3e3',
                     borderRadius: 2,
@@ -67,7 +56,8 @@ export const ChartWrapper = (props: ChartWrapperProps) => {
             >
                 {<GradePaceChart properties={props.properties} width={props.elevationWidth} height={300}></GradePaceChart>}
 
-            </Box>
+            </Box> */}
+            <Box sx={{margin: 2}}></Box>
         </>
     )
 }

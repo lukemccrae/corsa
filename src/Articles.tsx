@@ -28,10 +28,10 @@ export const Articles = () => {
           Latest Articles
         </Typography>
         <Grid container spacing={4} justifyContent="start">
-          {posts.map((post: Article) => (
+          {posts.map((post) => (
             <Grid item key={post.id} xs={12} sm={6} md={4}>
               <Card sx={{ 
-                  maxWidth: 345, 
+                  maxWidth: 545, 
                   display: 'flex', 
                   flexDirection: 'column',
                   '&:hover': {
@@ -40,7 +40,7 @@ export const Articles = () => {
                 }}>
                   <CardActionArea
                   component={Link}
-                  to={`/article/${post.destination}`} // Replace with your route
+                  to={`/article/${post.id}`} // Replace with your route
                   sx={{
                     '&:hover .MuiCardMedia-root': {
                       filter: 'grayscale(100%)', // Grayscale effect

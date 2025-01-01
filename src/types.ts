@@ -107,7 +107,7 @@ export interface GetGeoJsonBySortKey {
 }
 
 export interface Article {
-  id: number;
+  id: string;
   title: string;
   destination: string;
   author: string;

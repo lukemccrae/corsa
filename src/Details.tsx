@@ -100,7 +100,7 @@ export const Details = () => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 1,
+            gap: 5,
             padding: 1,
             height: '100%'
           }}
@@ -109,9 +109,22 @@ export const Details = () => {
             <Link to="/app" style={{ color: '#515B63' }}>
               <ArrowBackIcon />
             </Link>
-            <DeleteCourse planId={plan.id} label={"Delete"}></DeleteCourse>
-          </Box>
+            <Box sx={{gap: 1, display: 'flex',}}>
+              <DeleteCourse planId={plan.id} label={"Delete"}></DeleteCourse>
+            </Box>
 
+          </Box>
+          <Box
+                sx={{
+                    backgroundColor: '#e3e3e3',
+                    borderRadius: 2,
+                    padding: 2,
+                    justifyContent: 'center',
+                    alignItems: 'flex-start',
+                }}
+            >
+                <PaceTable plan={plan}></PaceTable>
+            </Box>
 
           {(properties && coords) && <ChartWrapper elevationWidth={elevationWidth} coords={coords} hoveredPoint={hoveredPoint} handleSetHoveredPoint={handleSetHoveredPoint} properties={properties} plan={plan}></ChartWrapper>}
 
