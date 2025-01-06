@@ -13,6 +13,7 @@ import { DeleteCourse } from "./DeleteCourse";
 
 import { ChartWrapper } from "./ChartWrapper";
 import { useScreenSize } from "./helpers/screensize.helper";
+import { TextEditor } from './TextEditor';
 
 
 export const Details = () => {
@@ -125,7 +126,7 @@ export const Details = () => {
             >
                 <PaceTable plan={plan}></PaceTable>
             </Box>
-
+            <TextEditor></TextEditor>
           {(properties && coords) && <ChartWrapper elevationWidth={elevationWidth} coords={coords} hoveredPoint={hoveredPoint} handleSetHoveredPoint={handleSetHoveredPoint} properties={properties} plan={plan}></ChartWrapper>}
 
 
