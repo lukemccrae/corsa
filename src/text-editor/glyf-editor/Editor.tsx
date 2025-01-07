@@ -46,7 +46,7 @@ export default function Editor(): JSX.Element {
       <ListPlugin />
       <RichTextPlugin
         contentEditable={<ContentEditable className="contentEditable" />}
-        placeholder={<div className="placeholder">Enter some text...</div>}
+        placeholder={<div className="placeholder"></div>}
         ErrorBoundary={LexicalErrorBoundary}
       />
       <HistoryPlugin />

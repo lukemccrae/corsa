@@ -32,6 +32,7 @@ function ToolbarButton(props: ToolbarButtonProps): JSX.Element {
 
 function TextFormatToolbarPlugin(): JSX.Element {
   const [editor] = useLexicalComposerContext();
+  console.log(JSON.stringify(editor.getEditorState().toJSON()), '<< state')
   const getIcon = (format: TextFormatType): JSX.Element | null => {
     switch (format) {
       case 'bold':

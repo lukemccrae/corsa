@@ -4,7 +4,6 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Title from "./Title";
 import { Plan } from "./types";
 import {
   averagePaces,
@@ -29,7 +28,7 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
             <TableCell sx={{ padding: "5px" }}>Avg.</TableCell>
             <TableCell sx={{ padding: "10px" }} align="left">Gain</TableCell>
             <TableCell sx={{ padding: "0 5px 0 0" }}>Loss</TableCell>
-            <TableCell sx={{ padding: "0 5px 0 0" }}>GAP</TableCell>
+            {/* <TableCell sx={{ padding: "0 5px 0 0" }}>GAP</TableCell> */}
             <TableCell sx={{ padding: "0 3px 0 5px" }}>Elapsed</TableCell>
           </TableRow>
         </TableHead>
@@ -65,9 +64,9 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
                 {Math.round(md.elevationLoss * 3.28084)}
               </TableCell>
               {/* GAP */}
-              <TableCell sx={{ padding: "5px" }}>
+              {/* <TableCell sx={{ padding: "5px" }}>
                 {toHHMMSS(md.gap)}
-              </TableCell>
+              </TableCell> */}
               <TableCell align="left" sx={{ padding: "0 3px 0 0" }}>
                 {calcTime(plan.mileData.slice(0, i + 1))}
               </TableCell>

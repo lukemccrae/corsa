@@ -9,6 +9,7 @@ import { MileProfile } from './MileProfile';
 import { createMiniProfile } from './helpers/miniVertProfile.helpter';
 import { calculateStartWithTZ } from './helpers/strartTime.helper';
 import { toHHMMSS } from './helpers/avgPace.helper';
+import { TextEditor } from './TextEditor';
 
 export const UI = () => {
   const { user } = useUser();

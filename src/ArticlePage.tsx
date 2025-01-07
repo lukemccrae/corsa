@@ -7,6 +7,8 @@ import { getPlanById } from './services/fetchPlans.service';
 import { useUser } from './context/UserContext';
 import { getGeoJsonBySortKey } from './services/fetchMap.service';
 import { PaceTable } from './PaceTable';
+import {lexicalarticle} from './temparticle'
+import { ArticleRichTextHtml } from './ArticleRichTextHtml';
 
 export const ArticlePage = () => {
   // Extract the `id` from the URL
@@ -113,9 +115,7 @@ return (
           </Box>
 
           {/* Content Section */}
-          <Typography sx={{color: 'black'}} variant="body1" paragraph>
-            {article?.content}
-          </Typography>
+          <ArticleRichTextHtml lexicaleditor={lexicalarticle}></ArticleRichTextHtml>
         </Box>
         {plan && <Box>
           <PaceTable plan={plan}></PaceTable>
