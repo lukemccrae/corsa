@@ -13,8 +13,8 @@ import { DeleteCourse } from "./DeleteCourse";
 
 import { ChartWrapper } from "./ChartWrapper";
 import { useScreenSize } from "./helpers/screensize.helper";
-import { TextEditor } from './TextEditor';
-
+// @ts-ignore
+import LexicalEditorWrapper from "./text-editor/components/LexicalEditorWrapper";
 
 export const Details = () => {
   const { id } = useParams();
@@ -128,7 +128,7 @@ export const Details = () => {
             </Box>
           {(properties && coords) && <ChartWrapper elevationWidth={elevationWidth} coords={coords} hoveredPoint={hoveredPoint} handleSetHoveredPoint={handleSetHoveredPoint} properties={properties} plan={plan}></ChartWrapper>}
           <Box sx={{position: "relative"}}>
-            <TextEditor></TextEditor>
+            <LexicalEditorWrapper></LexicalEditorWrapper>
 
             </Box>
         </Grid>
