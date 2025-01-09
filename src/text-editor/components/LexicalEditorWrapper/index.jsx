@@ -17,6 +17,9 @@ import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import ImagesPlugin from "../CustomPlugins/ImagePlugin";
 import FloatingTextFormatToolbarPlugin from "../CustomPlugins/FloatingTextFormatPlugin";
 
+import { lexicalarticle } from '../../../temparticle'
+
+
 function LexicalEditorWrapper(props) {
   return (
     <LexicalComposer initialConfig={lexicalEditorConfig}>
@@ -40,16 +43,13 @@ function LexicalEditorWrapper(props) {
   );
 }
 
-// When the editor changes, you can get notified via the
-// LexicalOnChangePlugin!
-function onChange(editorState) {
-  editorState.read(() => {
-    // Read the contents of the EditorState here.
-    const root = $getRoot();
-    const selection = $getSelection();
-
-    console.log(root, selection);
-  });
+// this onChange is a reflection of the onChange defined in the Lexical OnChangePlugin component
+// the args are editorState: EditorState, editor: LexicalEditor, tags: Set<string>
+// i need the second one so i have to throw a dummy arg in front 
+// this should be turned into a button action or periodic saving action
+function onChange(editorState, editor) {
+  const editorStateString = JSON.stringify(editor.getEditorState())
+  console.log(editorStateString, '<< editorstate')
 }
 
 // Lexical React plugins are React components, which makes them

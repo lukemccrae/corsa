@@ -5,6 +5,8 @@ import { CodeHighlightNode, CodeNode } from "@lexical/code";
 import { TableNode, TableCellNode, TableRowNode } from "@lexical/table";
 import { ListNode, ListItemNode } from "@lexical/list";
 import { ImageNode } from "../components/CustomNodes/ImageNode";
+import { lexicalarticle } from '../../temparticle'
+
 
 // Catch any errors that occur during Lexical updates and log them
 // or throw them as needed. If you don't throw them, Lexical will
@@ -17,6 +19,7 @@ export const lexicalEditorConfig = {
   namespace: "MyEditor",
   theme: lexicalEditorTheme,
   onError,
+  editorState: lexicalarticle,
 
   nodes: [
     HeadingNode,
