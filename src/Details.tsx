@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import { getPlanById } from "./services/fetchPlans.service";
 import { FeatureCollection, FeatureProperties, Plan } from "./types";
-import { Box, Container, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Container, Divider, Paper, Typography, useMediaQuery, useTheme } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { MapComponent } from "./MapComponent";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -16,6 +16,7 @@ import { ChartWrapper } from "./ChartWrapper";
 import { useScreenSize } from "./helpers/screensize.helper";
 // @ts-ignore
 import LexicalEditorWrapper from "./text-editor/components/LexicalEditorWrapper";
+import { calcTime } from "./helpers/avgPace.helper";
 
 export const Details = () => {
   const { id } = useParams();
@@ -27,7 +28,7 @@ export const Details = () => {
 
   const screenSize = useScreenSize();
 
-  let elevationWidth: number;
+  let elevationWidth: number = 500;
 
   switch (screenSize) {
     case 'sm':
@@ -41,12 +42,12 @@ export const Details = () => {
 
       break;
     case 'lg':
-      elevationWidth = 700;
+      elevationWidth = 500;
       console.log(screenSize)
 
       break;
     case 'xl':
-      elevationWidth = 700;
+      elevationWidth = 500;
       console.log(screenSize)
 
       break;
@@ -86,24 +87,94 @@ export const Details = () => {
       <Container sx={{ mt: '100px' }} maxWidth="xl">
         <Box
           display="flex"
-          flexDirection={{ xs: "column", xl: "row" }}  // Stack on small, side-by-side on xl
-          sx={{ justifyContent: "flex-start", alignItems: "flex-start" }}  // Align to the left
+          flexDirection={{ xs: "column", lg: "row" }}
+          sx={{ justifyContent: "flex-start", alignItems: "flex-start" }}
           width="100%"
-          gap={4}  // Reduced gap for better spacing
+          gap={4}
         >
-          {/* Left Side - Locked to Left */}
+          {/* Left Side - Fixed Width */}
           <Box
             display="flex"
             flexDirection="column"
             gap={2}
-            flex="0 0 300px"  // Fixed width, doesn't grow or shrink
-            sx={{ alignSelf: "stretch" }}  // Stretch to match right column's height
+            width={{ xs: "100%", lg: "520px" }}  // Full width on small, fixed on large
+            sx={{
+              alignSelf: "stretch",
+              alignItems: { xs: "center", lg: "flex-start" },  // Center on small, left-align on large
+              textAlign: { xs: "center", lg: "left" },  // Center text on small screens
+            }}
           >
-            <Link to="/app" style={{ color: '#515B63' }}>
-              <ArrowBackIcon />
-            </Link>
+            <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+              <Link to="/app" style={{ color: '#515B63' }}>
+                <ArrowBackIcon />
+              </Link>
 
-            <DeleteCourse planId={plan.id} label={"Delete"} />
+              <DeleteCourse planId={plan.id} label={"Delete"} />
+            </Box>
+            <Paper elevation={3} sx={{ padding: 4, margin: 2 }}>
+              {/* Header */}
+              <Typography variant="h5" gutterBottom>
+                {plan.name}
+              </Typography>
+              <Divider sx={{ my: 2 }} />
+
+              {/* Basic Information */}
+              <Box
+                display="flex"
+                flexDirection={{ xs: 'column', sm: 'row' }}
+                gap={2}
+                sx={{ width: '100%' }}
+              >
+                <Box flex={1}>
+                  <Typography variant="h6">Start Time:</Typography>
+                  <Typography>{new Date(plan.startTime).toLocaleString()}</Typography>
+                </Box>
+                <Box flex={1}>
+                  <Typography variant="h6">Elapsed Time:</Typography>
+                  <Typography>{calcTime(plan.mileData)}</Typography>
+                </Box>
+              </Box>
+
+              <Divider sx={{ my: 2 }} />
+
+              {/* Distance & Grade Information */}
+              <Box
+                display="flex"
+                flexDirection={{ xs: 'column', sm: 'row' }}
+                gap={2}
+                sx={{ width: '100%' }}
+              >
+                <Box flex={1}>
+                  <Typography variant="h6">Total Distance:</Typography>
+                  <Typography>{plan.distanceInMiles + plan.lastMileDistance} miles</Typography>
+                </Box>
+                <Box flex={1}>
+                  <Typography variant="h6">Grade Range:</Typography>
+                  <Typography>
+                    {properties?.maxGrade}% to {properties?.minGrade}%
+                  </Typography>
+                </Box>
+              </Box>
+
+              <Divider sx={{ my: 2 }} />
+
+              {/* Elevation Data */}
+              <Box
+                display="flex"
+                flexDirection={{ xs: 'column', sm: 'row' }}
+                gap={2}
+                sx={{ width: '100%' }}
+              >
+                <Box flex={1}>
+                  <Typography variant="h6">Elevation Gain:</Typography>
+                  <Typography>{Math.round(plan.gainInMeters * 3.28084)} feet</Typography>
+                </Box>
+                <Box flex={1}>
+                  <Typography variant="h6">Elevation Loss:</Typography>
+                  <Typography>{(Math.round(plan.lossInMeters * 3.28084))} feet</Typography>
+                </Box>
+              </Box>
+            </Paper>
 
             <PaceTable plan={plan} />
 
@@ -119,11 +190,11 @@ export const Details = () => {
             )}
           </Box>
 
-          {/* Right Side - Wider Lexical Editor */}
+          {/* Right Side - Flexible Lexical Editor */}
           <Box
-            flex="1 1 auto"  // Takes up remaining space
-            minWidth="600px"  // Minimum width for comfort
-            sx={{ alignSelf: "stretch" }}  // Matches left column's height
+            flex="1"
+            minWidth="600px"
+            sx={{ alignSelf: "stretch" }}
           >
             <LexicalEditorWrapper />
           </Box>

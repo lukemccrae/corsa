@@ -21,7 +21,7 @@ interface PaceTableProps {
 export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 400, maxWidth: 600 }} size="small" id="paceTable">
+      <Table sx={{ minWidth: 400, maxWidth: 528 }} size="small" id="paceTable">
         <TableHead>
           <TableRow>
             <TableCell sx={{ padding: "0 0 0 3px" }}>Mile</TableCell>

@@ -66,6 +66,7 @@ export const getPlanById = async (props: GetPlanByIdProps) => {
             gap
             startTime
             userId
+            timezone
             mileData {
               elevationGain
               gap
