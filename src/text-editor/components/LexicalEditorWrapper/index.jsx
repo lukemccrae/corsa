@@ -17,7 +17,6 @@ import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import ImagesPlugin from "../CustomPlugins/ImagePlugin";
 import FloatingTextFormatToolbarPlugin from "../CustomPlugins/FloatingTextFormatPlugin";
 
-import { lexicalarticle } from '../../../temparticle'
 
 
 function LexicalEditorWrapper(props) {
@@ -48,8 +47,8 @@ function LexicalEditorWrapper(props) {
 // i need the second one so i have to throw a dummy arg in front 
 // this should be turned into a button action or periodic saving action
 function onChange(editorState, editor) {
-  const editorStateString = JSON.stringify(editor.getEditorState())
-  console.log(editorStateString, '<< editorstate')
+  // const editorStateString = JSON.stringify(editor.getEditorState())
+  // console.log(editorStateString, '<< editorstate')
 }
 
 // Lexical React plugins are React components, which makes them

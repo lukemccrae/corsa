@@ -4,7 +4,8 @@ import { Link, useParams } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import { getPlanById } from "./services/fetchPlans.service";
 import { FeatureCollection, FeatureProperties, Plan } from "./types";
-import { Box, Grid, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Container, useMediaQuery, useTheme } from "@mui/material";
+import Grid from '@mui/material/Grid2';
 import { MapComponent } from "./MapComponent";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { getGeoJsonBySortKey } from "./services/fetchMap.service";
@@ -82,57 +83,52 @@ export const Details = () => {
 
   if (plan) {
     return (
-      <Box
-        component="main"
-        sx={{
-          p: 5,
-          display: "flex",
-          flexDirection: "column",
-          padding: 0,
-          mt: "64px",
-          alignItems: 'flex-start',
-        }}
-      >
-        <Grid
-          container
-          item
-          xs={12}
-          md={12}
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 5,
-            padding: 1,
-            height: '100%'
-          }}
+      <Container sx={{ mt: '64px' }}>
+        <Box
+          display="flex"
+          flexDirection={{ xs: "column", md: "column", lg: "column", xl: "row" }}  // Responsive direction
+          sx={{ justifyContent: "space-between" }}
+          width="100%"
+          gap={10}
         >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          {/* Left Side - Smaller Column */}
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap={2}
+            flex={{ xs: "1 1 100%", md: "1 1 100%", lg: "1 1 100%", xl: "1 1 25%" }} 
+            maxWidth={{ md: "730px" }}                // Limit max width
+          >
             <Link to="/app" style={{ color: '#515B63' }}>
               <ArrowBackIcon />
             </Link>
-            <Box sx={{gap: 1, display: 'flex',}}>
-              <DeleteCourse planId={plan.id} label={"Delete"}></DeleteCourse>
-            </Box>
 
+            <DeleteCourse planId={plan.id} label={"Delete"} />
+
+            <PaceTable plan={plan} />
+
+            {(properties && coords) && (
+              <ChartWrapper
+                elevationWidth={elevationWidth}
+                coords={coords}
+                hoveredPoint={hoveredPoint}
+                handleSetHoveredPoint={handleSetHoveredPoint}
+                properties={properties}
+                plan={plan}
+              />
+            )}
           </Box>
-          <Box
-                sx={{
-                    backgroundColor: '#e3e3e3',
-                    borderRadius: 2,
-                    padding: 2,
-                    justifyContent: 'center',
-                    alignItems: 'flex-start',
-                }}
-            >
-                <PaceTable plan={plan}></PaceTable>
-            </Box>
-          {(properties && coords) && <ChartWrapper elevationWidth={elevationWidth} coords={coords} hoveredPoint={hoveredPoint} handleSetHoveredPoint={handleSetHoveredPoint} properties={properties} plan={plan}></ChartWrapper>}
-          <Box sx={{position: "relative"}}>
-            <LexicalEditorWrapper></LexicalEditorWrapper>
 
-            </Box>
-        </Grid>
-      </Box>
+          {/* Right Side - Wider Lexical Editor */}
+          <Box
+            flex={{ xs: "1 1 100%", md: "1 1 100%", lg: "1 1 100%", xl: "1 1 75%" }}  // Occupies more space
+            minWidth={{ md: "600px" }}               // Set minimum width for editor
+          >
+            <LexicalEditorWrapper />
+          </Box>
+        </Box>
+      </Container>
+
     );
   } else {
     return <div></div>;
