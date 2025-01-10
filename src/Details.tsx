@@ -83,21 +83,21 @@ export const Details = () => {
 
   if (plan) {
     return (
-      <Container sx={{ mt: '64px' }}>
+      <Container sx={{ mt: '100px' }} maxWidth="xl">
         <Box
           display="flex"
-          flexDirection={{ xs: "column", md: "column", lg: "column", xl: "row" }}  // Responsive direction
-          sx={{ justifyContent: "space-between" }}
+          flexDirection={{ xs: "column", xl: "row" }}  // Stack on small, side-by-side on xl
+          sx={{ justifyContent: "flex-start", alignItems: "flex-start" }}  // Align to the left
           width="100%"
-          gap={10}
+          gap={4}  // Reduced gap for better spacing
         >
-          {/* Left Side - Smaller Column */}
+          {/* Left Side - Locked to Left */}
           <Box
             display="flex"
             flexDirection="column"
             gap={2}
-            flex={{ xs: "1 1 100%", md: "1 1 100%", lg: "1 1 100%", xl: "1 1 25%" }} 
-            maxWidth={{ md: "730px" }}                // Limit max width
+            flex="0 0 300px"  // Fixed width, doesn't grow or shrink
+            sx={{ alignSelf: "stretch" }}  // Stretch to match right column's height
           >
             <Link to="/app" style={{ color: '#515B63' }}>
               <ArrowBackIcon />
@@ -121,8 +121,9 @@ export const Details = () => {
 
           {/* Right Side - Wider Lexical Editor */}
           <Box
-            flex={{ xs: "1 1 100%", md: "1 1 100%", lg: "1 1 100%", xl: "1 1 75%" }}  // Occupies more space
-            minWidth={{ md: "600px" }}               // Set minimum width for editor
+            flex="1 1 auto"  // Takes up remaining space
+            minWidth="600px"  // Minimum width for comfort
+            sx={{ alignSelf: "stretch" }}  // Matches left column's height
           >
             <LexicalEditorWrapper />
           </Box>
