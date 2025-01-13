@@ -93,7 +93,7 @@ return (
 
     {/* Blog Post Content Section */}
     <Grid container justifyContent="center">
-      <Grid item xs={12} sm={8} md={6}>
+      <Grid item xs={12} sm={8} md={8}>
         <Box sx={{ padding: 3 }}>
           {/* Tag Section */}
           <Box sx={{ marginBottom: '20px', display: "flex", justifyContent: "center" }}>

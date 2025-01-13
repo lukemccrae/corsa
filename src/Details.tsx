@@ -4,12 +4,11 @@ import { Link, useParams } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import { getPlanById } from "./services/fetchPlans.service";
 import { FeatureCollection, FeatureProperties, Plan } from "./types";
-import { Box, Container, Divider, Paper, Typography, useMediaQuery, useTheme } from "@mui/material";
-import Grid from '@mui/material/Grid2';
-import { MapComponent } from "./MapComponent";
+import { Box, Container, Divider, Paper, Typography } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { getGeoJsonBySortKey } from "./services/fetchMap.service";
 import { DeleteCourse } from "./DeleteCourse";
+import { SaveCourse } from "./SaveCourse";
 
 
 import { ChartWrapper } from "./ChartWrapper";
@@ -70,7 +69,7 @@ export const Details = () => {
         const mapResult: FeatureCollection = await getGeoJsonBySortKey({ planId });
         setPlan(planResult);
         setCoords(mapResult.features[0].geometry.coordinates);
-        setProperties(mapResult.features[0].properties)
+        setProperties(mapResult.features[0].properties);
       };
       fetchPlan();
     }
@@ -108,8 +107,11 @@ export const Details = () => {
               <Link to="/app" style={{ color: '#515B63' }}>
                 <ArrowBackIcon />
               </Link>
+              <Box>
+                <DeleteCourse planId={plan.id} label={"Delete"} />
+                <SaveCourse plan={plan} label={"Save"} />
+              </Box>
 
-              <DeleteCourse planId={plan.id} label={"Delete"} />
             </Box>
             <Paper elevation={3} sx={{ padding: 4, margin: 2 }}>
               {/* Header */}

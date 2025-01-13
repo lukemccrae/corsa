@@ -21,22 +21,22 @@ interface PaceTableProps {
 export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 400, maxWidth: 528 }} size="small" id="paceTable">
+      <Table sx={{ minWidth: 400, maxWidth: 528 }} aria-label="pace table" size="small" id="paceTable">
         <TableHead>
           <TableRow>
             <TableCell sx={{ padding: "0 0 0 3px" }}>Mile</TableCell>
             <TableCell>Pace</TableCell>
-            <TableCell sx={{ padding: "0" }}>Profile</TableCell>
-            <TableCell sx={{ padding: "5px" }}>Avg.</TableCell>
-            <TableCell sx={{ padding: "10px" }} align="left">Gain</TableCell>
-            <TableCell sx={{ padding: "0 5px 0 0" }}>Loss</TableCell>
-            <TableCell sx={{ padding: "0 5px 0 0" }}>GAP</TableCell>
-            <TableCell sx={{ padding: "0 3px 0 5px" }}>Elapsed</TableCell>
+            <TableCell align="left" sx={{ padding: "0" }}>Profile</TableCell>
+            <TableCell align="left" sx={{ padding: "5px" }}>Avg.</TableCell>
+            <TableCell align="left" sx={{ padding: "10px" }}>Gain</TableCell>
+            <TableCell align="left" sx={{ padding: "0 5px 0 0" }}>Loss</TableCell>
+            <TableCell align="left" sx={{ padding: "0 5px 0 0" }}>GAP</TableCell>
+            <TableCell align="left" sx={{ padding: "0 3px 0 5px" }}>Elapsed</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {plan.mileData.map((md, i) => (
-            <TableRow key={i}>
+            <TableRow key={i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell sx={{ padding: "0 0 0 3px" }}>
                 {i === plan.mileData.length - 1 ? plan.lastMileDistance : i + 1}
               </TableCell>

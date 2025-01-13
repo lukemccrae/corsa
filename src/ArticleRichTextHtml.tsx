@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { $generateHtmlFromNodes } from '@lexical/html';
 import { createEditor } from 'lexical';
+import { Box } from '@mui/material';
 
 interface ArticleRichTextHtmlProps {
   lexicaleditor: string; // JSON string of the Lexical state
@@ -34,5 +35,5 @@ export const ArticleRichTextHtml: React.FC<ArticleRichTextHtmlProps> = (props) =
     });
   }, [props.lexicaleditor]);
 
-  return <div dangerouslySetInnerHTML={{ __html: htmlContent }} />;
+  return <Box dangerouslySetInnerHTML={{ __html: htmlContent }} />;
 };
