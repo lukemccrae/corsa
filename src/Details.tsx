@@ -186,7 +186,7 @@ export const Details = () => {
             minWidth="600px"
             sx={{ alignSelf: "stretch" }}
           >
-            <LexicalEditorWrapper />
+            <LexicalEditorWrapper articleContent={plan.articleContent} />
           </Box>
         </Box>
       </Container>

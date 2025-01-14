@@ -16,6 +16,7 @@ export const deletePlanById = async (props: DeletePlanProps) => {
         `;
     try {
         const result = await fetch(
+            // "http://localhost:8008/graphql",
             domain.appsync,
             {
                 method: "POST",

@@ -40,8 +40,6 @@ export const getPlansByUserId = async (props: GetPlansByUserIdProps) => {
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${retrieveUserToken()}`,
-
-          // Authorization: `Bearer ${JSON.stringify(token)}`,
         },
         body: JSON.stringify({ query }),
       }
@@ -59,6 +57,7 @@ export const getPlanById = async (props: GetPlanByIdProps) => {
       getPlanById(userId: "${props.userId}" planId: "${props.planId}") {
         distanceInMiles
             durationInSeconds
+            articleContent
             lastMileDistance
             lossInMeters
             id

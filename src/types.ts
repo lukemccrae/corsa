@@ -21,6 +21,7 @@ export type Plan = {
   grade: number[];
   gainInMeters: number;
   lossInMeters: number;
+  articleContent: string;
 };
 
 export interface getPlansByUserId {

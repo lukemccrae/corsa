@@ -42,6 +42,12 @@ import {
 import { eventTypes } from "./toolbarIconsList";
 import { InsertImageDialog } from "../CustomPlugins/ImagePlugin";
 import useModal from "../../common/hooks/useModal";
+import { saveArticle } from "../../../services/saveArticle.service";
+
+import { useParams } from 'react-router-dom';
+import { useUser } from '../../../context/UserContext';
+
+
 
 const LowPriority = 1;
 
@@ -52,6 +58,8 @@ const useOnClickListener = () => {
   const [selectedElementKey, setSelectedElementKey] = useState(null);
   const [isRTL, setIsRTL] = useState(false);
   const [isLink, setIsLink] = useState(false);
+  const { id } = useParams();
+  const { user } = useUser()
 
   const [selectedEventTypes, setSelectedEventTypes] = useState([]);
 
@@ -188,8 +196,17 @@ const useOnClickListener = () => {
       showModal("Insert Image", (onClose) => (
         <InsertImageDialog activeEditor={editor} onClose={onClose} />
       ));
+    } else if (eventType === eventTypes.saveText) {
+      saveText();
+
     }
   };
+
+  const saveText = async () => {
+    const bucketKey = id;
+    const article = editor.getEditorState();
+    const editResult = await saveArticle({article, bucketKey, user})
+  }
 
   const insertLink = useCallback(() => {
     if (!isLink) {

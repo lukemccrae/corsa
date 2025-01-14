@@ -16,6 +16,8 @@ import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import FormatText from "mdi-material-ui/FormatText";
 import CodeIcon from "@mui/icons-material/Code";
 import ImageIcon from "@mui/icons-material/Image";
+import SaveIcon from '@mui/icons-material/Save';
+
 
 export const eventTypes = {
   paragraph: "paragraph",
@@ -36,6 +38,7 @@ export const eventTypes = {
   formatAlignCenter: "formatAlignCenter",
   formatAlignRight: "formatAlignRight",
   insertImage: "insertImage",
+  saveText: "saveText"
 };
 
 const pluginsList = [
@@ -131,6 +134,11 @@ const pluginsList = [
     id: 17,
     Icon: FormatAlignRightOutlinedIcon,
     event: eventTypes.formatAlignRight,
+  },
+  {
+    id: 18,
+    Icon: SaveIcon,
+    event: eventTypes.saveText
   },
 ];
 

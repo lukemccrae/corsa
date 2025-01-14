@@ -21,7 +21,7 @@ const LexicalEditorTopBar = () => {
       justifyContent="space-between"
       spacing={2}
       alignItems="center"
-      sx={{ background: "white", py: 1.5, px: 0.5 }}
+      sx={{ background: "white", py: 1.5, px: 2.5 }}
     >
       {toolbarIconsList.map((plugin) => (
         <Grid
