@@ -107,7 +107,7 @@ export const Details = () => {
               <Link to="/app" style={{ color: '#515B63' }}>
                 <ArrowBackIcon />
               </Link>
-              <Box>
+              <Box display="flex" gap={2}>
                 <DeleteCourse planId={plan.id} label={"Delete"} />
                 <SaveCourse plan={plan} label={"Save"} />
               </Box>
@@ -135,21 +135,6 @@ export const Details = () => {
                   <Typography variant="h6">Elapsed Time:</Typography>
                   <Typography>{calcTime(plan.mileData)}</Typography>
                 </Box>
-              </Box>
-
-              <Divider sx={{ my: 2 }} />
-
-              {/* Distance & Grade Information */}
-              <Box
-                display="flex"
-                flexDirection={{ xs: 'column', sm: 'row' }}
-                gap={2}
-                sx={{ width: '100%' }}
-              >
-                <Box flex={1}>
-                  <Typography variant="h6">Total Distance:</Typography>
-                  <Typography>{plan.distanceInMiles + plan.lastMileDistance} miles</Typography>
-                </Box>
                 <Box flex={1}>
                   <Typography variant="h6">Grade Range:</Typography>
                   <Typography>
@@ -157,7 +142,6 @@ export const Details = () => {
                   </Typography>
                 </Box>
               </Box>
-
               <Divider sx={{ my: 2 }} />
 
               {/* Elevation Data */}
@@ -174,6 +158,10 @@ export const Details = () => {
                 <Box flex={1}>
                   <Typography variant="h6">Elevation Loss:</Typography>
                   <Typography>{(Math.round(plan.lossInMeters * 3.28084))} feet</Typography>
+                </Box>
+                <Box flex={1}>
+                  <Typography variant="h6">Total Distance:</Typography>
+                  <Typography>{plan.distanceInMiles + plan.lastMileDistance} miles</Typography>
                 </Box>
               </Box>
             </Paper>
