@@ -24,7 +24,7 @@ function LexicalEditorWrapper(props) {
     <LexicalComposer initialConfig={lexicalEditorConfig}>
       <LexicalEditorTopBar />
       <Divider />
-      <Box sx={{ position: "relative", background: "white" }}>
+      <Box sx={{ position: "relative", background: "white", padding: "16px" }}>
         <RichTextPlugin // #312D4B
           contentEditable={<MuiContentEditable />}
           placeholder={<Box sx={placeHolderSx}>Enter some text...</Box>}

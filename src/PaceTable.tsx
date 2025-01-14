@@ -21,23 +21,23 @@ interface PaceTableProps {
 export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 400, maxWidth: 528 }} aria-label="pace table" size="small" id="paceTable">
+      <Table sx={{ minWidth: 400, maxWidth: 600, margin: "8px" }} aria-label="pace table" size="small" id="paceTable">
         <TableHead>
           <TableRow>
-            <TableCell sx={{ padding: "0 0 0 3px" }}>Mile</TableCell>
+            <TableCell>Mile</TableCell>
             <TableCell>Pace</TableCell>
-            <TableCell align="left" sx={{ padding: "0" }}>Profile</TableCell>
-            <TableCell align="left" sx={{ padding: "5px" }}>Avg.</TableCell>
-            <TableCell align="left" sx={{ padding: "10px" }}>Gain</TableCell>
-            <TableCell align="left" sx={{ padding: "0 5px 0 0" }}>Loss</TableCell>
-            <TableCell align="left" sx={{ padding: "0 5px 0 0" }}>GAP</TableCell>
-            <TableCell align="left" sx={{ padding: "0 3px 0 5px" }}>Elapsed</TableCell>
+            <TableCell>Profile</TableCell>
+            <TableCell>Avg.</TableCell>
+            <TableCell>Gain</TableCell>
+            <TableCell>Loss</TableCell>
+            <TableCell>GAP</TableCell>
+            <TableCell>Elapsed</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {plan.mileData.map((md, i) => (
             <TableRow key={i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell sx={{ padding: "0 0 0 3px" }}>
+              <TableCell align="center" sx={{ padding: "0 0 0 3px" }}>
                 {i === plan.mileData.length - 1 ? plan.lastMileDistance : i + 1}
               </TableCell>
               <TableCell>
@@ -52,24 +52,24 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
                   mileVertProfile={md.mileVertProfile}>
                 </MileProfile>
               </TableCell>
-              <TableCell sx={{ padding: "5px" }}>
+              <TableCell align="center" sx={{ padding: "5px" }}>
                 {averagePaces(
                   plan.mileData.slice(0, i + 1),
                   plan.lastMileDistance,
                   i === plan.mileData.length - 1
                 )}
               </TableCell>
-              <TableCell align="left">
+              <TableCell align="center">
                 {Math.round(md.elevationGain * 3.28084)}
               </TableCell>
-              <TableCell align="left" sx={{ padding: "0 5px 0 0" }}>
+              <TableCell align="center" sx={{ padding: "0 5px 0 0" }}>
                 {Math.round(md.elevationLoss * 3.28084)}
               </TableCell>
               {/* GAP */}
-              <TableCell sx={{ padding: "5px" }}>
+              <TableCell align="center" sx={{ padding: "5px" }}>
                 {toHHMMSS(md.gap)}
               </TableCell>
-              <TableCell align="left" sx={{ padding: "0 3px 0 0" }}>
+              <TableCell align="center" sx={{ padding: "0 3px 0 0" }}>
                 {calcTime(plan.mileData.slice(0, i + 1))}
               </TableCell>
             </TableRow>
