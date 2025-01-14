@@ -1,23 +1,21 @@
 import Button from '@mui/material/Button';
 import SaveIcon from '@mui/icons-material/Save';
-import { updatePlanById } from './services/updatePlan.service';
 import { useUser } from './context/UserContext';
 import { Plan } from './types';
 
-interface DeleteButtonProps {
+interface PublishButtonProps {
     label: string
     plan: Plan
 }
 
-export const SaveCourse = (props: DeleteButtonProps) => {
+export const PublishCourse = (props: PublishButtonProps) => {
     const { user } = useUser()
-
 
     const onSave = async () => {
         if (user?.userId) {
             const userId = user.userId
             const plan = props.plan
-            await updatePlanById({ userId, plan })
+            await publishCourse({ userId, plan })
         }
     }
 

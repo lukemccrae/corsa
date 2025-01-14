@@ -31,7 +31,6 @@ function onError(error) {
 }
 
 function LexicalEditorWrapper(props) {
-  console.log(props, '<< props')
   const lexicalEditorConfig = {
     namespace: "MyEditor",
     theme: lexicalEditorTheme,

@@ -8,7 +8,7 @@ import { Box, Container, Divider, Paper, Typography } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { getGeoJsonBySortKey } from "./services/fetchMap.service";
 import { DeleteCourse } from "./DeleteCourse";
-import { SaveCourse } from "./SaveCourse";
+import { PublishCourse } from "./PublishCourse";
 
 
 import { ChartWrapper } from "./ChartWrapper";
@@ -109,7 +109,7 @@ export const Details = () => {
               </Link>
               <Box display="flex" gap={2}>
                 <DeleteCourse planId={plan.id} label={"Delete"} />
-                <SaveCourse plan={plan} label={"Save"} />
+                <PublishCourse plan={plan} label={"Publish"} />
               </Box>
 
             </Box>
