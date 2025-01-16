@@ -4,7 +4,7 @@ import { retrieveUserToken } from '../helpers/token.helper';
 
 interface PublishCourseProps {
     bucketKey: string;
-    user: User;
+    userId: string;
 }
 
 export const publishCourse = async (props: PublishCourseProps) => {
@@ -13,7 +13,8 @@ export const publishCourse = async (props: PublishCourseProps) => {
 
     const variables = {
         bucketKey: props.bucketKey,
-        userId: props.user.userId,
+        userId: props.userId,
+        published: true
     };
 
     try {
@@ -25,8 +26,6 @@ export const publishCourse = async (props: PublishCourseProps) => {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${retrieveUserToken()}`,
-
-
                 },
                 body: JSON.stringify({
                     query: mutation,

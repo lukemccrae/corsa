@@ -22,6 +22,7 @@ export type Plan = {
   gainInMeters: number;
   lossInMeters: number;
   articleContent: string;
+  published: boolean;
 };
 
 export interface getPlansByUserId {
@@ -109,7 +110,7 @@ export interface GetGeoJsonBySortKey {
 
 export interface Article {
   id: string;
-  title: string;
+  name: string;
   destination: string;
   author: string;
   date: string;

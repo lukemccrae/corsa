@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { posts } from './assets/posts'
-import { Box, Chip, Container, Grid, Paper, Typography } from '@mui/material';
+import { Box, Chip, Container, Paper, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import { Article, FeatureCollection, FeatureProperties, Plan } from './types';
 import { getPlanById } from './services/fetchPlans.service';
 import { useUser } from './context/UserContext';
@@ -20,11 +20,6 @@ export const ArticlePage = () => {
 
   useEffect(() => {
     if (id && user) {
-      let index = posts.map((p) => p.id).indexOf(id);
-      let post = posts[index]
-      if (post) {
-        setArticle(posts[index])
-      }
 
       const userId = user.userId;
       const planId = id;
@@ -68,7 +63,7 @@ return (
         }}
       >
         <Typography variant="h3" gutterBottom>
-          {article?.title}
+          {article?.name}
         </Typography>
       </Box>
     </Box>
@@ -86,13 +81,13 @@ return (
       }}
     >
       <Typography variant="h3" gutterBottom>
-        {article?.title}
+        {article?.name}
       </Typography>
     </Box>
 
     {/* Blog Post Content Section */}
     <Grid container justifyContent="center">
-      <Grid item xs={12} sm={8} md={8}>
+      <Grid size={{xs: 8, sm: 10, md: 12}}>
         <Box sx={{ padding: 3 }}>
           {/* Tag Section */}
           <Box sx={{ marginBottom: '20px', display: "flex", justifyContent: "center" }}>
@@ -124,15 +119,3 @@ return (
   </Container>
 );
 }
-
-function setPlan(planResult: Plan) {
-  throw new Error('Function not implemented.');
-}
-function setCoords(coordinates: import("./types").LatLngAltitude[]) {
-  throw new Error('Function not implemented.');
-}
-
-function setProperties(properties: FeatureProperties) {
-  throw new Error('Function not implemented.');
-}
-

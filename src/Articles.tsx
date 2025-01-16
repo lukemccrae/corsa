@@ -3,10 +3,24 @@ import { Container, Grid, Typography, Card, CardContent, CardMedia, Box, CardAct
 import { posts } from './assets/posts'
 import { Tags } from './Tags';
 import { Link } from 'react-router-dom';
-import { Article } from './types';
-
+import { Article, Plan } from './types';
+import { useUser } from './context/UserContext';
+import { getPublishedPlans } from './services/fetchPlans.service';
 
 export const Articles = () => {
+  const [articles, setArticles] = React.useState<Article[]>();
+  const { user } = useUser();
+  React.useEffect(() => {
+    if (user) {
+      const fetchPublishedPlans = async () => {
+        const articleResult: Article[] = await getPublishedPlans();
+        console.log(articleResult, ' arrticle result')
+        setArticles(articleResult);
+      };
+      fetchPublishedPlans();
+    }
+
+  }, []);
   return (
     <Box
         component="main"
@@ -28,7 +42,7 @@ export const Articles = () => {
           Latest Articles
         </Typography>
         <Grid container spacing={4} justifyContent="start">
-          {posts.map((post) => (
+          {articles && articles.map((post) => (
             <Grid item key={post.id} xs={12} sm={6} md={4}>
               <Card sx={{ 
                   maxWidth: 545, 
@@ -51,13 +65,13 @@ export const Articles = () => {
                 <CardMedia
                   component="img"
                   height="140"
-                  image={post.image}
-                  alt={post.title}
+                  // image={post.image}
+                  // alt={post.title}
                 />
                 <CardContent>
-                  <Tags tags={post.tags}></Tags>
+                  {/* <Tags tags={post.tags}></Tags> */}
                   <Typography sx={{margin: "10px 0 10px 0"}} variant="h6" gutterBottom>
-                    {post.title}
+                    {post.name}
                   </Typography>
                   {/* <Typography variant="body2" sx={{ mt: 2 }}>
                     {post.content}

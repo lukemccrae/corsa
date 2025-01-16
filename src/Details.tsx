@@ -82,6 +82,7 @@ export const Details = () => {
   }
 
   if (plan) {
+    console.log(plan)
     return (
       <Container sx={{ mt: '100px' }} maxWidth="xl">
         <Box
@@ -109,7 +110,7 @@ export const Details = () => {
               </Link>
               <Box display="flex" gap={2}>
                 <DeleteCourse planId={plan.id} label={"Delete"} />
-                <PublishCourse plan={plan} label={"Publish"} />
+                <PublishCourse plan={plan} label={plan.published ? "Unpublish" : "Publish"} />
               </Box>
 
             </Box>

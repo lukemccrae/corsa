@@ -10,6 +10,38 @@ interface GetPlanByIdProps {
   planId: string;
 }
 
+export const getPublishedPlans = async () => {
+  const query = `
+query MyQuery {
+  getPublishedPlans {
+    name
+    id
+  }
+}
+`;
+
+  try {
+    let token = localStorage.getItem("user")
+    if (typeof token !== 'string') throw new Error("token not valid")
+    const result = await fetch(
+      domain.appsync,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${retrieveUserToken()}`,
+        },
+        body: JSON.stringify({ query }),
+      }
+    );
+    const publishedPlans = await result.json();
+    console.log(publishedPlans, '<< pp')
+    return publishedPlans.data.getPublishedPlans;
+  } catch (e) {
+    console.log(e, "<< error");
+  }
+}
+
 export const getPlansByUserId = async (props: GetPlansByUserIdProps) => {
   const query = `
         query MyQuery {
@@ -75,6 +107,8 @@ export const getPlanById = async (props: GetPlanByIdProps) => {
               elevationLoss
             }
             name
+            articleContent
+            published
       }
     }
   `;
