@@ -35,7 +35,6 @@ query MyQuery {
       }
     );
     const publishedPlans = await result.json();
-    console.log(publishedPlans, '<< pp')
     return publishedPlans.data.getPublishedPlans;
   } catch (e) {
     console.log(e, "<< error");

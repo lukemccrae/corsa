@@ -5,7 +5,7 @@ import { retrieveUserToken } from '../helpers/token.helper';
 interface SaveArticleProps {
     article: string;
     bucketKey: string;
-    user: User;
+    userId: string;
 }
 
 export const saveArticle = async (props: SaveArticleProps) => {
@@ -23,7 +23,7 @@ export const saveArticle = async (props: SaveArticleProps) => {
 
     const variables = {
         bucketKey: props.bucketKey,
-        userId: props.user.userId,
+        userId: props.userId,
         articleContent: JSON.stringify(props.article),
     };
 
@@ -47,7 +47,7 @@ export const saveArticle = async (props: SaveArticleProps) => {
         );
         const jsonResult = await result.json();
         console.log(jsonResult, '<< hihihi')
-        if (jsonResult.success) {
+        if (jsonResult.data.updateArticleByPlanId) {
             return true;
         } else {
             return false
