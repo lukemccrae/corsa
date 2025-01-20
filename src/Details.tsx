@@ -4,18 +4,20 @@ import { Link, useParams } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import { getPlanById } from "./services/fetchPlans.service";
 import { FeatureCollection, FeatureProperties, Plan } from "./types";
-import { Box, Container, Divider, Paper, Typography } from "@mui/material";
+import { Box, Button, Container, Divider, Paper, Typography } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { getGeoJsonBySortKey } from "./services/fetchMap.service";
 import { DeleteCourse } from "./DeleteCourse";
 import { PublishCourse } from "./PublishCourse";
-
+import MDEditor from '@uiw/react-md-editor';
 
 import { ChartWrapper } from "./ChartWrapper";
 import { useScreenSize } from "./helpers/screensize.helper";
 // @ts-ignore
 import LexicalEditorWrapper from "./text-editor/components/LexicalEditorWrapper";
 import { calcTime } from "./helpers/avgPace.helper";
+import { SaveArticle } from "./SaveArticle";
+import { unescapeMarkdown } from "./helpers/markdown.helper";
 
 export const Details = () => {
   const { id } = useParams();
@@ -24,6 +26,7 @@ export const Details = () => {
   const [coords, setCoords] = React.useState<number[][]>();
   const [properties, setProperties] = React.useState<FeatureProperties>();
   const [hoveredPoint, setHoveredPoint] = React.useState<number>(0);
+  const [value, setValue] = React.useState<string>("**Hello world!!!**");
 
   const screenSize = useScreenSize();
 
@@ -70,6 +73,7 @@ export const Details = () => {
         setPlan(planResult);
         setCoords(mapResult.features[0].geometry.coordinates);
         setProperties(mapResult.features[0].properties);
+        setValue(unescapeMarkdown(planResult.articleContent))
       };
       fetchPlan();
     }
@@ -82,7 +86,6 @@ export const Details = () => {
   }
 
   if (plan) {
-    console.log(plan)
     return (
       <Container sx={{ mt: '100px' }} maxWidth="xl">
         <Box
@@ -167,7 +170,7 @@ export const Details = () => {
               </Box>
             </Paper>
 
-            <PaceTable plan={plan} />
+            <PaceTable cols={["Mile", "Pace",	"Profile","Avg.",	"Gain", "GAP", "Loss", "Elapsed"]} plan={plan} />
 
             {(properties && coords) && (
               <ChartWrapper
@@ -185,10 +188,19 @@ export const Details = () => {
           <Box
             flex="1"
             minWidth="600px"
+            maxWidth="800px"
             sx={{ alignSelf: "stretch" }}
           >
-            <LexicalEditorWrapper articleContent={plan.articleContent} />
+            <Box sx={{ display: "flex", justifyContent: "end", margin: "10px" }}>
+              <SaveArticle planId={plan.id} label={"Save"} value={value} />
+            </Box>
+            <MDEditor
+              value={value}
+              onChange={(val) => setValue(val || '')}
+            />
+            <MDEditor.Markdown source={value} style={{ whiteSpace: 'pre-wrap' }} />
           </Box>
+
         </Box>
       </Container>
 

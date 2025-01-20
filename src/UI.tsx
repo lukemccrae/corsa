@@ -19,7 +19,6 @@ export const UI = () => {
       const userId = user.userId;
       const fetchPlan = async () => {
         const plans = await getPlansByUserId({ userId });
-        console.log(plans, '<< plans')
         setPlans(plans);
       }
       fetchPlan()

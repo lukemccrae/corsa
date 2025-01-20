@@ -16,35 +16,41 @@ import { Paper, TableContainer } from "@mui/material";
 
 interface PaceTableProps {
   plan: Plan;
+  cols: string[];
 }
 
-export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
+export const PaceTable: React.FC<PaceTableProps> = (props: PaceTableProps) => {
+  function checkDisplayCols(col: string) {
+    console.log(col)
+    return props.cols.includes(col) ? "table-cell" : "none"
+  }
+  
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 400, maxWidth: 600, margin: "8px" }} aria-label="pace table" size="small" id="paceTable">
         <TableHead>
           <TableRow>
-            <TableCell>Mile</TableCell>
-            <TableCell>Pace</TableCell>
-            <TableCell>Profile</TableCell>
-            <TableCell>Avg.</TableCell>
-            <TableCell>Gain</TableCell>
-            <TableCell>Loss</TableCell>
-            <TableCell>GAP</TableCell>
-            <TableCell>Elapsed</TableCell>
+            <TableCell sx={{display: checkDisplayCols('Mile')}}>Mile</TableCell>
+            <TableCell sx={{display: checkDisplayCols('Pace')}}>Pace</TableCell>
+            <TableCell sx={{display: checkDisplayCols('Profile')}}>Profile</TableCell>
+            <TableCell sx={{display: checkDisplayCols('Avg.')}}>Avg.</TableCell>
+            <TableCell sx={{display: checkDisplayCols('Gain')}}>Gain</TableCell>
+            <TableCell sx={{display: checkDisplayCols('Loss')}}>Loss</TableCell>
+            <TableCell sx={{display: checkDisplayCols('GAP')}}>GAP</TableCell>
+            <TableCell sx={{display: checkDisplayCols('Elapsed')}}>Elapsed</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {plan.mileData.map((md, i) => (
+          {props.plan.mileData.map((md, i) => (
             <TableRow key={i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell align="center" sx={{ padding: "0 0 0 3px" }}>
-                {i === plan.mileData.length - 1 ? plan.lastMileDistance : i + 1}
+              <TableCell align="center" sx={{ padding: "0 0 0 3px", display: checkDisplayCols('Mile') }}>
+                {i === props.plan.mileData.length - 1 ? props.plan.lastMileDistance : i + 1}
               </TableCell>
-              <TableCell>
+              <TableCell sx={{display: checkDisplayCols('Pace')}}>
                 {" "}
                 {toHHMMSS(md.pace)}
               </TableCell>
-              <TableCell sx={{ padding: "0" }}>
+              <TableCell sx={{ padding: "0", display: checkDisplayCols('Profile') }}>
                 <MileProfile
                   marginRight={1}
                   multiplyPadding={1}
@@ -52,25 +58,25 @@ export const PaceTable: React.FC<PaceTableProps> = ({ plan }) => {
                   mileVertProfile={md.mileVertProfile}>
                 </MileProfile>
               </TableCell>
-              <TableCell align="center" sx={{ padding: "5px" }}>
+              <TableCell align="center" sx={{ padding: "5px", display: checkDisplayCols('Avg.') }}>
                 {averagePaces(
-                  plan.mileData.slice(0, i + 1),
-                  plan.lastMileDistance,
-                  i === plan.mileData.length - 1
+                  props.plan.mileData.slice(0, i + 1),
+                  props.plan.lastMileDistance,
+                  i === props.plan.mileData.length - 1
                 )}
               </TableCell>
-              <TableCell align="center">
+              <TableCell align="center" sx={{ padding: "0", display: checkDisplayCols('Gain') }}>
                 {Math.round(md.elevationGain * 3.28084)}
               </TableCell>
-              <TableCell align="center" sx={{ padding: "0 5px 0 0" }}>
+              <TableCell align="center" sx={{ padding: "0 5px 0 0", display: checkDisplayCols('Loss') }}>
                 {Math.round(md.elevationLoss * 3.28084)}
               </TableCell>
               {/* GAP */}
-              <TableCell align="center" sx={{ padding: "5px" }}>
+              <TableCell align="center" sx={{ padding: "5px", display: checkDisplayCols('GAP') }}>
                 {toHHMMSS(md.gap)}
               </TableCell>
-              <TableCell align="center" sx={{ padding: "0 3px 0 0" }}>
-                {calcTime(plan.mileData.slice(0, i + 1))}
+              <TableCell align="center" sx={{ padding: "0 3px 0 0", display: checkDisplayCols('Elapsed') }}>
+                {calcTime(props.plan.mileData.slice(0, i + 1))}
               </TableCell>
             </TableRow>
           ))}
