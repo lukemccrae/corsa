@@ -89,44 +89,6 @@ export const Authenticate = (props: AuthenticationProps) => {
 
   const [needToRegister, setNeedToRegister] = React.useState(false);
 
-  React.useEffect(() => {
-   console.log("auth") 
-    // const token = retrieveUserToken()
-    // console.log(token)
-    // const decodedToken = jwtdecode(token) as CognitoToken;
-
-    // const tokenIsGood = decodedToken.exp - Date.now() / 1000 > 0;
-    if (false) {
-      // check for outdated token
-      const { exp, email, sub } = decodedToken;
-      setLoginState(email, exp, sub)
-    } else {
-      const REGION = 'us-west-1';
-      const IDENTITY_POOL_ID = 'us-west-1:4517dea5-b569-4630-9285-74ac979506fb';
-
-      AWS.config.update({
-        region: REGION,
-        credentials: new AWS.CognitoIdentityCredentials({
-          IdentityPoolId: IDENTITY_POOL_ID,
-        }),
-      });
-      if (AWS.config.credentials) {
-        const credentials = AWS.config.credentials as AWS.CognitoIdentityCredentials;
-        // Fetch anonymous credentials
-        credentials.get((err) => {
-          console.log("hihihi")
-          if (err) {
-            console.error('Error getting anonymous credentials:', err);
-          } else {
-            console.log('Anonymous Identity ID:', credentials.identityId);
-          }
-        });
-      }
-
-
-    }
-  }, []);
-
   const handleNeedToRegister = () => {
     setNeedToRegister(!needToRegister)
   }

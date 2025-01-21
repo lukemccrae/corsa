@@ -10,19 +10,12 @@ export const App = () => {
         <Box
             component="main"
             sx={{
-                // backgroundImage: `url('../splash.min.jpg');`,
-                // flexGrow: 1,
-                // backgroundSize: "cover",
-                // backgroundPosition: "center",
-                // backgroundAttachment: "fixed", /* This keeps the background image fixed while scrolling */
-                // backgroundRepeat: "no-repeat",
                 height: "100vh",
                 justifyContent: "center"
             }}
         >
-
             <Container maxWidth="lg" style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: 0, marginTop: '64px' }}>
-                {checkValidTokenExp() && user ? (
+                {checkValidTokenExp() && user ? ( //this needs logic to reject anon tokens
                     <Paper sx={{ p: 5, display: "flex", flexDirection: "column" }}>
                         <UI></UI>
                     </Paper>

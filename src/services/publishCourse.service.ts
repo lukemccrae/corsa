@@ -34,6 +34,7 @@ export const publishCourse = async (props: PublishCourseProps) => {
             }
         );
         const jsonResult = await result.json();
+        console.log(jsonResult)
         if (jsonResult.success) {
             return true;
         } else {

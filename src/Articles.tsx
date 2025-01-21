@@ -6,11 +6,24 @@ import { Link } from 'react-router-dom';
 import { Article, Plan } from './types';
 import { useUser } from './context/UserContext';
 import { getPublishedPlans } from './services/fetchPlans.service';
+import AWS from 'aws-sdk';
 
 export const Articles = () => {
   const [articles, setArticles] = React.useState<Article[]>();
-  const { user } = useUser();
+  const { user, checkAnonStatus, loginAnon } = useUser();
   React.useEffect(() => {
+
+    if (!checkAnonStatus()) {
+      loginAnon()
+      const credentials = AWS.config.credentials;
+      console.log(credentials, '<< creds')
+      // const fetchPublishedPlans = async () => {
+      //   const articleResult: Article[] = await getPublishedPlans();
+      //   console.log(articleResult, ' arrticle result')
+      //   setArticles(articleResult);
+      // };
+      // fetchPublishedPlans();
+    }
     if (user) {
       const fetchPublishedPlans = async () => {
         const articleResult: Article[] = await getPublishedPlans();
@@ -18,24 +31,26 @@ export const Articles = () => {
         setArticles(articleResult);
       };
       fetchPublishedPlans();
+    } else {
+
     }
 
   }, []);
   return (
     <Box
-        component="main"
-        sx={{
-            // backgroundImage: `url('../splash.min.jpg');`,
-            flexGrow: 1,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundAttachment: "fixed", /* This keeps the background image fixed while scrolling */
-            backgroundRepeat: "no-repeat",
-            height: "100vh",
-            overflow: "auto",
-            width: '100vw',
-            justifyContent: "center"
-        }}
+      component="main"
+      sx={{
+        // backgroundImage: `url('../splash.min.jpg');`,
+        flexGrow: 1,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed", /* This keeps the background image fixed while scrolling */
+        backgroundRepeat: "no-repeat",
+        height: "100vh",
+        overflow: "auto",
+        width: '100vw',
+        justifyContent: "center"
+      }}
     >
       <Container maxWidth="lg" sx={{ py: 10, justifyContent: "center" }}>
         <Typography variant="h4" gutterBottom align="left">
@@ -44,15 +59,15 @@ export const Articles = () => {
         <Grid container spacing={4} justifyContent="start">
           {articles && articles.map((post) => (
             <Grid item key={post.id} xs={12} sm={6} md={4}>
-              <Card sx={{ 
-                  maxWidth: 545, 
-                  display: 'flex', 
-                  flexDirection: 'column',
-                  '&:hover': {
-                    boxShadow: 12, // Adds elevation on hover
-                  }
-                }}>
-                  <CardActionArea
+              <Card sx={{
+                maxWidth: 545,
+                display: 'flex',
+                flexDirection: 'column',
+                '&:hover': {
+                  boxShadow: 12, // Adds elevation on hover
+                }
+              }}>
+                <CardActionArea
                   component={Link}
                   to={`/article/${post.id}`} // Replace with your route
                   sx={{
@@ -62,33 +77,33 @@ export const Articles = () => {
                     cursor: 'pointer', // Ensures the pointer cursor
                   }}
                 >
-                <CardMedia
-                  component="img"
-                  height="140"
+                  <CardMedia
+                    component="img"
+                    height="140"
                   // image={post.image}
                   // alt={post.title}
-                />
-                <CardContent>
-                  {/* <Tags tags={post.tags}></Tags> */}
-                  <Typography sx={{margin: "10px 0 10px 0"}} variant="h6" gutterBottom>
-                    {post.name}
-                  </Typography>
-                  {/* <Typography variant="body2" sx={{ mt: 2 }}>
+                  />
+                  <CardContent>
+                    {/* <Tags tags={post.tags}></Tags> */}
+                    <Typography sx={{ margin: "10px 0 10px 0" }} variant="h6" gutterBottom>
+                      {post.name}
+                    </Typography>
+                    {/* <Typography variant="body2" sx={{ mt: 2 }}>
                     {post.content}
                   </Typography> */}
-                  <Typography
-                    component="span"
-                    sx={{
-                      textDecoration: 'underline',
-                      color: 'black',
-                      cursor: 'pointer',
-                      textUnderlineOffset:'8px',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    READ
-                  </Typography>
-                </CardContent>
+                    <Typography
+                      component="span"
+                      sx={{
+                        textDecoration: 'underline',
+                        color: 'black',
+                        cursor: 'pointer',
+                        textUnderlineOffset: '8px',
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      READ
+                    </Typography>
+                  </CardContent>
                 </CardActionArea>
               </Card>
             </Grid>
