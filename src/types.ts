@@ -23,7 +23,27 @@ export type Plan = {
   lossInMeters: number;
   articleContent: string;
   published: boolean;
+  coverImage: string;
 };
+
+export interface PartialPlan {
+  id: string;
+  name: string;
+  mileData: MileData[];
+  startTime: Date;
+  timezone: string;
+  userId: string;
+  lastMileDistance: number;
+  distanceInMiles: number;
+  min: number;
+  max: number;
+  pace: number[];
+  grade: number[];
+  gainInMeters: number;
+  lossInMeters: number;
+  articleContent: string;
+  published: boolean;
+}
 
 export interface getPlansByUserId {
   getPlansByUserId: Plan[];
@@ -118,6 +138,8 @@ export interface Article {
   tags: string[];
   content: string;
 }
+
+
 
 export type PointMetadata = {
   grade: number;

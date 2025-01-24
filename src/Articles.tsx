@@ -3,39 +3,25 @@ import { Container, Grid, Typography, Card, CardContent, CardMedia, Box, CardAct
 import { posts } from './assets/posts'
 import { Tags } from './Tags';
 import { Link } from 'react-router-dom';
-import { Article, Plan } from './types';
+import { Article, PartialPlan, Plan } from './types';
 import { useUser } from './context/UserContext';
 import { getPublishedPlans } from './services/fetchPlans.service';
 import AWS from 'aws-sdk';
+import { fetchPublishedPlanIds } from './services/anon.service';
 
 export const Articles = () => {
-  const [articles, setArticles] = React.useState<Article[]>();
-  const { user, checkAnonStatus, loginAnon } = useUser();
+  const [plans, setPlans] = React.useState<Plan[]>();
+  const { anon, checkValidAnon } = useUser();
+
   React.useEffect(() => {
-
-    if (!checkAnonStatus()) {
-      loginAnon()
-      const credentials = AWS.config.credentials;
-      console.log(credentials, '<< creds')
-      // const fetchPublishedPlans = async () => {
-      //   const articleResult: Article[] = await getPublishedPlans();
-      //   console.log(articleResult, ' arrticle result')
-      //   setArticles(articleResult);
-      // };
-      // fetchPublishedPlans();
+    const publishedPlans = async () => {
+      if (anon && checkValidAnon()) {
+        const result = await fetchPublishedPlanIds(anon)
+        setPlans(result.data.getPublishedPlans)
+      }
     }
-    if (user) {
-      const fetchPublishedPlans = async () => {
-        const articleResult: Article[] = await getPublishedPlans();
-        console.log(articleResult, ' arrticle result')
-        setArticles(articleResult);
-      };
-      fetchPublishedPlans();
-    } else {
-
-    }
-
-  }, []);
+    publishedPlans()
+  }, [anon]);
   return (
     <Box
       component="main"
@@ -57,7 +43,7 @@ export const Articles = () => {
           Latest Articles
         </Typography>
         <Grid container spacing={4} justifyContent="start">
-          {articles && articles.map((post) => (
+          {plans && plans.map((post) => (
             <Grid item key={post.id} xs={12} sm={6} md={4}>
               <Card sx={{
                 maxWidth: 545,
@@ -69,7 +55,7 @@ export const Articles = () => {
               }}>
                 <CardActionArea
                   component={Link}
-                  to={`/article/${post.id}`} // Replace with your route
+                  to={`/${post.userId}/${post.id}`} // Replace with your route
                   sx={{
                     '&:hover .MuiCardMedia-root': {
                       filter: 'grayscale(100%)', // Grayscale effect
@@ -80,7 +66,7 @@ export const Articles = () => {
                   <CardMedia
                     component="img"
                     height="140"
-                  // image={post.image}
+                    image={post.coverImage}
                   // alt={post.title}
                   />
                   <CardContent>
@@ -91,6 +77,7 @@ export const Articles = () => {
                     {/* <Typography variant="body2" sx={{ mt: 2 }}>
                     {post.content}
                   </Typography> */}
+                    <Typography>By Luke McCrae</Typography>
                     <Typography
                       component="span"
                       sx={{

@@ -1,8 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import jwtdecode from "jwt-decode";
-import AWS from 'aws-sdk';
-
-
+import AWS, { CognitoIdentityCredentials } from 'aws-sdk';
 
 type User = {
   email: string;
@@ -10,33 +7,21 @@ type User = {
   exp: number;
 };
 
+export type Anon = {
+  accessKeyId: string;
+  expiration: Date;
+  sessionToken: string;
+  secretAccessKey: string;
+};
+
 type UserContextType = {
   user: User | null;
-  isLoggedIn: boolean;
-  checkAnonStatus: () => boolean;
-  login: (userData: User) => void;
-  loginAnon: () => void;
-  logout: () => void;
-  checkValidTokenExp: () => boolean;
+  anon: Anon | undefined;
+  checkValidAnon: () => boolean;
+  setAnonCreds: () => Promise<void>;
+  getAnon: () => Promise<Anon>;
 };
 
-type CognitoToken = {
-  aud: string;
-  auth_time: number;
-  "cognito:username": string;
-  email: string;
-  email_verified: boolean;
-  event_id: string;
-  exp: number;
-  iat: number;
-  iss: string;
-  jti: string;
-  origin_jti: string;
-  sub: string;
-  token_use: string;
-};
-
-// Create a Context with an initial value of undefined
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 // Custom hook to access the UserContext
@@ -53,39 +38,53 @@ type UserProviderProps = {
   children: ReactNode;
 };
 
-// UserProvider component to wrap the app and provide the context
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isAnon, setIsAnon] = useState(false);
+  const [anon, setAnon] = useState<Anon | undefined>(undefined);
+  const [isFetching, setIsFetching] = useState(false);
 
-
+  // On mount, load credentials from localStorage or fetch fresh ones
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-
-    if (storedUser) {
-      const decodedToken = jwtdecode(storedUser) as CognitoToken;
-      const { exp, email, sub } = decodedToken;
-      const userId = sub;
-      login({ email, userId, exp })
-      setIsLoggedIn(true);
+    const localCreds = localStorage.getItem("anon");
+    if (localCreds) {
+      const parsedAnon: Anon = JSON.parse(localCreds);
+      setAnon(parsedAnon);
     }
 
-    const userAgent = navigator.userAgent.toLowerCase();
-    const mobileRegex = /android|iphone|ipad|ipod|blackberry|windows phone/;
-    setIsMobile(mobileRegex.test(userAgent));
-
+    if (!checkValidAnon()) {
+      retrieveAnon();
+    }
   }, []);
 
-  const checkAnonStatus = () => {
-    console.log(isAnon, '<< isAnon')
-    return isAnon;
+  // Check if anonymous credentials are still valid
+  const checkValidAnon = (): boolean => {
+    if (!anon) return false;
+    if (!anon.accessKeyId || !anon.secretAccessKey || !anon.sessionToken) return false;
+    return new Date(anon.expiration).getTime() > Date.now();
   };
 
-  const loginAnon = () => {
-    const REGION = 'us-west-1';
-    const IDENTITY_POOL_ID = 'us-west-1:85bf7267-2f79-43cc-a053-063c7ee03228';
+  // Retrieve new anonymous credentials
+  const retrieveAnon = async () => {
+    if (!isFetching) {
+      await setAnonCreds();
+    }
+  };
+
+  // Get anonymous credentials, retrieving them if necessary
+  const getAnon = async (): Promise<Anon> => {
+    if (!checkValidAnon()) {
+      await setAnonCreds();
+    }
+    if (!anon) {
+      throw new Error("Failed to retrieve valid anonymous credentials.");
+    }
+    return anon;
+  };
+
+  // Function to fetch anonymous credentials from AWS Cognito
+  const getAnonCreds = async (): Promise<AWS.CognitoIdentityCredentials> => {
+    const REGION = "us-west-1";
+    const IDENTITY_POOL_ID = "us-west-1:85bf7267-2f79-43cc-a053-063c7ee03228";
 
     AWS.config.update({
       region: REGION,
@@ -93,58 +92,55 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         IdentityPoolId: IDENTITY_POOL_ID,
       }),
     });
-    if (AWS.config.credentials) {
+
+    return new Promise((resolve, reject) => {
       const credentials = AWS.config.credentials as AWS.CognitoIdentityCredentials;
-      // Fetch anonymous credentials
+
       credentials.get((err) => {
         if (err) {
-          console.error('Error getting anonymous credentials:', err);
+          console.error("Error getting anonymous credentials:", err);
+          reject(new Error("Failed to fetch anonymous credentials"));
         } else {
-          console.log('Anonymous Identity ID:', credentials.identityId);
-          setIsAnon(true)
-          const { accessKeyId, secretAccessKey, sessionToken } = credentials;
-
-          // Set the AWS SDK credentials globally
-          // THESE CREDS MAYBE OPEN AND DANGROUS
-          // LOCK THEM DOWN
-          AWS.config.update({
-            accessKeyId,
-            secretAccessKey,
-            sessionToken,
-          });
-
-          console.log(sessionToken, "hsessionToken")
-          console.log(secretAccessKey, "secretAccessKey")
-
-          console.log(accessKeyId, "accessKeyId")
-
+          resolve(credentials);
         }
       });
+    });
+  };
+
+  // Function to store and set the credentials
+  const setAnonCreds = async () => {
+    try {
+      setIsFetching(true);
+
+      const anonCreds = await getAnonCreds();
+      if (
+        anonCreds &&
+        anonCreds.expireTime &&
+        anonCreds.sessionToken &&
+        anonCreds.accessKeyId &&
+        anonCreds.secretAccessKey
+      ) {
+        const creds: Anon = {
+          expiration: anonCreds.expireTime,
+          sessionToken: anonCreds.sessionToken,
+          secretAccessKey: anonCreds.secretAccessKey,
+          accessKeyId: anonCreds.accessKeyId,
+        };
+
+        setAnon(creds);
+        localStorage.setItem("anon", JSON.stringify(creds));
+      } else {
+        throw new Error("Failed to retrieve valid credentials");
+      }
+    } catch (error) {
+      console.error("Error setting anonymous credentials:", error);
+    } finally {
+      setIsFetching(false);
     }
-
-  }
-
-  const login = (userData: User) => {
-    setUser(userData);
-    setIsLoggedIn(true);
-    setIsAnon(false)
-  };
-
-  const logout = () => {
-    setUser(null);
-    setIsLoggedIn(false);
-    localStorage.removeItem("user");
-    loginAnon();
-  };
-
-  const checkValidTokenExp = (): boolean => {
-    console.log(user, 'user')
-    if (user) return user.exp - Date.now() / 1000 > 0;
-    return false;
   };
 
   return (
-    <UserContext.Provider value={{ user, isLoggedIn, checkValidTokenExp, login, loginAnon, logout, checkAnonStatus }}>
+    <UserContext.Provider value={{ user, anon, checkValidAnon, setAnonCreds, getAnon }}>
       {children}
     </UserContext.Provider>
   );

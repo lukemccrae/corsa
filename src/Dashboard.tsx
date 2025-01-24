@@ -19,7 +19,8 @@ import Divider from '@mui/material/Divider';
 import AddIcon from "@mui/icons-material/Add";
 
 
-const pages = ['Articles', 'App'];
+// const pages = ['Articles', 'App'];
+const pages: [] = []
 
 export const Dashboard = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -81,7 +82,7 @@ export const Dashboard = () => {
             <DirectionsRunIcon sx={{ ml: 1, margin: 0 }} />
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
+            {/* <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -90,8 +91,8 @@ export const Dashboard = () => {
               color="inherit"
             >
               <MenuIcon />
-            </IconButton>
-            <Menu
+            </IconButton> */}
+            {/* <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
@@ -116,7 +117,7 @@ export const Dashboard = () => {
 
                 </MenuItem>
               ))}
-            </Menu>
+            </Menu> */}
           </Box>
           <Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>
             <Typography

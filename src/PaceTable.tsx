@@ -21,7 +21,6 @@ interface PaceTableProps {
 
 export const PaceTable: React.FC<PaceTableProps> = (props: PaceTableProps) => {
   function checkDisplayCols(col: string) {
-    console.log(col)
     return props.cols.includes(col) ? "table-cell" : "none"
   }
   
