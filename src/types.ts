@@ -24,6 +24,7 @@ export type Plan = {
   articleContent: string;
   published: boolean;
   coverImage: string;
+  author: string;
 };
 
 export interface PartialPlan {

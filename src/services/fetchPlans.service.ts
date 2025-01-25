@@ -16,6 +16,7 @@ query MyQuery {
   getPublishedPlans {
     name
     id
+    author
   }
 }
 `;

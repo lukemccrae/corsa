@@ -50,6 +50,7 @@ export const ArticlePage = () => {
             backgroundPosition: 'center',
             borderRadius: '8px',
             marginBottom: '20px',
+            marginTop: '64px'
           }}
         >
           <Box
@@ -84,13 +85,6 @@ export const ArticlePage = () => {
                     sx={{ marginRight: 1, marginBottom: 1 }}
                   />
                 ))}
-              </Box>
-
-              {/* Date and Author Section */}
-              <Box sx={{ marginBottom: '20px' }}>
-                <Typography variant="body2" color="text.secondary">
-                  {/* <strong>{article?.author}</strong> | {article?.date} */}
-                </Typography>
               </Box>
 
               {/* Content Section */}

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Grid, Typography, Card, CardContent, CardMedia, Box, CardActionArea } from '@mui/material';
-import { posts } from './assets/posts'
 import { Tags } from './Tags';
 import { Link } from 'react-router-dom';
 import { Article, PartialPlan, Plan } from './types';
@@ -17,6 +16,7 @@ export const Articles = () => {
     const publishedPlans = async () => {
       if (anon && checkValidAnon()) {
         const result = await fetchPublishedPlanIds(anon)
+        console.log(result)
         setPlans(result.data.getPublishedPlans)
       }
     }
@@ -55,7 +55,7 @@ export const Articles = () => {
               }}>
                 <CardActionArea
                   component={Link}
-                  to={`/${post.userId}/${post.id}`} // Replace with your route
+                  to={`/${post.author}/${post.id}`} // Replace with your route
                   sx={{
                     '&:hover .MuiCardMedia-root': {
                       filter: 'grayscale(100%)', // Grayscale effect
@@ -77,7 +77,7 @@ export const Articles = () => {
                     {/* <Typography variant="body2" sx={{ mt: 2 }}>
                     {post.content}
                   </Typography> */}
-                    <Typography>By Luke McCrae</Typography>
+                    <Typography>By {post.author}</Typography>
                     <Typography
                       component="span"
                       sx={{

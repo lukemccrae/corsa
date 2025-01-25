@@ -58,7 +58,6 @@ export const fetchMapDetails = async (bucketKey: string, anon: Anon) => {
     }
 
   `
-
   const result = await anonFetch(query, anon);
   return result;
 }
@@ -71,6 +70,7 @@ export const fetchPublishedPlanIds = async (anon: Anon) => {
         userId
         name
         coverImage
+        author
       }
     }
   `;
