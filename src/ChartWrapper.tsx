@@ -20,7 +20,7 @@ export const ChartWrapper = (props: ChartWrapperProps) => {
 
     return (
         <>
-            <Box
+            {/* <Box
                 sx={{
                     backgroundColor: '#e3e3e3',
                     borderRadius: 2,
@@ -30,7 +30,7 @@ export const ChartWrapper = (props: ChartWrapperProps) => {
                 }}
             >
                 {props.properties && <AreaChart handleSetHoveredPoint={props.handleSetHoveredPoint} hoveredPoint={props.hoveredPoint} properties={props.properties} width={props.elevationWidth} height={300}></AreaChart>}
-            </Box>
+            </Box> */}
 
             <Box
                 sx={{

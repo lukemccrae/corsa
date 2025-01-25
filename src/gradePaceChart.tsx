@@ -127,7 +127,7 @@ export default withTooltip<DotsProps, PointMetadata>(
             ))}
           </Group>
         </svg>
-        {tooltipOpen && tooltipData && tooltipLeft != null && tooltipTop != null && (
+        {/* {tooltipOpen && tooltipData && tooltipLeft != null && tooltipTop != null && (
           <Tooltip left={tooltipLeft + 10} top={tooltipTop + 10}>
             <div>
               <strong>grade:</strong> {grade(tooltipData)}
@@ -139,7 +139,7 @@ export default withTooltip<DotsProps, PointMetadata>(
               <strong>distance:</strong> {(distance(tooltipData) / 5280).toFixed(2)}
             </div>
           </Tooltip>
-        )}
+        )} */}
         {showControls && (
           <div>
             <label style={{ fontSize: 12 }}>

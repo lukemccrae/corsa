@@ -192,7 +192,7 @@ export default withTooltip<AreaProps, PointMetadata>(
             </g>
           )}
         </svg>
-        {tooltipData && (
+        {/* {tooltipData && (
           <div>
             <TooltipWithBounds
               key={Math.random()}
@@ -212,14 +212,11 @@ export default withTooltip<AreaProps, PointMetadata>(
               }}
             >
               <div>{toHHMMSS(properties.pointMetadata[hoveredPoint].pace) + "/mi."}</div>
-              {/* {properties.pointMetadata[hoveredPoint].cumulativeDistance} */}
-              {/* <div>{calcElapsed(properties.pointMetadata[0].time, properties.pointMetadata[hoveredPoint].time)}</div> */}
               <div>{Math.round(properties.pointMetadata[hoveredPoint].grade)}% grade</div>
               <div>{(properties.pointMetadata[hoveredPoint].cumulativeDistance / 5280).toFixed(2)} mi.</div>
-
             </Tooltip>
           </div>
-        )}
+        )} */}
       </div>
     );
   },
