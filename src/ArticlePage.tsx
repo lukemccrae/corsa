@@ -23,7 +23,7 @@ export const ArticlePage = () => {
     const publishedPlans = async () => {
       if (anon && checkValidAnon() && user && id) {
         const result = await fetchPlanDetails(user, id, anon)
-      setPlan(result.data.getPlanById)
+        setPlan(result.data.getPlanById)
       }
     }
     publishedPlans()
@@ -66,14 +66,18 @@ export const ArticlePage = () => {
               textAlign: 'center',
             }}
           >
-            <Typography variant="h3" gutterBottom>
+            <Typography sx={{
+              typography: {
+                xs: 'h4', sm: 'h2',
+              },
+            }} gutterBottom>
               {plan.name}
             </Typography>
           </Box>
         </Box>
         {/* Blog Post Content Section */}
         <Grid container justifyContent="center">
-          <Grid size={{ xs: 8, sm: 10, md: 12 }}>
+          <Grid size={{ xs: 10, sm: 12, md: 12 }}>
             <Box sx={{ padding: 3 }}>
               {/* Tag Section */}
               <Box sx={{ marginBottom: '20px', display: "flex", justifyContent: "center" }}>
