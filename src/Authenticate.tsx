@@ -15,8 +15,6 @@ import { retrieveUserToken } from "./helpers/token.helper";
 import UserPool from "./UserPool";
 import { StravaIcon } from './CustomIcons';
 
-import AWS from 'aws-sdk';
-
 type CognitoToken = {
   aud: string;
   auth_time: number;

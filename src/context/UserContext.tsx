@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import AWS, { CognitoIdentityCredentials } from 'aws-sdk';
+import {config, CognitoIdentityCredentials } from 'aws-sdk';
 
 type User = {
   email: string;
@@ -86,15 +86,15 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     const REGION = "us-west-1";
     const IDENTITY_POOL_ID = "us-west-1:85bf7267-2f79-43cc-a053-063c7ee03228";
 
-    AWS.config.update({
+    config.update({
       region: REGION,
-      credentials: new AWS.CognitoIdentityCredentials({
+      credentials: new CognitoIdentityCredentials({
         IdentityPoolId: IDENTITY_POOL_ID,
       }),
     });
 
     return new Promise((resolve, reject) => {
-      const credentials = AWS.config.credentials as AWS.CognitoIdentityCredentials;
+      const credentials = config.credentials as AWS.CognitoIdentityCredentials;
 
       credentials.get((err) => {
         if (err) {
