@@ -14,7 +14,6 @@ import MDEditor from '@uiw/react-md-editor';
 import { ChartWrapper } from "./ChartWrapper";
 import { useScreenSize } from "./helpers/screensize.helper";
 // @ts-ignore
-import LexicalEditorWrapper from "./text-editor/components/LexicalEditorWrapper";
 import { calcTime } from "./helpers/avgPace.helper";
 import { SaveArticle } from "./SaveArticle";
 import { unescapeMarkdown } from "./helpers/markdown.helper";
@@ -184,7 +183,7 @@ export const Details = () => {
             )}
           </Box>
 
-          {/* Right Side - Flexible Lexical Editor */}
+          {/* Right Side - Flexible Editor */}
           <Box
             flex="1"
             minWidth="600px"
