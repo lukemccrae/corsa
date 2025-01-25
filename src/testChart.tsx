@@ -1,6 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
 import { AreaClosed, Line, Bar } from '@visx/shape';
-import appleStock, { AppleStock } from '@visx/mock-data/lib/mocks/appleStock';
 import { curveMonotoneX } from '@visx/curve';
 import { GridRows, GridColumns } from '@visx/grid';
 import { scaleTime, scaleLinear } from '@visx/scale';
@@ -8,11 +7,9 @@ import { withTooltip, Tooltip, TooltipWithBounds, defaultStyles } from '@visx/to
 import { WithTooltipProvidedProps } from '@visx/tooltip/lib/enhancers/withTooltip';
 import { localPoint } from '@visx/event';
 import { LinearGradient } from '@visx/gradient';
-import { max, extent, bisector } from '@visx/vendor/d3-array';
-import { timeFormat } from '@visx/vendor/d3-time-format';
+import { extent, bisector } from '@visx/vendor/d3-array';
 import { FeatureProperties, PointMetadata } from './types';
 import { toHHMMSS } from './helpers/avgPace.helper';
-import { calcElapsed } from './helpers/time.helper';
 
 type TooltipData = {
   time: string;
