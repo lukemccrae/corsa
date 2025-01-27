@@ -63,7 +63,7 @@ export const Details = () => {
 
   React.useEffect(() => {
     if (id && user) {
-      const userId = user.userId;
+      const userId = user.preferred_username;
       const planId = id;
 
       const fetchPlan = async () => {

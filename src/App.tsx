@@ -1,6 +1,15 @@
 import { Box, Container, Grid, Paper } from "@mui/material"
+import { useUser } from "./context/UserContext"
+import { Authenticate } from "./Authenticate";
+import { UI } from "./UI";
+import React from "react";
 
 export const App = () => {
+    const { user, refreshUser } = useUser();
+    React.useEffect(() => {
+        refreshUser()
+    }, [])
+
 
     return (
         <Box
@@ -19,6 +28,9 @@ export const App = () => {
                     padding: 0,
                     marginTop: '64px'
                 }}>
+                {user ? (
+                    <UI></UI>
+                ) : (<Authenticate></Authenticate>)}
             </Container>
         </Box>
     )

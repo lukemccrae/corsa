@@ -15,7 +15,6 @@ import { fetchMapDetails, fetchPlanDetails } from './services/anon.service';
 export const ArticlePage = () => {
   // Extract the `id` from the URL
   const { id, user } = useParams(); // { id } corresponds to `:id` in the route path
-  const [article, setArticle] = useState<Article>();
   const [plan, setPlan] = React.useState<Plan>();
   const { anon, checkValidAnon } = useUser();
 
@@ -23,6 +22,7 @@ export const ArticlePage = () => {
     const publishedPlans = async () => {
       if (anon && checkValidAnon() && user && id) {
         const result = await fetchPlanDetails(user, id, anon)
+        console.log(result, '<< res')
         setPlan(result.data.getPlanById)
       }
     }
@@ -81,14 +81,6 @@ export const ArticlePage = () => {
             <Box sx={{ padding: 3 }}>
               {/* Tag Section */}
               <Box sx={{ marginBottom: '20px', display: "flex", justifyContent: "center" }}>
-                {article?.tags.map((tag, index) => (
-                  <Chip
-                    key={index}
-                    label={tag}
-                    color="primary"
-                    sx={{ marginRight: 1, marginBottom: 1 }}
-                  />
-                ))}
               </Box>
 
               {/* Content Section */}

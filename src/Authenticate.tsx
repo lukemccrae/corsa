@@ -9,27 +9,11 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
-import jwtdecode from "jwt-decode";
 import { retrieveUserToken } from "./helpers/token.helper";
 import UserPool from "./UserPool";
 import { StravaIcon } from './CustomIcons';
+import { useUser } from './context/UserContext';
 
-type CognitoToken = {
-  aud: string;
-  auth_time: number;
-  "cognito:username": string;
-  email: string;
-  email_verified: boolean;
-  event_id: string;
-  exp: number;
-  iat: number;
-  iss: string;
-  jti: string;
-  origin_jti: string;
-  sub: string;
-  token_use: string;
-};
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -51,7 +35,7 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 const SignInContainer = styled(Stack)(({ theme }) => ({
-  height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
+  height: '100%',
   minHeight: '100%',
   padding: theme.spacing(2),
   [theme.breakpoints.up('sm')]: {
@@ -73,93 +57,23 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-interface AuthenticationProps {
-  isLoggedIn: boolean;
-  login: Function;
-  logout: Function;
-}
 
-export const Authenticate = (props: AuthenticationProps) => {
+
+export const Authenticate = () => {
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
 
   const [needToRegister, setNeedToRegister] = React.useState(false);
+  const { loginUser, registerUser } = useUser();
+
 
   const handleNeedToRegister = () => {
     setNeedToRegister(!needToRegister)
   }
 
-  const onSubmitRegister = (event: any) => {
-    const data = new FormData(event.currentTarget);
 
-    const email = data.get('register-email')?.toString();
-    const password = data.get('register-password')?.toString()
-
-    if (!email || !password) {
-      throw new Error('Your user credentials are invalid')
-    }
-
-    event.preventDefault();
-    UserPool.signUp(email, password, [], [], (err, data) => {
-      if (err) {
-        console.error(err);
-      }
-      // on success set creds for login
-      setNeedToRegister(false)
-      const loginForm = new FormData(event.currentTarget);
-      loginForm.set('email', email)
-      loginForm.set('password', password)
-
-    });
-  };
-
-  const setLoginState = async (email: string, exp: number, userId: string) => {
-    props.login({ email, userId, exp })
-  }
-
-  const onSubmitLogin = (event: any) => {
-    const data = new FormData(event.currentTarget);
-
-    const email = data.get('email')?.toString();
-    const password = data.get('password')?.toString()
-
-    if (!email || !password) {
-      throw new Error('Your user credentials are invalid')
-    }
-
-    event.preventDefault();
-    const authenticationDetails = new AuthenticationDetails({
-      Username: email,
-      Password: password,
-    });
-    var userData = {
-      Username: email,
-      Pool: UserPool,
-    };
-    var cognitoUser = new CognitoUser(userData);
-
-    cognitoUser.authenticateUser(authenticationDetails, {
-      onSuccess: function (result) {
-        // const idTokenPayload = result.idToken.payload;
-
-        const idToken = result.getIdToken().getJwtToken();
-        const decodedToken = jwtdecode(idToken) as CognitoToken;
-
-        const { email, exp, sub } = decodedToken;
-
-        // set token in storage for auto login
-        localStorage.setItem('user', idToken);
-
-        setLoginState(email, exp, sub)
-      },
-
-      onFailure: function (err) {
-        alert(err);
-      },
-    });
-  };
 
   const validateInputs = () => {
     const email = document.getElementById('email') as HTMLInputElement;
@@ -202,7 +116,7 @@ export const Authenticate = (props: AuthenticationProps) => {
           {!needToRegister ?
             <Box
               component="form"
-              onSubmit={onSubmitLogin}
+              onSubmit={loginUser}
               noValidate
               sx={{
                 display: 'flex',
@@ -302,7 +216,7 @@ export const Authenticate = (props: AuthenticationProps) => {
             : // TERNARY
             <Box
               component="form"
-              onSubmit={onSubmitRegister}
+              onSubmit={registerUser}
               noValidate
               sx={{
                 display: 'flex',

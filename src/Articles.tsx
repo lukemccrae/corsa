@@ -16,7 +16,6 @@ export const Articles = () => {
     const publishedPlans = async () => {
       if (anon && checkValidAnon()) {
         const result = await fetchPublishedPlanIds(anon)
-        console.log(result)
         setPlans(result.data.getPublishedPlans)
       }
     }

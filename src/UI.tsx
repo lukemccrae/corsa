@@ -14,11 +14,11 @@ export const UI = () => {
   const { user } = useUser();
   const [plans, setPlans] = React.useState<Plan[]>([]);
 
+
   useEffect(() => {
     if (user) {
-      const userId = user.userId;
       const fetchPlan = async () => {
-        const plans = await getPlansByUserId({ userId });
+        const plans = await getPlansByUserId({ user });
         setPlans(plans);
       }
       fetchPlan()

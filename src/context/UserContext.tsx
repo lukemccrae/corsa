@@ -1,10 +1,18 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import {config, CognitoIdentityCredentials } from 'aws-sdk';
+import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
+import UserPool from "../UserPool";
+import { CognitoToken } from '../types';
+import jwtdecode from "jwt-decode";
+
+
 
 type User = {
   email: string;
   userId: string;
   exp: number;
+  idToken: string;
+  preferred_username: string;
 };
 
 export type Anon = {
@@ -15,11 +23,15 @@ export type Anon = {
 };
 
 type UserContextType = {
-  user: User | null;
+  user: User | undefined;
   anon: Anon | undefined;
   checkValidAnon: () => boolean;
   setAnonCreds: () => Promise<void>;
   getAnon: () => Promise<Anon>;
+  logoutUser: () => Promise<void>
+  loginUser: (event: any) => Promise<void>
+  registerUser: (event: any) => Promise<void>
+  refreshUser: () => void;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -39,15 +51,26 @@ type UserProviderProps = {
 };
 
 export const UserProvider = ({ children }: UserProviderProps) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | undefined>(undefined);
   const [anon, setAnon] = useState<Anon | undefined>(undefined);
   const [isFetching, setIsFetching] = useState(false);
 
   // On mount, load credentials from localStorage or fetch fresh ones
   useEffect(() => {
-    const localCreds = localStorage.getItem("anon");
-    if (localCreds) {
-      const parsedAnon: Anon = JSON.parse(localCreds);
+    const localAnonCreds = localStorage.getItem("anon");
+    const localUserCreds = localStorage.getItem("user");
+
+    if(localUserCreds) {
+      const decodedUser: CognitoToken = jwtdecode(localUserCreds);
+      if(decodedUser.exp > Date.now()) {
+        setUserInStorage(localUserCreds)
+      } else {
+        localStorage.removeItem("user")
+      }
+    }
+
+    if (localAnonCreds) {
+      const parsedAnon: Anon = JSON.parse(localAnonCreds);
       setAnon(parsedAnon);
     }
 
@@ -55,6 +78,15 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       retrieveAnon();
     }
   }, []);
+
+  const logoutUser = async () => {
+    console.log("logout user")
+  }
+
+  const refreshUser = () => {
+    const localUserCreds = localStorage.getItem("user")
+    if(localUserCreds) setUserInStorage(localUserCreds)
+  }
 
   // Check if anonymous credentials are still valid
   const checkValidAnon = (): boolean => {
@@ -68,6 +100,73 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     if (!isFetching) {
       await setAnonCreds();
     }
+  };
+
+  const registerUser = async (event: any) => {
+    const data = new FormData(event.currentTarget);
+
+    const email = data.get('register-email')?.toString();
+    const password = data.get('register-password')?.toString()
+
+    if (!email || !password) {
+      throw new Error('Your user credentials are invalid')
+    }
+
+    event.preventDefault();
+    UserPool.signUp(email, password, [], [], (err, data) => {
+      if (err) {
+        console.error(err);
+      }
+      const loginForm = new FormData(event.currentTarget);
+      loginForm.set('email', email)
+      loginForm.set('password', password)
+
+    });
+  };
+
+  const setUserInStorage = (idToken: string) => {
+    const decodedToken = jwtdecode(idToken) as CognitoToken;
+    const { email, exp, sub, preferred_username } = decodedToken;
+    const userId = sub;
+
+    setUser({email, exp, userId, idToken, preferred_username})
+    localStorage.setItem("user", idToken)
+  }
+
+  const loginUser = async (event: any) => {
+    const data = new FormData(event.currentTarget);
+
+    const email = data.get('email')?.toString();
+    const password = data.get('password')?.toString()
+
+    if (!email || !password) {
+      throw new Error('Your user credentials are invalid')
+    }
+
+    event.preventDefault();
+    const authenticationDetails = new AuthenticationDetails({
+      Username: email,
+      Password: password,
+    });
+    var userData = {
+      Username: email,
+      Pool: UserPool,
+    };
+    var cognitoUser = new CognitoUser(userData);
+
+    cognitoUser.authenticateUser(authenticationDetails, {
+      onSuccess: function (result) {
+        const idToken = result.getIdToken().getJwtToken()
+
+        // const refreshToken = result.getRefreshToken()
+        // TODO store refresh token and perform auto-refresh
+
+        setUserInStorage(idToken)
+      },
+      onFailure: function(err) {
+        console.log(err, "auth failure")
+      }
+    });
   };
 
   // Get anonymous credentials, retrieving them if necessary
@@ -140,7 +239,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, anon, checkValidAnon, setAnonCreds, getAnon }}>
+    <UserContext.Provider value={{ refreshUser, user, anon, registerUser, loginUser, checkValidAnon, setAnonCreds, getAnon, logoutUser }}>
       {children}
     </UserContext.Provider>
   );

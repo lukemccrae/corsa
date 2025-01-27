@@ -1,8 +1,9 @@
 import { domain } from "../context/domain.context";
 import { retrieveUserToken } from "../helpers/token.helper";
+import { User } from "../types";
 
 interface GetPlansByUserIdProps {
-  userId: string;
+  user: User;
 }
 
 interface GetPlanByIdProps {
@@ -12,13 +13,13 @@ interface GetPlanByIdProps {
 
 export const getPublishedPlans = async () => {
   const query = `
-query MyQuery {
-  getPublishedPlans {
-    name
-    id
-    author
+  query MyQuery {
+    getPublishedPlans {
+      name
+      id
+      author
+    }
   }
-}
 `;
 
   try {
@@ -45,7 +46,7 @@ query MyQuery {
 export const getPlansByUserId = async (props: GetPlansByUserIdProps) => {
   const query = `
         query MyQuery {
-          getPlansByUserId(userId: "${props.userId}") {
+          getPlansByUserId(userId: "${props.user.preferred_username}") {
             id
             name
             userId
@@ -63,20 +64,19 @@ export const getPlansByUserId = async (props: GetPlansByUserIdProps) => {
         }
       `;
   try {
-    let token = localStorage.getItem("user")
-    if (typeof token !== 'string') throw new Error("token not valid")
     const result = await fetch(
       domain.appsync,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${retrieveUserToken()}`,
+          "Authorization": `Bearer ${props.user.idToken}`,
         },
         body: JSON.stringify({ query }),
       }
     );
     const plans = await result.json();
+    console.log(plans, '<< plans')
     return plans.data.getPlansByUserId;
   } catch (e) {
     console.log(e, "<< error");

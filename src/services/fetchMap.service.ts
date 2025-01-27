@@ -6,6 +6,7 @@ interface GetGeoJsonBySortKeyProps {
 }
 
 export const getGeoJsonBySortKey = async (props: GetGeoJsonBySortKeyProps) => {
+    console.log(props.planId)
     const query = `
         query MyQuery {
             getGeoJsonBySortKey(sortKey: "${props.planId}") {

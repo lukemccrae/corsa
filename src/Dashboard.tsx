@@ -19,13 +19,12 @@ import Divider from '@mui/material/Divider';
 import AddIcon from "@mui/icons-material/Add";
 
 
-// const pages = ['Articles', 'App'];
-const pages: [] = []
+const pages = ['App'];
 
 export const Dashboard = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  const { user } = useUser()
+  const { user, logoutUser } = useUser()
 
   const location = useLocation();
 
@@ -46,16 +45,16 @@ export const Dashboard = () => {
 
   // Sketchy menu system matching name to method to execute
   // Switch to onClick?  
-  // type Setting = "Logout";
-  // const settings: Setting[] = ["Logout"];
+  type Setting = "Logout";
+  const settings: Setting[] = ["Logout"];
 
   // // Map each setting to its corresponding function
-  // const settingActions: Record<Setting, () => void> = {
-  //   Logout: () => logout(),
-  // };
+  const settingActions: Record<Setting, () => void> = {
+    Logout: () => logoutUser(),
+  };
 
   return (
-    <AppBar sx={{backgroundColor: "#515B63"}} position="fixed">
+    <AppBar sx={{ backgroundColor: "#515B63" }} position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -75,15 +74,15 @@ export const Dashboard = () => {
               alignItems: 'center',
               '&:hover': {
                 color: '#E3A446',
-              },  
+              },
             }}
           >
             CORSA.
             <DirectionsRunIcon sx={{ ml: 1, margin: 0 }} />
           </Typography>
-          {/*
+
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-             <IconButton
+            <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -92,8 +91,8 @@ export const Dashboard = () => {
               color="inherit"
             >
               <MenuIcon />
-            </IconButton> */}
-            {/* <Menu
+            </IconButton>
+            <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
@@ -118,9 +117,9 @@ export const Dashboard = () => {
 
                 </MenuItem>
               ))}
-            </Menu> 
+            </Menu>
           </Box>
-          */}
+
           <Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>
             <Typography
               variant="h5"
@@ -138,8 +137,8 @@ export const Dashboard = () => {
                 textDecoration: 'none',
                 alignItems: 'center', // Center-align text and icon
                 '&:hover': {
-                color: '#E3A446',
-              },  
+                  color: '#E3A446',
+                },
               }}
             >
               <Typography>CORSA.</Typography>
@@ -147,7 +146,7 @@ export const Dashboard = () => {
             </Typography>
           </Box>
 
-          {/* <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "end" }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "end" }}>
             {pages.map((page) => {
 
               return (
@@ -162,64 +161,63 @@ export const Dashboard = () => {
                 </Link>
               )
             })}
-          </Box> */}
+          </Box>
           {(user) && (
-            <div></div>
-            // <div style={{ display: "flex" }}>
-            //   <Box sx={{ flexGrow: 0 }}>
-            //     <Tooltip title="Account settings">
-            //       <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-            //         <Avatar alt={user.email} src="/static/images/avatar/2.jpg" />
-            //       </IconButton>
-            //     </Tooltip>
-            //     <Menu
-            //       sx={{ mt: '45px' }}
-            //       id="menu-appbar"
-            //       anchorEl={anchorElUser}
-            //       anchorOrigin={{
-            //         vertical: 'top',
-            //         horizontal: 'right',
-            //       }}
-            //       keepMounted
-            //       transformOrigin={{
-            //         vertical: 'top',
-            //         horizontal: 'right',
-            //       }}
-            //       open={Boolean(anchorElUser)}
-            //       onClose={handleCloseUserMenu}
-            //     >
-            //       {settings.map((setting: string) => (
-            //         <MenuItem key={setting} onClick={() => {
-            //           handleCloseUserMenu();
-            //           settingActions[setting as Setting]();
-            //         }}>
-            //           <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
-            //         </MenuItem>
-            //       ))}
-            //       <Divider></Divider>
-            //       <ListItemText primary={user.email} sx={{ textAlign: 'center', color: 'gray', padding: "2px" }} />
+            <div style={{ display: "flex" }}>
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Account settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt={user.preferred_username.toUpperCase()} src="/static/images/avatar/2.jpg" />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting: string) => (
+                    <MenuItem key={setting} onClick={() => {
+                      handleCloseUserMenu();
+                      settingActions[setting as Setting]();
+                    }}>
+                      <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                    </MenuItem>
+                  ))}
+                  <Divider></Divider>
+                  <ListItemText primary={user.email} sx={{ textAlign: 'center', color: 'gray', padding: "2px" }} />
 
-            //     </Menu>
-            //   </Box>
-            //   <Box sx={{}}>
-            //     <Tooltip title="Add Course">
-            //       <IconButton
-            //         component={Link}
-            //         to={"/add-course"}
-            //         size="small"
-            //         sx={{
-            //           borderRadius: '50%', // Circular button
-            //           border: '1px solid #ccc',
-            //           backgroundColor: '#469CE3'
-            //         }}
-            //       >
-            //         <AddIcon></AddIcon>
-            //       </IconButton>
-            //     </Tooltip>
-            //   </Box>
-              
-            //   {/* <AddButton location={location.pathname}></AddButton> */}
-            // </div>
+                </Menu>
+              </Box>
+              <Box sx={{}}>
+                <Tooltip title="Add Course">
+                  <IconButton
+                    component={Link}
+                    to={"/add-course"}
+                    size="small"
+                    sx={{
+                      borderRadius: '50%', // Circular button
+                      border: '1px solid #ccc',
+                      backgroundColor: '#469CE3'
+                    }}
+                  >
+                    <AddIcon></AddIcon>
+                  </IconButton>
+                </Tooltip>
+              </Box>
+
+              {/* <AddButton location={location.pathname}></AddButton> */}
+            </div>
           )}
 
         </Toolbar>
