@@ -62,15 +62,15 @@ export const fetchMapDetails = async (bucketKey: string, anon: Anon) => {
   return result;
 }
 
-export const fetchPublishedPlanIds = async (anon: Anon) => {
+export const fetchPublishedPlans = async (anon: Anon) => {
   const query = `
     query MyQuery {
       getPublishedPlans {
         id
-        userId
         name
         coverImage
         author
+        profilePhoto
       }
     }
   `;
@@ -104,6 +104,8 @@ export const fetchPlanDetails = async (userId: string, bucketKey: string, anon: 
         userId
         timezone
         coverImage
+        profilePhoto
+        author
       }
     }
 

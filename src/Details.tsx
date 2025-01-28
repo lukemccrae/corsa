@@ -34,23 +34,15 @@ export const Details = () => {
   switch (screenSize) {
     case 'sm':
       elevationWidth = window.innerWidth - 100;
-      console.log(screenSize)
-
       break;
     case 'md':
       elevationWidth = 500;
-      console.log(screenSize)
-
       break;
     case 'lg':
       elevationWidth = 500;
-      console.log(screenSize)
-
       break;
     case 'xl':
       elevationWidth = 500;
-      console.log(screenSize)
-
       break;
     default:
       elevationWidth = 700;
@@ -196,8 +188,9 @@ export const Details = () => {
             <MDEditor
               value={value}
               onChange={(val) => setValue(val || '')}
+              preview={"live"}
             />
-            <MDEditor.Markdown source={value} style={{ whiteSpace: 'pre-wrap' }} />
+            <MDEditor.Markdown  source={value} style={{ whiteSpace: 'pre-wrap' }} />
           </Box>
 
         </Box>

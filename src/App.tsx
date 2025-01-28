@@ -5,9 +5,8 @@ import { UI } from "./UI";
 import React from "react";
 
 export const App = () => {
-    const { user, refreshUser } = useUser();
+    const { user } = useUser();
     React.useEffect(() => {
-        refreshUser()
     }, [])
 
 

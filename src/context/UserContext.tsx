@@ -31,7 +31,6 @@ type UserContextType = {
   logoutUser: () => Promise<void>
   loginUser: (event: any) => Promise<void>
   registerUser: (event: any) => Promise<void>
-  refreshUser: () => void;
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -62,7 +61,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
     if(localUserCreds) {
       const decodedUser: CognitoToken = jwtdecode(localUserCreds);
-      if(decodedUser.exp > Date.now()) {
+      if(checkValidUser(decodedUser)) {
         setUserInStorage(localUserCreds)
       } else {
         localStorage.removeItem("user")
@@ -83,9 +82,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     console.log("logout user")
   }
 
-  const refreshUser = () => {
-    const localUserCreds = localStorage.getItem("user")
-    if(localUserCreds) setUserInStorage(localUserCreds)
+  const checkValidUser = (decodedUser: CognitoToken) => {
+    if(!decodedUser) return false;
+    if(decodedUser.exp < (Date.now() / 1000)) return false
+    return true;
   }
 
   // Check if anonymous credentials are still valid
@@ -239,7 +239,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   return (
-    <UserContext.Provider value={{ refreshUser, user, anon, registerUser, loginUser, checkValidAnon, setAnonCreds, getAnon, logoutUser }}>
+    <UserContext.Provider value={{ user, anon, registerUser, loginUser, checkValidAnon, setAnonCreds, getAnon, logoutUser }}>
       {children}
     </UserContext.Provider>
   );

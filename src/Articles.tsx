@@ -1,12 +1,13 @@
 import React from 'react';
-import { Container, Grid, Typography, Card, CardContent, CardMedia, Box, CardActionArea } from '@mui/material';
+import { Container, Grid, Typography, Card, CardContent, CardMedia, Box, CardActionArea, Stack, Avatar } from '@mui/material';
 import { Tags } from './Tags';
-import { Link } from 'react-router-dom';
-import { Article, PartialPlan, Plan } from './types';
+import { Link, useParams } from 'react-router-dom';
+import { Article, PartialPlan, Plan, User } from './types';
 import { useUser } from './context/UserContext';
 import { getPublishedPlans } from './services/fetchPlans.service';
 import AWS from 'aws-sdk';
-import { fetchPublishedPlanIds } from './services/anon.service';
+import { fetchPublishedPlans } from './services/anon.service';
+import { fetchUser } from './services/fetchUser.service';
 
 export const Articles = () => {
   const [plans, setPlans] = React.useState<Plan[]>();
@@ -15,7 +16,8 @@ export const Articles = () => {
   React.useEffect(() => {
     const publishedPlans = async () => {
       if (anon && checkValidAnon()) {
-        const result = await fetchPublishedPlanIds(anon)
+        const result = await fetchPublishedPlans(anon)
+        console.log(result)
         setPlans(result.data.getPublishedPlans)
       }
     }
@@ -76,7 +78,15 @@ export const Articles = () => {
                     {/* <Typography variant="body2" sx={{ mt: 2 }}>
                     {post.content}
                   </Typography> */}
-                    <Typography>By {post.author}</Typography>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <Avatar
+                        alt={post.profilePhoto}
+                        src={post.profilePhoto}
+                        sx={{ width: 24, height: 24 }} // Small size
+                      />
+                      <Typography>{post.author}</Typography>
+
+                    </Stack>
                     <Typography
                       component="span"
                       sx={{

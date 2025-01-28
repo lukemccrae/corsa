@@ -37,7 +37,7 @@ export const UI = () => {
       }}
     >
       {plans.map((record, index) => (
-        <Box>
+        <Box key={index}>
           <CardActionArea
             key={index}
             component={Link}

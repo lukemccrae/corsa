@@ -16,8 +16,8 @@ export const getPublishedPlans = async () => {
   query MyQuery {
     getPublishedPlans {
       name
-      id
       author
+      profilePhoto
     }
   }
 `;
@@ -114,6 +114,7 @@ export const getPlanById = async (props: GetPlanByIdProps) => {
   `;
   try {
     let token = localStorage.getItem("user")
+    console.log(token)
     if (typeof token !== 'string') throw new Error("token not valid")
     const result = await fetch(
       domain.appsync,

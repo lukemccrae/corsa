@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Chip, Container, Typography } from '@mui/material';
+import { Avatar, Box, Chip, Container, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { Article, FeatureCollection, FeatureProperties, Plan } from './types';
 import { getPlanById } from './services/fetchPlans.service';
@@ -76,6 +76,26 @@ export const ArticlePage = () => {
           </Box>
         </Box>
         {/* Blog Post Content Section */}
+        <Stack
+          direction="row"
+          spacing={1}
+          alignItems="center"
+          sx={{
+            marginBottom: 2,
+            marginTop: 1,
+            color: "gray.700",
+            fontSize: "0.875rem", // Slightly smaller text
+          }}
+        >
+          <Avatar
+            alt={plan.author}
+            src={plan.profilePhoto}
+            sx={{ width: 64, height: 64 }} // Slightly larger size for better readability
+          />
+          <Typography variant="body1">
+            By <strong>{plan.author}</strong>
+          </Typography>
+        </Stack>
         <Grid container justifyContent="center">
           <Grid size={{ xs: 10, sm: 12, md: 12 }}>
             <Box sx={{ padding: 3 }}>
