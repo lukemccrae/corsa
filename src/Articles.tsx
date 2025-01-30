@@ -4,7 +4,6 @@ import { Tags } from './Tags';
 import { Link, useParams } from 'react-router-dom';
 import { Article, PartialPlan, Plan, User } from './types';
 import { useUser } from './context/UserContext';
-import { getPublishedPlans } from './services/fetchPlans.service';
 import AWS from 'aws-sdk';
 import { fetchPublishedPlans } from './services/anon.service';
 import { fetchUser } from './services/fetchUser.service';
@@ -45,7 +44,7 @@ export const Articles = () => {
         </Typography>
         <Grid container spacing={4} justifyContent="start">
           {plans && plans.map((post) => (
-            <Grid item key={post.id} xs={12} sm={6} md={4}>
+            <Grid item key={post.slug} xs={12} sm={6} md={4}>
               <Card sx={{
                 maxWidth: 545,
                 display: 'flex',
@@ -56,7 +55,7 @@ export const Articles = () => {
               }}>
                 <CardActionArea
                   component={Link}
-                  to={`/${post.author}/${post.id}`} // Replace with your route
+                  to={`/${post.author}/${post.slug}`} // Replace with your route
                   sx={{
                     '&:hover .MuiCardMedia-root': {
                       filter: 'grayscale(100%)', // Grayscale effect

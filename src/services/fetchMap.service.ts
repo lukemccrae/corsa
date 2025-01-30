@@ -2,14 +2,13 @@ import { domain } from "../context/domain.context";
 import { retrieveUserToken } from "../helpers/token.helper";
 
 interface GetGeoJsonBySortKeyProps {
-    planId: string;
+    bucketKey: string;
 }
 
 export const getGeoJsonBySortKey = async (props: GetGeoJsonBySortKeyProps) => {
-    console.log(props.planId)
     const query = `
         query MyQuery {
-            getGeoJsonBySortKey(sortKey: "${props.planId}") {
+            getGeoJsonByBucketKey(bucketKey: "${props.bucketKey}") {
                 features {
                 properties {
                     minElevationInFeet

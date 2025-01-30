@@ -8,47 +8,15 @@ interface GetPlansByUserIdProps {
 
 interface GetPlanByIdProps {
   userId: string;
-  planId: string;
-}
-
-export const getPublishedPlans = async () => {
-  const query = `
-  query MyQuery {
-    getPublishedPlans {
-      name
-      author
-      profilePhoto
-    }
-  }
-`;
-
-  try {
-    let token = localStorage.getItem("user")
-    if (typeof token !== 'string') throw new Error("token not valid")
-    const result = await fetch(
-      domain.appsync,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${retrieveUserToken()}`,
-        },
-        body: JSON.stringify({ query }),
-      }
-    );
-    const publishedPlans = await result.json();
-    return publishedPlans.data.getPublishedPlans;
-  } catch (e) {
-    console.log(e, "<< error");
-  }
+  slug: string;
 }
 
 export const getPlansByUserId = async (props: GetPlansByUserIdProps) => {
   const query = `
         query MyQuery {
           getPlansByUserId(userId: "${props.user.preferred_username}") {
-            id
             name
+            slug
             userId
             lastMileDistance
             distanceInMiles
@@ -86,13 +54,12 @@ export const getPlansByUserId = async (props: GetPlansByUserIdProps) => {
 export const getPlanById = async (props: GetPlanByIdProps) => {
   const query = ` 
     query MyQuery {
-      getPlanById(userId: "${props.userId}" planId: "${props.planId}") {
+      getPlanById(userId: "${props.userId}" slug: "${props.slug}") {
         distanceInMiles
             durationInSeconds
             articleContent
             lastMileDistance
             lossInMeters
-            id
             gainInMeters
             gap
             startTime
@@ -112,6 +79,7 @@ export const getPlanById = async (props: GetPlanByIdProps) => {
       }
     }
   `;
+  console.log(query, '<< q')
   try {
     let token = localStorage.getItem("user")
     console.log(token)

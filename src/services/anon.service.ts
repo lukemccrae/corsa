@@ -66,11 +66,11 @@ export const fetchPublishedPlans = async (anon: Anon) => {
   const query = `
     query MyQuery {
       getPublishedPlans {
-        id
         name
         coverImage
-        author
         profilePhoto
+        author
+        slug
       }
     }
   `;
@@ -78,16 +78,15 @@ export const fetchPublishedPlans = async (anon: Anon) => {
   return result;
 }
 
-export const fetchPlanDetails = async (userId: string, bucketKey: string, anon: Anon) => {
+export const fetchPlanDetails = async (userId: string, slug: string, anon: Anon) => {
   const query = `
     query MyQuery {
-      getPlanById(planId: "${bucketKey}", userId: "${userId}") {
+      getPlanById(slug: "${slug}", userId: "${userId}") {
         articleContent
         distanceInMiles
         durationInSeconds
         gainInMeters
         gap
-        id
         lastMileDistance
         lossInMeters
         mileData {
@@ -111,6 +110,7 @@ export const fetchPlanDetails = async (userId: string, bucketKey: string, anon: 
 
   `;
   const result = await anonFetch(query, anon);
+  console.log(result, '<< res')
   return result;
 
 }

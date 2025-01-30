@@ -5,7 +5,7 @@ import { saveArticle } from './services/saveArticle.service';
 
 interface SaveArticleProps {
     label: string
-    planId: string
+    slug: string
     value: string
 }
 
@@ -17,9 +17,9 @@ export const SaveArticle = (props: SaveArticleProps) => {
     const updateArticleData = async () => {
         if(user && user.userId) {
             const article = props.value;
-            const bucketKey = props.planId;
+            const slug = props.slug;
             const userId = user.userId
-            const result = await saveArticle({article, bucketKey, userId})    
+            const result = await saveArticle({article, slug, userId})    
         }
     }
 

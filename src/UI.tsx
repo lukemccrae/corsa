@@ -41,7 +41,7 @@ export const UI = () => {
           <CardActionArea
             key={index}
             component={Link}
-            to={`/app/course/${record.id}`}
+            to={`/app/course/${record.slug}`}
             sx={{
               '&:hover .MuiCardMedia-root': {
                 filter: 'grayscale(100%)',

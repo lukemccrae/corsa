@@ -4,15 +4,15 @@ import { retrieveUserToken } from '../helpers/token.helper';
 
 interface SaveArticleProps {
     article: string;
-    bucketKey: string;
+    slug: string;
     userId: string;
 }
 
 export const saveArticle = async (props: SaveArticleProps) => {
     const mutation = `
-        mutation MyMutation($bucketKey: ID!, $userId: String!, $articleContent: String!) {
+        mutation MyMutation($slug: ID!, $userId: String!, $articleContent: String!) {
         updateArticleByPlanId(
-            bucketKey: $bucketKey,
+            slug: $slug,
             userId: $userId,
             articleContent: $articleContent
         ) {
@@ -22,7 +22,7 @@ export const saveArticle = async (props: SaveArticleProps) => {
   `;
 
     const variables = {
-        bucketKey: props.bucketKey,
+        slug: props.slug,
         userId: props.userId,
         articleContent: JSON.stringify(props.article),
     };

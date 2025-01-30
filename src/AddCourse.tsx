@@ -2,7 +2,7 @@ import * as React from "react";
 import Title from "./Title";
 import { handleFileUpload } from "./services/addCourse.service.ts";
 import { useUser } from './context/UserContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 import UploadProgress from "./UploadProgress.tsx";
@@ -22,7 +22,7 @@ export const AddCourse = () => {
     setProgress(10)
 
     if (user) {
-      handleFileUpload(gpx, user.userId, setProgress, navigate);
+      handleFileUpload(gpx, user.userId, setProgress, navigate, user.preferred_username);
     } else {
       alert('There is a problem with your login, please relog then try again.')
     }

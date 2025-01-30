@@ -3,10 +3,9 @@ import { PaceTable } from "./PaceTable";
 import { Link, useParams } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import { getPlanById } from "./services/fetchPlans.service";
-import { FeatureCollection, FeatureProperties, Plan } from "./types";
-import { Box, Button, Container, Divider, Paper, Typography } from "@mui/material";
+import { FeatureProperties, Plan } from "./types";
+import { Box, Container, Divider, Paper, Typography } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { getGeoJsonBySortKey } from "./services/fetchMap.service";
 import { DeleteCourse } from "./DeleteCourse";
 import { PublishCourse } from "./PublishCourse";
 import MDEditor from '@uiw/react-md-editor';
@@ -56,14 +55,15 @@ export const Details = () => {
   React.useEffect(() => {
     if (id && user) {
       const userId = user.preferred_username;
-      const planId = id;
+      const slug = id;
 
       const fetchPlan = async () => {
-        const planResult: Plan = await getPlanById({ userId, planId });
-        const mapResult: FeatureCollection = await getGeoJsonBySortKey({ planId });
+        const planResult: Plan = await getPlanById({ userId, slug });
+        // this needs to retrieve the bucket key and pass it bwlow
+        // const mapResult: FeatureCollection = await getGeoJsonBySortKey({ planId });
         setPlan(planResult);
-        setCoords(mapResult.features[0].geometry.coordinates);
-        setProperties(mapResult.features[0].properties);
+        // setCoords(mapResult.features[0].geometry.coordinates);
+        // setProperties(mapResult.features[0].properties);
         setValue(unescapeMarkdown(planResult.articleContent))
       };
       fetchPlan();
@@ -103,7 +103,7 @@ export const Details = () => {
                 <ArrowBackIcon />
               </Link>
               <Box display="flex" gap={2}>
-                <DeleteCourse planId={plan.id} label={"Delete"} />
+                <DeleteCourse slug={plan.slug} label={"Delete"} />
                 <PublishCourse plan={plan} label={plan.published ? "Unpublish" : "Publish"} />
               </Box>
 
@@ -183,7 +183,7 @@ export const Details = () => {
             sx={{ alignSelf: "stretch" }}
           >
             <Box sx={{ display: "flex", justifyContent: "end", margin: "10px" }}>
-              <SaveArticle planId={plan.id} label={"Save"} value={value} />
+              <SaveArticle slug={plan.slug} label={"Save"} value={value} />
             </Box>
             <MDEditor
               value={value}

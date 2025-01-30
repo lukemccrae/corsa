@@ -3,13 +3,13 @@ import { retrieveUserToken } from "../helpers/token.helper";
 
 interface DeletePlanProps {
     userId: string;
-    planId: string;
+    slug: string;
 }
 
 export const deletePlanById = async (props: DeletePlanProps) => {
     const query = `
         mutation MyMutation {
-            deletePlanById(bucketKey: "${props.planId}", userId: "${props.userId}") {
+            deletePlanById(slug: "${props.slug}", slug: "${props.userId}") {
                 success
             }
         }

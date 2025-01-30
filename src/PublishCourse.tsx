@@ -18,8 +18,8 @@ export const PublishCourse = (props: PublishButtonProps) => {
     const onSave = async () => {
         if (user?.userId) {
             const userId = user.userId
-            const bucketKey = props.plan.id
-            await publishCourse({ userId, bucketKey })
+            const slug = props.plan.slug
+            await publishCourse({ userId, slug })
         }
     }
 

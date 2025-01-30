@@ -1,11 +1,11 @@
 import { domain } from "../context/domain.context";
 import { retrieveUserToken } from "../helpers/token.helper";
 
-export const handleFileUpload = async (gpx: string, userId: string, setProgress: Function, navigate: Function) => {
+export const handleFileUpload = async (gpx: string, userId: string, setProgress: Function, navigate: Function, username: string) => {
   const formMutationQuery = (uuid: string) => {
     const query = `
     mutation MyMutation {
-      createPlanFromGeoJson(gpxId: "${uuid}", userId: "${userId}") {
+      createPlanFromGeoJson(gpxId: "${uuid}", userId: "${userId}", username: "${username}) {
         success
       }
     }
@@ -41,6 +41,7 @@ export const handleFileUpload = async (gpx: string, userId: string, setProgress:
     if (!uploadResult.ok) throw new Error("Failed to upload to S3");
 
     const query = formMutationQuery(uuid);
+    console.log(query, '<< qu')
 
     const response = await fetch(
       // "http://localhost:8008/graphql",

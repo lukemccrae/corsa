@@ -9,7 +9,8 @@ export interface User {
 }
 
 export type Plan = {
-  id: string;
+  slug: string;
+  bucketKey: string;
   name: string;
   mileData: MileData[];
   startTime: Date;
