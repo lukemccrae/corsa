@@ -8,21 +8,19 @@ import { useUser } from './context/UserContext';
 
 interface DeleteButtonProps {
     label: string
-    planId: string
+    slug: string
 }
-
 
 export const DeleteCourse = (props: DeleteButtonProps) => {
     const [open, setOpen] = React.useState<boolean>(false)
     const navigate = useNavigate()
     const { user } = useUser()
 
-
     const onDelete = async () => {
         if (user?.userId) {
             const userId = user.userId
-            const planId = props.planId
-            await deletePlanById({userId, planId})
+            const slug = props.slug
+            await deletePlanById({userId, slug})
         }
         
         navigate('/app')

@@ -3,6 +3,12 @@ import { Sha256 } from "@aws-crypto/sha256-js";
 import { HttpRequest } from "@aws-sdk/protocol-http";
 import { domain } from "../context/domain.context";
 import { Anon } from "../context/UserContext";
+import { User } from "../types";
+
+interface GetPublishedUserInfoProps {
+  username: String;
+  anon: Anon;
+}
 
 // Your AppSync API endpoint
 const APPSYNC_ENDPOINT = domain.appsync;
@@ -61,6 +67,36 @@ export const fetchMapDetails = async (bucketKey: string, anon: Anon) => {
   const result = await anonFetch(query, anon);
   return result;
 }
+
+
+export const getPublishedUserInfo = async (props: GetPublishedUserInfoProps) => {
+  const query = `
+    query MyQuery {
+      getPublishedUserInfo(username: "${props.username}") {
+        profilePicture
+        bio
+        plans {
+          name
+          slug
+          lastMileDistance
+          distanceInMiles
+          gainInMeters
+          lossInMeters
+          mileData {
+            mileVertProfile
+            pace
+          }
+          startTime
+        }
+
+      }
+    }
+  `
+
+  const result = await anonFetch(query, props.anon);
+  return result;
+}
+
 
 export const fetchPublishedPlans = async (anon: Anon) => {
   const query = `

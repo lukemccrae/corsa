@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Avatar, Box, Chip, Container, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Chip, Container, Link, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { Article, FeatureCollection, FeatureProperties, Plan } from './types';
 import { getPlanById } from './services/fetchPlans.service';
@@ -14,15 +14,14 @@ import { fetchMapDetails, fetchPlanDetails } from './services/anon.service';
 
 export const ArticlePage = () => {
   // Extract the `id` from the URL
-  const { id, user } = useParams(); // { id } corresponds to `:id` in the route path
+  const { id, username } = useParams(); // { id } corresponds to `:id` in the route path
   const [plan, setPlan] = React.useState<Plan>();
   const { anon, checkValidAnon } = useUser();
 
   React.useEffect(() => {
     const publishedPlans = async () => {
-      if (anon && checkValidAnon() && user && id) {
-        const result = await fetchPlanDetails(user, id, anon)
-        console.log(result, '<< res')
+      if (anon && checkValidAnon() && username && id) {
+        const result = await fetchPlanDetails(username, id, anon)
         setPlan(result.data.getPlanById)
       }
     }
@@ -92,9 +91,27 @@ export const ArticlePage = () => {
             src={plan.profilePhoto}
             sx={{ width: 64, height: 64 }} // Slightly larger size for better readability
           />
-          <Typography variant="body1">
-            By <strong>{plan.author}</strong>
-          </Typography>
+          <Box>
+            <Typography variant="body1">
+              <Link
+                href={`/${plan.author}`}
+                sx={{
+                  color: "black",
+                  textDecoration: "none",
+                  '&:hover': {
+                    color: "#E3A446",
+                    textDecoration: "underline",
+                    textDecorationColor: "#E3A446"
+                  }
+                }}
+              >
+                <strong>{plan.author}</strong>
+              </Link>
+            </Typography>
+            <Typography>
+              {Date.now()}
+            </Typography>
+          </Box>
         </Stack>
         <Grid container justifyContent="center">
           <Grid size={{ xs: 10, sm: 12, md: 12 }}>

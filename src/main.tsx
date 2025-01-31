@@ -9,6 +9,7 @@ import { UserProvider } from './context/UserContext.tsx';
 import { AddCourse } from './AddCourse.tsx';
 import { ArticlePage } from './ArticlePage.tsx';
 import { Details } from './Details.tsx';
+import { Profile } from './Profile.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -18,7 +19,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="/" element={<Articles />}></Route>
         <Route path="/app" element={<App />}></Route>
-        <Route path="/:user/:id" element={<ArticlePage />}></Route>
+        <Route path="/:username" element={<Profile />}></Route>
+        <Route path="/:username/:id" element={<ArticlePage />}></Route>
         <Route path="/add-course" element={<AddCourse />}></Route>
         <Route path="/app/course/:id" element={<Details />}></Route>
       </Routes>
