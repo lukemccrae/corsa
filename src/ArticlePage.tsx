@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Avatar, Box, Chip, Container, Link, Stack, Typography } from '@mui/material';
+import { useParams, Link } from 'react-router-dom';
+import { Avatar, Box, Chip, Container, Stack, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { Article, FeatureCollection, FeatureProperties, Plan } from './types';
 import { getPlanById } from './services/fetchPlans.service';
@@ -92,24 +92,26 @@ export const ArticlePage = () => {
             sx={{ width: 64, height: 64 }} // Slightly larger size for better readability
           />
           <Box>
-            <Typography variant="body1">
-              <Link
-                href={`/${plan.author}`}
-                sx={{
-                  color: "black",
-                  textDecoration: "none",
-                  '&:hover': {
-                    color: "#E3A446",
-                    textDecoration: "underline",
-                    textDecorationColor: "#E3A446"
-                  }
-                }}
-              >
-                <strong>{plan.author}</strong>
-              </Link>
+            <Typography to={`/${plan.author}`} component={Link}
+              sx={{
+                color: "black",
+                textDecoration: "none",
+                '&:hover': {
+                  color: "#E3A446",
+                  textDecoration: "underline",
+                  textDecorationColor: "#E3A446"
+                }
+              }} variant="body1">
+              <strong>{plan.author}</strong>
+
             </Typography>
+            
             <Typography>
-              {Date.now()}
+              {new Date(Number(plan.publishDate)).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
             </Typography>
           </Box>
         </Stack>

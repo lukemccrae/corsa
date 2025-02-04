@@ -29,6 +29,7 @@ export type Plan = {
   coverImage: string;
   author: string;
   profilePhoto: string;
+  publishDate: string;
 };
 
 export interface PartialPlan {

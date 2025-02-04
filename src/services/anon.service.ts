@@ -141,6 +141,7 @@ export const fetchPlanDetails = async (userId: string, slug: string, anon: Anon)
         coverImage
         profilePhoto
         author
+        publishDate
       }
     }
 

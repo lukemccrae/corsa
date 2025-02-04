@@ -19,7 +19,7 @@ import Divider from '@mui/material/Divider';
 import AddIcon from "@mui/icons-material/Add";
 
 
-const pages = ['App'];
+// const pages = ['App'];
 
 export const Dashboard = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -92,7 +92,7 @@ export const Dashboard = () => {
             >
               <MenuIcon />
             </IconButton>
-            <Menu
+            {/* <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
@@ -117,7 +117,7 @@ export const Dashboard = () => {
 
                 </MenuItem>
               ))}
-            </Menu>
+            </Menu> */}
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>
@@ -146,7 +146,7 @@ export const Dashboard = () => {
             </Typography>
           </Box>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "end" }}>
+          {/* <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "end" }}>
             {pages.map((page) => {
 
               return (
@@ -161,7 +161,7 @@ export const Dashboard = () => {
                 </Link>
               )
             })}
-          </Box>
+          </Box> */}
           {(user) && (
             <div style={{ display: "flex" }}>
               <Box sx={{ flexGrow: 0 }}>
