@@ -13,13 +13,12 @@ import MenuItem from '@mui/material/MenuItem';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import { Link, useLocation } from 'react-router-dom';
 import { useUser } from './context/UserContext';
-import { AddButton } from "./AddButton";
 import { ListItemText } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import AddIcon from "@mui/icons-material/Add";
 
 
-// const pages = ['App'];
+const pages = ['App'];
 
 export const Dashboard = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -82,7 +81,7 @@ export const Dashboard = () => {
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            {/* <IconButton
+            <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -91,8 +90,8 @@ export const Dashboard = () => {
               color="inherit"
             >
               <MenuIcon />
-            </IconButton> */}
-            {/* <Menu
+            </IconButton>
+            <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
@@ -117,7 +116,7 @@ export const Dashboard = () => {
 
                 </MenuItem>
               ))}
-            </Menu> */}
+            </Menu>
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center", mr: 1 }}>
@@ -146,7 +145,7 @@ export const Dashboard = () => {
             </Typography>
           </Box>
 
-          {/* <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "end" }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "end" }}>
             {pages.map((page) => {
 
               return (
@@ -161,7 +160,7 @@ export const Dashboard = () => {
                 </Link>
               )
             })}
-          </Box> */}
+          </Box>
           {(user) && (
             <div style={{ display: "flex" }}>
               <Box sx={{ flexGrow: 0 }}>
@@ -216,7 +215,6 @@ export const Dashboard = () => {
                 </Tooltip>
               </Box>
 
-              {/* <AddButton location={location.pathname}></AddButton> */}
             </div>
           )}
 
