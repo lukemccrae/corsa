@@ -82,7 +82,7 @@ export const Dashboard = () => {
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
+            {/* <IconButton
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -91,7 +91,7 @@ export const Dashboard = () => {
               color="inherit"
             >
               <MenuIcon />
-            </IconButton>
+            </IconButton> */}
             {/* <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}

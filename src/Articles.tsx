@@ -1,11 +1,9 @@
 import React from 'react';
 import { Container, Grid, Typography, Card, CardContent, CardMedia, Box, CardActionArea, Stack, Avatar } from '@mui/material';
-import { Tags } from './Tags';
-import { Link, useParams } from 'react-router-dom';
-import { Article, PartialPlan, Plan, User } from './types';
+import { Link } from 'react-router-dom';
+import { Plan } from './types';
 import { useUser } from './context/UserContext';
 import { fetchPublishedPlans } from './services/anon.service';
-import { fetchUser } from './services/fetchUser.service';
 
 export const Articles = () => {
   const [plans, setPlans] = React.useState<Plan[]>();

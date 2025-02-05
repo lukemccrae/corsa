@@ -76,7 +76,7 @@ export const ArticlePage = () => {
         </Box>
         {/* Blog Post Content Section */}
         <Stack
-          direction="row"
+          direction="column"
           spacing={1}
           alignItems="center"
           sx={{
@@ -95,7 +95,7 @@ export const ArticlePage = () => {
             <Typography to={`/${plan.author}`} component={Link}
               sx={{
                 color: "black",
-                textDecoration: "none",
+                textDecoration: "underline",
                 '&:hover': {
                   color: "#E3A446",
                   textDecoration: "underline",
@@ -117,7 +117,7 @@ export const ArticlePage = () => {
         </Stack>
         <Grid container justifyContent="center">
           <Grid size={{ xs: 10, sm: 12, md: 12 }}>
-            <Box sx={{ padding: 3 }}>
+            <Box sx={{ padding: 1 }}>
               {/* Tag Section */}
               <Box sx={{ marginBottom: '20px', display: "flex", justifyContent: "center" }}>
               </Box>

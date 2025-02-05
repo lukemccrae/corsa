@@ -2,8 +2,8 @@ import React from 'react';
 import { Plan, User } from './types';
 import { useUser } from './context/UserContext';
 import { getPublishedUserInfo } from './services/anon.service';
-import { Avatar, Box, Card, CardActionArea, CardContent, Container, Link, Typography } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { Avatar, Box, Card, CardActionArea, CardContent, Container, Typography } from '@mui/material';
+import { useParams, Link } from 'react-router-dom';
 import { calculateStartWithTZ } from './helpers/strartTime.helper';
 import { shortenName } from './helpers/substring.helper';
 import { toHHMMSS } from './helpers/avgPace.helper';
@@ -51,7 +51,7 @@ export const Profile = () => {
               alt={username}
               sx={{ width: 100, height: 100, mr: 2 }}
             />
-            <Box sx={{maxWidth: "200px"}}>
+            <Box sx={{ maxWidth: "200px" }}>
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                 {username}
               </Typography>
@@ -70,7 +70,7 @@ export const Profile = () => {
               <Box key={index} sx={{ mb: 2 }}>
                 <CardActionArea
                   component={Link}
-                  href={`${username}/${record.slug}`}
+                  to={`/${username}/${record.slug}`}
                   sx={{
                     "&:hover .MuiCardMedia-root": { filter: "grayscale(100%)" },
                     cursor: "pointer",
