@@ -198,7 +198,7 @@ export const Dashboard = () => {
 
                 </Menu>
               </Box>
-              <Box sx={{}}>
+              {/* <Box sx={{}}>
                 <Tooltip title="Add Course">
                   <IconButton
                     component={Link}
@@ -213,7 +213,7 @@ export const Dashboard = () => {
                     <AddIcon></AddIcon>
                   </IconButton>
                 </Tooltip>
-              </Box>
+              </Box> */}
 
               {/* <AddButton location={location.pathname}></AddButton> */}
             </div>
