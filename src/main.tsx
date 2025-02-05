@@ -18,11 +18,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Dashboard></Dashboard>
       <Routes>
         <Route path="/" element={<Articles />}></Route>
-        {/* <Route path="/app" element={<App />}></Route> */}
+        <Route path="/app" element={<App />}></Route>
         <Route path="/:username" element={<Profile />}></Route>
         <Route path="/:username/:id" element={<ArticlePage />}></Route>
-        {/* <Route path="/add-course" element={<AddCourse />}></Route>
-        <Route path="/app/course/:id" element={<Details />}></Route> */}
+        <Route path="/add-course" element={<AddCourse />}></Route>
+        <Route path="/app/course/:id" element={<Details />}></Route>
       </Routes>
       {/* <Footer></Footer> */}
       <div style={{margin: "5px"}}></div>
