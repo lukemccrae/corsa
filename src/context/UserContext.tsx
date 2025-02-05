@@ -1,9 +1,13 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import {config, CognitoIdentityCredentials } from 'aws-sdk';
+
+import { AwsCredentialIdentity } from "@aws-sdk/types";
+import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
+
 import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 import UserPool from "../UserPool";
 import { CognitoToken } from '../types';
 import jwtdecode from "jwt-decode";
+import { CognitoIdentityClient } from '@aws-sdk/client-cognito-identity';
 
 
 
@@ -59,9 +63,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     const localAnonCreds = localStorage.getItem("anon");
     const localUserCreds = localStorage.getItem("user");
 
-    if(localUserCreds) {
+    if (localUserCreds) {
       const decodedUser: CognitoToken = jwtdecode(localUserCreds);
-      if(checkValidUser(decodedUser)) {
+      if (checkValidUser(decodedUser)) {
         setUserInStorage(localUserCreds)
       } else {
         localStorage.removeItem("user")
@@ -83,8 +87,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   }
 
   const checkValidUser = (decodedUser: CognitoToken) => {
-    if(!decodedUser) return false;
-    if(decodedUser.exp < (Date.now() / 1000)) return false
+    if (!decodedUser) return false;
+    if (decodedUser.exp < (Date.now() / 1000)) return false
     return true;
   }
 
@@ -129,7 +133,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     const { email, exp, sub, preferred_username } = decodedToken;
     const userId = sub;
 
-    setUser({email, exp, userId, idToken, preferred_username})
+    setUser({ email, exp, userId, idToken, preferred_username })
     localStorage.setItem("user", idToken)
   }
 
@@ -163,7 +167,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
         setUserInStorage(idToken)
       },
-      onFailure: function(err) {
+      onFailure: function (err) {
         console.log(err, "auth failure")
       }
     });
@@ -180,30 +184,25 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     return anon;
   };
 
-  // Function to fetch anonymous credentials from AWS Cognito
-  const getAnonCreds = async (): Promise<AWS.CognitoIdentityCredentials> => {
+  const getAnonCreds = async (): Promise<AwsCredentialIdentity> => {
     const REGION = "us-west-1";
     const IDENTITY_POOL_ID = "us-west-1:85bf7267-2f79-43cc-a053-063c7ee03228";
 
-    config.update({
-      region: REGION,
-      credentials: new CognitoIdentityCredentials({
-        IdentityPoolId: IDENTITY_POOL_ID,
-      }),
+    const cognitoClient = new CognitoIdentityClient({ region: REGION });
+
+    const credentialsProvider = fromCognitoIdentityPool({
+      identityPoolId: IDENTITY_POOL_ID,
+      clientConfig: { region: REGION }
     });
 
-    return new Promise((resolve, reject) => {
-      const credentials = config.credentials as AWS.CognitoIdentityCredentials;
 
-      credentials.get((err) => {
-        if (err) {
-          console.error("Error getting anonymous credentials:", err);
-          reject(new Error("Failed to fetch anonymous credentials"));
-        } else {
-          resolve(credentials);
-        }
-      });
-    });
+    try {
+      const credentials = await credentialsProvider();
+      return credentials;
+    } catch (error) {
+      console.error("Error getting anonymous credentials:", error);
+      throw new Error("Failed to fetch anonymous credentials");
+    }
   };
 
   // Function to store and set the credentials
@@ -214,13 +213,13 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       const anonCreds = await getAnonCreds();
       if (
         anonCreds &&
-        anonCreds.expireTime &&
+        anonCreds.expiration &&
         anonCreds.sessionToken &&
         anonCreds.accessKeyId &&
         anonCreds.secretAccessKey
       ) {
         const creds: Anon = {
-          expiration: anonCreds.expireTime,
+          expiration: anonCreds.expiration,
           sessionToken: anonCreds.sessionToken,
           secretAccessKey: anonCreds.secretAccessKey,
           accessKeyId: anonCreds.accessKeyId,

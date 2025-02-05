@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@aws-sdk/client-cognito-identity": "^3.742.0",
     "@aws-sdk/client-s3": "^3.556.0",
     "@aws-sdk/client-sts": "^3.741.0",
+    "@aws-sdk/credential-provider-process": "^3.734.0",
+    "@aws-sdk/credential-providers": "^3.742.0",
     "@aws-sdk/protocol-http": "^3.374.0",
     "@aws-sdk/signature-v4": "^3.374.0",
     "@emotion/react": "^11.11.4",
@@ -44,7 +47,7 @@
     "yjs": "^13.6.21"
   },
   "devDependencies": {
-    "@types/node": "^22.10.5",
+    "@types/node": "^22.13.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@types/uuid": "^9.0.8",
