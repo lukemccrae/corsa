@@ -4,7 +4,6 @@ import { Tags } from './Tags';
 import { Link, useParams } from 'react-router-dom';
 import { Article, PartialPlan, Plan, User } from './types';
 import { useUser } from './context/UserContext';
-import AWS from 'aws-sdk';
 import { fetchPublishedPlans } from './services/anon.service';
 import { fetchUser } from './services/fetchUser.service';
 
