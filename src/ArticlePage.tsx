@@ -32,7 +32,7 @@ export const ArticlePage = () => {
     <img
       src={src}
       alt={alt}
-      style={{ maxWidth: '300px', maxHeight: '900px' }}
+      style={{ maxWidth: '800px', width: '100%', height: 'auto' }}
       {...props}
     />
   );
@@ -123,11 +123,11 @@ export const ArticlePage = () => {
               </Box>
 
               {/* Content Section */}
-              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', lg: 'row' }, gap: 5 }}>
+              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', lg: 'row' }, gap: 3 }}>
                 <Box sx={{ order: { xs: 2, lg: 1 }, maxWidth: "400px" }}>
                   <PaceTable cols={['Mile', 'Pace', 'Profile', 'Avg.', 'Gain', 'Elapsed']} plan={plan}></PaceTable>
                 </Box>
-                <Box sx={{ flex: 1, display: 'block', order: { xs: 1, lg: 2 } }}>
+                <Box sx={{ flex: 1, display: 'block', order: { xs: 1, lg: 2 }, padding: 2 }}>
                   <ReactMarkdown components={{
                     img: ({ node, ...props }) => <CustomImage {...props} />,
                   }} remarkPlugins={[remarkGfm]}>

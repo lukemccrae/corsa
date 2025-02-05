@@ -9,6 +9,7 @@ interface SaveArticleProps {
 }
 
 export const saveArticle = async (props: SaveArticleProps) => {
+    console.log(props)
     const mutation = `
         mutation MyMutation($slug: ID!, $userId: String!, $articleContent: String!) {
         updateArticleByPlanId(

@@ -147,7 +147,6 @@ export const fetchPlanDetails = async (userId: string, slug: string, anon: Anon)
 
   `;
   const result = await anonFetch(query, anon);
-  console.log(result, '<< res')
   return result;
 
 }

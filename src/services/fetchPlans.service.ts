@@ -76,13 +76,12 @@ export const getPlanById = async (props: GetPlanByIdProps) => {
             name
             articleContent
             published
+            slug
       }
     }
   `;
-  console.log(query, '<< q')
   try {
     let token = localStorage.getItem("user")
-    console.log(token)
     if (typeof token !== 'string') throw new Error("token not valid")
     const result = await fetch(
       domain.appsync,
