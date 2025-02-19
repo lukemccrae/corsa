@@ -1,11 +1,17 @@
 import { domain } from "../context/domain.context";
 import { retrieveUserToken } from "../helpers/token.helper";
 
-export const handleFileUpload = async (gpx: string, userId: string, setProgress: Function, navigate: Function, username: string) => {
+export const handleFileUpload = async (
+  gpx: string,
+  userId: string,
+  setProgress: Function,
+  navigate: Function,
+  username: string
+) => {
   const formMutationQuery = (uuid: string) => {
     const query = `
     mutation MyMutation {
-      createPlanFromGeoJson(gpxId: "${uuid}", userId: "${userId}", username: "${username}) {
+      createPlanFromGeoJson(gpxId: "${uuid}", userId: "${userId}", username: "${username}") {
         success
       }
     }
@@ -13,35 +19,33 @@ export const handleFileUpload = async (gpx: string, userId: string, setProgress:
     return query;
   };
   try {
-    setProgress(10)
+    setProgress(10);
     // retrieve presigned URL for uploading object to S3
     const presignedResponse = await fetch(
       `${domain.utilityApi}/gpx-presigned`,
       {
         method: "GET",
         headers: {
-          "Authorization": `Bearer ${retrieveUserToken()}`,
+          Authorization: `Bearer ${retrieveUserToken()}`,
         },
       }
     );
-    setProgress(25)
+    setProgress(25);
 
     // resources for uploading to s3
     const { url, uuid } = await presignedResponse.json();
     const uploadResult = await fetch(url, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/xml"
+        "Content-Type": "application/xml",
       },
       body: gpx,
     });
-    setProgress(55)
-
+    setProgress(55);
 
     if (!uploadResult.ok) throw new Error("Failed to upload to S3");
 
     const query = formMutationQuery(uuid);
-    console.log(query, '<< qu')
 
     const response = await fetch(
       // "http://localhost:8008/graphql",
@@ -50,16 +54,17 @@ export const handleFileUpload = async (gpx: string, userId: string, setProgress:
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${retrieveUserToken()}`,
+          Authorization: `Bearer ${retrieveUserToken()}`,
         },
         body: JSON.stringify({ query }),
       }
     );
 
     const data = await response.json();
-    
-    setProgress(0)
-    navigate('/app');
+    console.log(data, "<< data");
+
+    setProgress(0);
+    navigate("/app");
     return data;
   } catch (e) {
     console.log(e);

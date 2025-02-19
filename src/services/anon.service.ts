@@ -14,7 +14,6 @@ interface GetPublishedUserInfoProps {
 const APPSYNC_ENDPOINT = domain.appsync;
 
 export const anonFetch = async (query: string, anon: Anon) => {
-
   // Prepare HTTP request
   const request = new HttpRequest({
     method: "POST",
@@ -30,7 +29,7 @@ export const anonFetch = async (query: string, anon: Anon) => {
   // Sign the request using SignatureV4
   const signer = new SignatureV4({
     credentials: anon,
-    region: "us-west-1",  // Replace with your AWS region
+    region: "us-west-1", // Replace with your AWS region
     service: "appsync",
     sha256: Sha256,
   });
@@ -46,7 +45,7 @@ export const anonFetch = async (query: string, anon: Anon) => {
 
   const responseData = await response.json();
   return responseData;
-}
+};
 
 export const fetchMapDetails = async (bucketKey: string, anon: Anon) => {
   const query = `
@@ -63,13 +62,14 @@ export const fetchMapDetails = async (bucketKey: string, anon: Anon) => {
       }
     }
 
-  `
+  `;
   const result = await anonFetch(query, anon);
   return result;
-}
+};
 
-
-export const getPublishedUserInfo = async (props: GetPublishedUserInfoProps) => {
+export const getPublishedUserInfo = async (
+  props: GetPublishedUserInfoProps
+) => {
   const query = `
     query MyQuery {
       getPublishedUserInfo(username: "${props.username}") {
@@ -91,12 +91,11 @@ export const getPublishedUserInfo = async (props: GetPublishedUserInfoProps) => 
 
       }
     }
-  `
+  `;
 
   const result = await anonFetch(query, props.anon);
   return result;
-}
-
+};
 
 export const fetchPublishedPlans = async (anon: Anon) => {
   const query = `
@@ -112,9 +111,13 @@ export const fetchPublishedPlans = async (anon: Anon) => {
   `;
   const result = await anonFetch(query, anon);
   return result;
-}
+};
 
-export const fetchPlanDetails = async (userId: string, slug: string, anon: Anon) => {
+export const fetchPlanDetails = async (
+  userId: string,
+  slug: string,
+  anon: Anon
+) => {
   const query = `
     query MyQuery {
       getPlanById(slug: "${slug}", userId: "${userId}") {
@@ -148,5 +151,4 @@ export const fetchPlanDetails = async (userId: string, slug: string, anon: Anon)
   `;
   const result = await anonFetch(query, anon);
   return result;
-
-}
+};

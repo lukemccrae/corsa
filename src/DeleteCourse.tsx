@@ -1,77 +1,85 @@
-import React from 'react';
-import Button from '@mui/material/Button';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { deletePlanById } from './services/deletePlan.service';
-import { useUser } from './context/UserContext';
+import React from "react";
+import Button from "@mui/material/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { deletePlanById } from "./services/deletePlan.service";
+import { useUser } from "./context/UserContext";
 
 interface DeleteButtonProps {
-    label: string
-    slug: string
+  label: string;
+  slug: string;
+  bucketKey: string;
 }
 
 export const DeleteCourse = (props: DeleteButtonProps) => {
-    const [open, setOpen] = React.useState<boolean>(false)
-    const navigate = useNavigate()
-    const { user } = useUser()
+  const [open, setOpen] = React.useState<boolean>(false);
+  const navigate = useNavigate();
+  const { user } = useUser();
 
-    const onDelete = async () => {
-        if (user?.userId) {
-            const userId = user.userId
-            const slug = props.slug
-            await deletePlanById({userId, slug})
-        }
-        
-        navigate('/app')
+  const onDelete = async () => {
+    if (user?.userId) {
+      const userId = user.userId;
+      const slug = props.slug;
+      const bucketKey = props.bucketKey;
+      await deletePlanById({ userId, slug, bucketKey });
     }
 
-    const handleOpen = () => {
-        setOpen(true);
-    };
+    navigate("/app");
+  };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
-    const handleConfirmDelete = async () => {
-        await onDelete();
-        setOpen(false);
-    };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
-    return (
-        <>
-            <Button
-                variant="contained"
-                color="error"
-                startIcon={<DeleteIcon />}
-                onClick={handleOpen}
-                sx={{ backgroundColor: '#469CE3', '&:hover': {} }}
-            >
-                {props.label}
-            </Button>
+  const handleConfirmDelete = async () => {
+    await onDelete();
+    setOpen(false);
+  };
 
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="confirm-delete-title"
-                aria-describedby="confirm-delete-description"
-            >
-                <DialogTitle id="confirm-delete-title">Confirm Deletion</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="confirm-delete-description">
-                        Are you sure you want to delete this? This action cannot be undone.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={handleConfirmDelete} color="error" autoFocus>
-                        Delete
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </>
-    );
+  return (
+    <>
+      <Button
+        variant="contained"
+        color="error"
+        startIcon={<DeleteIcon />}
+        onClick={handleOpen}
+        sx={{ backgroundColor: "#469CE3", "&:hover": {} }}
+      >
+        {props.label}
+      </Button>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="confirm-delete-title"
+        aria-describedby="confirm-delete-description"
+      >
+        <DialogTitle id="confirm-delete-title">Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="confirm-delete-description">
+            Are you sure you want to delete this? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} color="error" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
 };
