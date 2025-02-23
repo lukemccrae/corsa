@@ -52,7 +52,7 @@ export const Profile = () => {
               sx={{ width: 100, height: 100, mr: 2 }}
             />
             <Box sx={{ maxWidth: "200px" }}>
-              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+              <Typography variant="h5" sx={{ fontWeight: "bold", color: "black" }}>
                 {username}
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -67,10 +67,10 @@ export const Profile = () => {
           <Typography variant="h5">Posts</Typography> {/* Makes sure this section expands to fill remaining space */}
           {plans &&
             plans.map((record, index) => (
-              <Box key={index} sx={{ mb: 2 }}>
+              <Box key={index} sx={{ mb: 2, display: record.published ? "block" : "none" }}>
                 <CardActionArea
                   component={Link}
-                  to={`/${username}/${record.slug}`}
+                  to={`/users/${username}/posts/${record.slug}`}
                   sx={{
                     "&:hover .MuiCardMedia-root": { filter: "grayscale(100%)" },
                     cursor: "pointer",
