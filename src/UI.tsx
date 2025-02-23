@@ -16,6 +16,7 @@ export const UI = () => {
 
 
   useEffect(() => {
+    console.log(user)
     if (user) {
       const fetchPlan = async () => {
         const plans = await getPlansByUserId({ user });
@@ -65,9 +66,9 @@ export const UI = () => {
               <CardContent>
                 <Typography>{shortenName(record.name)}</Typography>
                 {/* <Typography>{record.startTime.toLocaleString('en-US', options)}</Typography> */}
-                <Typography variant="body2" color="text.secondary">
+                {/* <Typography variant="body2" color="text.secondary">
                   {calculateStartWithTZ(record.startTime, record.timezone)}
-                </Typography>
+                </Typography> */}
                 <Typography variant="body2" color="text.secondary">
                   {record.distanceInMiles + record.lastMileDistance}{ } mi
                 </Typography>

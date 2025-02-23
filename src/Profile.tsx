@@ -83,9 +83,9 @@ export const Profile = () => {
                   <Card sx={{ backgroundColor: "#f5f5f5", "&:hover": { boxShadow: 6 } }}>
                     <CardContent>
                       <Typography variant="body1">{shortenName(record.name)}</Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      {/* <Typography variant="body2" color="text.secondary">
                         {calculateStartWithTZ(record.startTime, record.timezone)}
-                      </Typography>
+                      </Typography> */}
                       <Typography variant="body2" color="text.secondary">
                         {record.distanceInMiles + record.lastMileDistance} mi
                       </Typography>

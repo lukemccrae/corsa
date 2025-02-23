@@ -27,11 +27,11 @@ export const getPlansByUserId = async (props: GetPlansByUserIdProps) => {
               pace
             }
             startTime
-            timezone
             bucketKey
           }
         }
       `;
+      console.log(query, '<< query')
   try {
     const result = await fetch(domain.appsync, {
       method: "POST",
@@ -62,7 +62,6 @@ export const getPlanById = async (props: GetPlanByIdProps) => {
             gap
             startTime
             userId
-            timezone
             mileData {
               elevationGain
               gap

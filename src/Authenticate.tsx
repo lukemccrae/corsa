@@ -76,9 +76,8 @@ export const Authenticate = () => {
 
 
   const validateInputs = () => {
-    const email = document.getElementById('email') as HTMLInputElement;
-    const password = document.getElementById('password') as HTMLInputElement;
-
+    const email = (document.getElementById('register-email') as HTMLInputElement);
+    const password = document.getElementById('register-password') as HTMLInputElement;
     let isValid = true;
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {

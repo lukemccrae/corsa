@@ -140,7 +140,6 @@ export const fetchPlanDetails = async (
         published
         startTime
         userId
-        timezone
         coverImage
         profilePhoto
         author

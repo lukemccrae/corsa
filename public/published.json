@@ -1,0 +1,18 @@
+{
+    "publishedPlans": [
+        {
+            "name": "Pikes Peak Backslap",
+            "coverImage": "https://i.imgur.com/ApefoWl.png",
+            "profilePhoto": "https://dgalywyr863hv.cloudfront.net/pictures/athletes/19680637/14084643/37/large.jpg",
+            "author": "lukemccrae",
+            "slug": "pikes-peak-backslap"
+        },
+        {
+            "name": "HURT 100",
+            "coverImage": "https://i.imgur.com/ApefoWl.png",
+            "profilePhoto": "https://dgalywyr863hv.cloudfront.net/pictures/athletes/19680637/14084643/37/large.jpg",
+            "author": "ianpryor",
+            "slug": "hurt-100"
+        }
+    ]
+}
