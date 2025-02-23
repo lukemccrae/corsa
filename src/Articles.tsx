@@ -11,13 +11,13 @@ export const Articles = () => {
 
   React.useEffect(() => {
     const publishedPlans = async () => {
-      if (anon && checkValidAnon()) {
-        const result = await fetchPublishedPlans(anon)
-        setPlans(result.data.getPublishedPlans)
-      }
+      const published = await fetch('/published.json') // Path relative to the public folder
+      .then(response => response.json())
+      .then(data => setPlans(data.publishedPlans))
+      .catch(error => console.error('Error loading plans:', error));
     }
     publishedPlans()
-  }, [anon]);
+  }, []);
   return (
     <Box
       component="main"
