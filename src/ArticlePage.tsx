@@ -36,7 +36,7 @@ export const ArticlePage = () => {
     <img
       src={src}
       alt={alt}
-      style={{ maxWidth: "800px", width: "100%", height: "auto" }}
+      style={{ maxWidth: "400px", width: "100%", height: "auto" }}
       {...props}
     />
   );
@@ -102,7 +102,7 @@ export const ArticlePage = () => {
             />
             <Box>
               <Typography
-                to={`/${plan.author}`}
+                to={`/users/${plan.author}`}
                 component={Link}
                 sx={{
                   color: "black",
@@ -146,28 +146,15 @@ export const ArticlePage = () => {
                 <Box
                   sx={{
                     display: "flex",
-                    flexDirection: { xs: "column", lg: "row" },
+                    flexDirection: { xs: "column", lg: "column" }, // pace chart always on bottom
                     gap: 3,
                   }}
                 >
-                  <Box sx={{ order: { xs: 2, lg: 1 }, maxWidth: "400px" }}>
-                    <PaceTable
-                      cols={[
-                        "Mile",
-                        "Pace",
-                        "Profile",
-                        "Avg.",
-                        "Gain",
-                        "Elapsed",
-                      ]}
-                      plan={plan}
-                    ></PaceTable>
-                  </Box>
                   <Box
                     sx={{
                       flex: 1,
                       display: "block",
-                      order: { xs: 1, lg: 2 },
+                      // order: { xs: 1, lg: 2 }, // pace chart always on bottom
                       padding: 2,
                     }}
                   >
@@ -194,6 +181,20 @@ export const ArticlePage = () => {
                     >
                       {unescapeMarkdown(plan.articleContent)}
                     </ReactMarkdown>
+                  </Box>
+                  <Box sx={{ order: { xs: 2, lg: 1 }, maxWidth: "400px" }}>
+                    <PaceTable
+                      cols={[
+                        "Mile",
+                        "Pace",
+                        "Profile",
+                        "Avg.",
+                        "Gain",
+                        "GAP",
+                        "Elapsed",
+                      ]}
+                      plan={plan}
+                    ></PaceTable>
                   </Box>
                 </Box>
               </Box>
