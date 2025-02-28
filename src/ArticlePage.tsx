@@ -174,6 +174,21 @@ export const ArticlePage = () => {
                     <ReactMarkdown
                       components={{
                         img: ({ node, ...props }) => <CustomImage {...props} />,
+                        p: ({ node, ...props }) => (
+                          <p style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
+                        ),
+                        h1: ({ node, ...props }) => (
+                          <h1 style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
+                        ),
+                        h2: ({ node, ...props }) => (
+                          <h2 style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
+                        ),
+                        h3: ({ node, ...props }) => (
+                          <h3 style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
+                        ),
+                        ul: ({ node, ...props }) => (
+                          <ul style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
+                        ),
                       }}
                       remarkPlugins={[remarkGfm]}
                     >
