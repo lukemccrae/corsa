@@ -16,7 +16,7 @@ export const Footer = () => {
         >
             <div
                 style={{
-                    fontSize: "16px",
+                    fontSize: "12px",
                     fontWeight: "bold",
                     textAlign: "start",
                 }}
