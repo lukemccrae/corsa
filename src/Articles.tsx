@@ -6,17 +6,43 @@ import { useUser } from './context/UserContext';
 import { fetchPublishedPlans } from './services/anon.service';
 
 export const Articles = () => {
-  const [plans, setPlans] = React.useState<Plan[]>();
+  const [plans, setPlans] = React.useState<Partial<Plan>[]>();  
   const { anon, checkValidAnon } = useUser();
 
   React.useEffect(() => {
-    const publishedPlans = async () => {
-      const published = await fetch('published.json') // Path relative to the public folder
-      .then(response => response.json())
-      .then(data => setPlans(data.publishedPlans))
-      .catch(error => console.error('Error loading plans:', error));
-    }
-    publishedPlans()
+
+    const publishedPlans = [
+      {
+        name: "Owens Valley FKT on Mt Dan",
+        coverImage: "https://i.imgur.com/yvGPLVe.png",
+        profilePhoto: "https://dgalywyr863hv.cloudfront.net/pictures/athletes/19680637/14084643/37/large.jpg",
+        author: "lukemccrae",
+        slug: "mt-dan-fkt"
+      },
+      {
+        name: "HURT 100",
+        coverImage: "https://i.imgur.com/FcwYXO8.png",
+        profilePhoto: "https://dgalywyr863hv.cloudfront.net/pictures/athletes/35814508/10561396/6/large.jpg",
+        author: "ianpryor",
+        slug: "hurt-100"
+      },
+      {
+        name: "Glacier Lodge Road to Marathon Redemption",
+        coverImage: "https://i.imgur.com/jHrOH9V.png",
+        profilePhoto: "https://dgalywyr863hv.cloudfront.net/pictures/athletes/19680637/14084643/37/large.jpg",
+        author: "lukemccrae",
+        slug: "glacier-lodge-road"
+      }
+    ]
+    
+    setPlans(publishedPlans)
+    // const publishedPlans = async () => {
+    //   const published = await fetch('published.json') // Path relative to the public folder
+    //   .then(response => response.json())
+    //   .then(data => setPlans(data.publishedPlans))
+    //   .catch(error => console.error('Error loading plans:', error));
+    // }
+    // publishedPlans()
   }, []);
   return (
     <Box
