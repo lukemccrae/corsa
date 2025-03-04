@@ -18,7 +18,7 @@ import { SaveArticle } from "./SaveArticle";
 import { unescapeMarkdown } from "./helpers/markdown.helper";
 
 export const Details = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const { user } = useUser();
   const [plan, setPlan] = React.useState<Plan>();
   const [coords, setCoords] = React.useState<number[][]>();
@@ -52,9 +52,8 @@ export const Details = () => {
   // elevation profile is shortened version of points so this guides indexing the map array
 
   React.useEffect(() => {
-    if (id && user) {
+    if (slug && user) {
       const userId = user.preferred_username;
-      const slug = id;
 
       const fetchPlan = async () => {
         const planResult: Plan = await getPlanById({ userId, slug });
@@ -68,7 +67,7 @@ export const Details = () => {
       };
       fetchPlan();
     }
-  }, [id, user]);
+  }, [slug, user]);
 
   const handleSetHoveredPoint = (x: number) => {
     if (properties) {

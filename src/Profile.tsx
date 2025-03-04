@@ -76,6 +76,7 @@ export const Profile = () => {
                     cursor: "pointer",
                     display: "inline-block",
                     transform: "scale(.98)",
+                    width: "200px",
                     transition: "transform 0.2s ease-in-out",
                     "&:hover": { transform: "scale(1)" },
                   }}

@@ -216,7 +216,7 @@ export const Dashboard = () => {
               </Box>
 
             </div>
-          )}
+          )} 
 
         </Toolbar>
       </Container>
