@@ -12,19 +12,19 @@ import { fetchPlanDetails } from "./services/anon.service";
 
 export const ArticlePage = () => {
   // Extract the `id` from the URL
-  const { id, username } = useParams(); // { id } corresponds to `:id` in the route path
+  const { slug, username } = useParams();
   const [plan, setPlan] = React.useState<Plan>();
   const { anon, checkValidAnon } = useUser();
 
   React.useEffect(() => {
     const publishedPlans = async () => {
-      if (anon && checkValidAnon() && username && id) {
-        const result = await fetchPlanDetails(username, id, anon);
+      if (anon && checkValidAnon() && username && slug) {
+        const result = await fetchPlanDetails(username, slug, anon);
         setPlan(result.data.getPlanById);
       }
     };
     publishedPlans();
-  }, [anon, username, id]);
+  }, [anon, username, slug]);
 
   const CustomImage: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = ({
     alt,
