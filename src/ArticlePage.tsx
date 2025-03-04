@@ -22,7 +22,6 @@ export const ArticlePage = () => {
     const publishedPlans = async () => {
       if (anon && checkValidAnon() && username && id) {
         const result = await fetchPlanDetails(username, id, anon);
-        console.log(result, '<< res')
         setPlan(result.data.getPlanById);
       }
     };
@@ -106,7 +105,7 @@ export const ArticlePage = () => {
                 to={`/users/${plan.author}`}
                 component={Link}
                 sx={{
-                  color: "rgba(0, 0, 0, 0.6)",
+                  color: "black",
                   textDecoration: "underline",
                   "&:hover": {
                     color: "#E3A446",
@@ -119,7 +118,7 @@ export const ArticlePage = () => {
                 <strong>{plan.author}</strong>
               </Typography>
 
-              <Typography style={{color: "rgba(0, 0, 0, 0.6)"}}>
+              <Typography>
                 {new Date(Number(plan.publishDate)).toLocaleDateString(
                   "en-US",
                   {
@@ -156,7 +155,7 @@ export const ArticlePage = () => {
                       flex: 1,
                       display: "block",
                       // order: { xs: 1, lg: 2 }, // pace chart always on bottom
-                      padding: 2,
+                      padding: 2
                     }}
                   >
                     <ReactMarkdown
@@ -183,7 +182,7 @@ export const ArticlePage = () => {
                       {unescapeMarkdown(plan.articleContent)}
                     </ReactMarkdown>
                   </Box>
-                  <Box sx={{ order: { xs: 2, lg: 1 }, maxWidth: "400px" }}>
+                  <Box sx={{ order: { xs: 2, lg: 1 }, maxWidth: "400px", marginBottom: 10 }}>
                     <PaceTable
                       cols={[
                         "Mile",
