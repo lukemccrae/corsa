@@ -182,7 +182,7 @@ export const ArticlePage = () => {
                       {unescapeMarkdown(plan.articleContent)}
                     </ReactMarkdown>
                   </Box>
-                  <Box sx={{ order: { xs: 2, lg: 1 }, maxWidth: "400px", marginBottom: 10 }}>
+                  <Box sx={{ order: { xs: 2, lg: 1 }, maxWidth: "600px", marginBottom: 10 }}>
                     <PaceTable
                       cols={[
                         "Mile",
