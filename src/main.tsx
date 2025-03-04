@@ -25,9 +25,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/add-course" element={<AddCourse />}></Route>
         <Route path="/app/course/:id" element={<Details />}></Route>
       </Routes>
-      <Footer></Footer>
-      <div style={{margin: "5px"}}></div>
       </UserProvider>
+      <Footer></Footer>
     </Router>
   </React.StrictMode>,
 )
