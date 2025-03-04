@@ -51,7 +51,7 @@ export const Articles = () => {
               }}>
                 <CardActionArea
                   component={Link}
-                  to={`/${post.author}/${post.slug}`} // Replace with your route
+                  to={`/users/${post.author}/posts/${post.slug}`} // Replace with your route
                   sx={{
                     '&:hover .MuiCardMedia-root': {
                       filter: 'grayscale(100%)', // Grayscale effect

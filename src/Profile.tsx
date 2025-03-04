@@ -70,7 +70,7 @@ export const Profile = () => {
               <Box key={index} sx={{ mb: 2 }}>
                 <CardActionArea
                   component={Link}
-                  to={`/${username}/${record.slug}`}
+                  to={`/users/${username}/posts/${record.slug}`}
                   sx={{
                     "&:hover .MuiCardMedia-root": { filter: "grayscale(100%)" },
                     cursor: "pointer",

@@ -142,10 +142,10 @@ export const Details = () => {
                     {new Date(plan.startTime).toLocaleString()}
                   </Typography>
                 </Box>
-                <Box flex={1}>
+                {/* <Box flex={1}>
                   <Typography variant="h6">Elapsed Time:</Typography>
                   <Typography>{calcTime(plan.mileData)}</Typography>
-                </Box>
+                </Box> */}
                 <Box flex={1}>
                   <Typography variant="h6">Grade Range:</Typography>
                   <Typography>
