@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Avatar, Box, Chip, Container, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Container, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { Article, FeatureCollection, FeatureProperties, Plan } from "./types";
-import { getPlanById } from "./services/fetchPlans.service";
+import { Plan } from "./types";
 import { useUser } from "./context/UserContext";
-import { getGeoJsonBySortKey } from "./services/fetchMap.service";
 import { PaceTable } from "./PaceTable";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { unescapeMarkdown } from "./helpers/markdown.helper";
-import { fetchMapDetails, fetchPlanDetails } from "./services/anon.service";
+import { fetchPlanDetails } from "./services/anon.service";
 
 export const ArticlePage = () => {
   // Extract the `id` from the URL
@@ -26,7 +24,7 @@ export const ArticlePage = () => {
       }
     };
     publishedPlans();
-  }, [anon]);
+  }, [anon, username, id]);
 
   const CustomImage: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = ({
     alt,
