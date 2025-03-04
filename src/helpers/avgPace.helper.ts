@@ -1,8 +1,15 @@
 import { MileData } from "../types";
 
-export const percentageOfPace = (distance: number, secs: number) => {
-  return Math.round((1 / distance) * secs);
+export const percentageOfPace = (distance: number, pace: number) => {
+  const fractionalPace = pace * distance;
+  // Adjusts the average pace based on fractional distances, with larger fractions 
+  // pulling the average closer to the full pace, while smaller fractions have less impact.
+
+  const weightedPace = (fractionalPace + pace) / 2;
+
+  return Math.round(weightedPace);
 };
+
 export const toHHMMSS = (secs: number) => {
   const roundedSecs = Math.round(secs)
   var hours = Math.floor(roundedSecs / 3600);
@@ -37,10 +44,11 @@ export const averagePaces = (
   return result;
 };
 
-export const calcTime = (md: MileData[]) => {
-  const sum = md.reduce(
-    (accumulator, currentValue) => accumulator + currentValue.pace,
-    0
-  );
+export const calcTime = (md: MileData[], lmd: number, lastMile: boolean) => {
+  const sum = md.reduce((accumulator, currentValue, index) => {
+    if (lastMile && index == md.length - 1) return accumulator + (lmd * currentValue.pace)
+    return accumulator + currentValue.pace;
+  }, 0);
+
   return toHHMMSS(sum);
 };

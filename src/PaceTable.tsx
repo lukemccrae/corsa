@@ -75,7 +75,7 @@ export const PaceTable: React.FC<PaceTableProps> = (props: PaceTableProps) => {
                 {toHHMMSS(md.gap)}
               </TableCell>
               <TableCell align="center" sx={{ padding: "0 3px 0 0", display: checkDisplayCols('Elapsed') }}>
-                {calcTime(props.plan.mileData.slice(0, i + 1))}
+                {calcTime(props.plan.mileData.slice(0, i + 1), props.plan.lastMileDistance, i === props.plan.mileData.length - 1)}
               </TableCell>
             </TableRow>
           ))}
