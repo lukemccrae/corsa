@@ -42,7 +42,7 @@ export const ArticlePage = () => {
   );
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="md">
       {/* Banner Section */}
       {plan && (
         <>
