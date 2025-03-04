@@ -11,7 +11,7 @@ export const Articles = () => {
 
   React.useEffect(() => {
     const publishedPlans = async () => {
-      const published = await fetch('/published.json') // Path relative to the public folder
+      const published = await fetch('published.json') // Path relative to the public folder
       .then(response => response.json())
       .then(data => setPlans(data.publishedPlans))
       .catch(error => console.error('Error loading plans:', error));
