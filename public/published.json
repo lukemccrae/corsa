@@ -1,11 +1,11 @@
 {
     "publishedPlans": [
         {
-            "name": "Glacier Lodge Road to Marathon Redemption",
-            "coverImage": "https://i.imgur.com/jHrOH9V.png",
+            "name": "Owens Valley FKT on Mt Dan",
+            "coverImage": "https://i.imgur.com/yvGPLVe.png",
             "profilePhoto": "https://dgalywyr863hv.cloudfront.net/pictures/athletes/19680637/14084643/37/large.jpg",
             "author": "lukemccrae",
-            "slug": "glacier-lodge-road"
+            "slug": "mt-dan-fkt"
         },
         {
             "name": "HURT 100",
@@ -15,18 +15,12 @@
             "slug": "hurt-100"
         },
         {
-            "name": "Owens Valley FKT on Mt Dan",
-            "coverImage": "https://i.imgur.com/yvGPLVe.png",
+            "name": "Glacier Lodge Road to Marathon Redemption",
+            "coverImage": "https://i.imgur.com/jHrOH9V.png",
             "profilePhoto": "https://dgalywyr863hv.cloudfront.net/pictures/athletes/19680637/14084643/37/large.jpg",
             "author": "lukemccrae",
-            "slug": "mt-dan-fkt"
-        },
-        {
-            "name": "Pikes Peak Backslap",
-            "coverImage": "https://i.imgur.com/ApefoWl.png",
-            "profilePhoto": "https://dgalywyr863hv.cloudfront.net/pictures/athletes/19680637/14084643/37/large.jpg",
-            "author": "lukemccrae",
-            "slug": "pikes-peak-backslap"
+            "slug": "glacier-lodge-road"
         }
+
     ]
 }
