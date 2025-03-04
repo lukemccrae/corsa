@@ -81,7 +81,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   }, []);
 
   const logoutUser = async () => {
-    console.log("logout user")
+    localStorage.removeItem("user")
   }
 
   const checkValidUser = (decodedUser: CognitoToken) => {

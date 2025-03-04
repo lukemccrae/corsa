@@ -22,6 +22,7 @@ export const ArticlePage = () => {
     const publishedPlans = async () => {
       if (anon && checkValidAnon() && username && id) {
         const result = await fetchPlanDetails(username, id, anon);
+        console.log(result, '<< res')
         setPlan(result.data.getPlanById);
       }
     };
@@ -105,7 +106,7 @@ export const ArticlePage = () => {
                 to={`/users/${plan.author}`}
                 component={Link}
                 sx={{
-                  color: "black",
+                  color: "rgba(0, 0, 0, 0.6)",
                   textDecoration: "underline",
                   "&:hover": {
                     color: "#E3A446",
@@ -118,7 +119,7 @@ export const ArticlePage = () => {
                 <strong>{plan.author}</strong>
               </Typography>
 
-              <Typography>
+              <Typography style={{color: "rgba(0, 0, 0, 0.6)"}}>
                 {new Date(Number(plan.publishDate)).toLocaleDateString(
                   "en-US",
                   {

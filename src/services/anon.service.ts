@@ -82,6 +82,7 @@ export const getPublishedUserInfo = async (
           distanceInMiles
           gainInMeters
           lossInMeters
+          published
           mileData {
             mileVertProfile
             pace
