@@ -5,7 +5,7 @@
             "coverImage": "https://imgur.com/a/jPOPf56",
             "profilePhoto": "https://i.imgur.com/ARKqkWp.png",
             "author": "colleenmiracle",
-            "slug": "desert-lung-determinatin"
+            "slug": "desert-lung-determination"
         },
         {
             "name": "Owens Valley FKT on Mt Dan",
@@ -16,7 +16,7 @@
         },
         {
             "name": "HURT 100",
-            "coverImage": "https://i.imgur.com/FcwYXO8.png",
+            "coverImage": "https://i.imgur.com/FcwYXO8",
             "profilePhoto": "https://dgalywyr863hv.cloudfront.net/pictures/athletes/35814508/10561396/6/large.jpg",
             "author": "ianpryor",
             "slug": "hurt-100"
@@ -27,6 +27,6 @@
             "profilePhoto": "https://dgalywyr863hv.cloudfront.net/pictures/athletes/19680637/14084643/37/large.jpg",
             "author": "lukemccrae",
             "slug": "glacier-lodge-road"
-        },
+        }
     ]
 }
