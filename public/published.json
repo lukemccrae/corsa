@@ -1,6 +1,13 @@
 {
     "publishedPlans": [
         {
+            "name": "Desert Lung and Determination: My 100-Mile Journey at Coldwater",
+            "coverImage": "https://i.imgur.com/zjM1dxh.png",
+            "profilePhoto": "https://i.imgur.com/ARKqkWp.png",
+            "author": "colleenmiracle",
+            "slug": "desert-lung-determination"
+        },
+        {
             "name": "Owens Valley FKT on Mt Dan",
             "coverImage": "https://i.imgur.com/yvGPLVe.png",
             "profilePhoto": "https://dgalywyr863hv.cloudfront.net/pictures/athletes/19680637/14084643/37/large.jpg",
@@ -21,6 +28,5 @@
             "author": "lukemccrae",
             "slug": "glacier-lodge-road"
         }
-
     ]
 }

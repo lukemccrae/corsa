@@ -6,12 +6,19 @@ import { useUser } from './context/UserContext';
 import { fetchPublishedPlans } from './services/anon.service';
 
 export const Articles = () => {
-  const [plans, setPlans] = React.useState<Partial<Plan>[]>();  
+  const [plans, setPlans] = React.useState<Partial<Plan>[]>();
   const { anon, checkValidAnon } = useUser();
 
   React.useEffect(() => {
 
     const publishedPlans = [
+      {
+        name: "Desert Lung and Determination: My 100-Mile Journey at Coldwater",
+        coverImage: "https://i.imgur.com/zjM1dxh.png",
+        profilePhoto: "https://i.imgur.com/ARKqkWp.png",
+        author: "colleenmiracle",
+        slug: "desert-lung-determination"
+      },
       {
         name: "Owens Valley FKT on Mt Dan",
         coverImage: "https://i.imgur.com/yvGPLVe.png",
@@ -34,7 +41,7 @@ export const Articles = () => {
         slug: "glacier-lodge-road"
       }
     ]
-    
+
     setPlans(publishedPlans)
     // const publishedPlans = async () => {
     //   const published = await fetch('published.json') // Path relative to the public folder

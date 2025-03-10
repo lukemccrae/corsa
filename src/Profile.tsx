@@ -17,19 +17,20 @@ export const Profile = () => {
   const { anon, checkValidAnon } = useUser();
   const { username } = useParams();
 
-
-
   React.useEffect(() => {
     const publishedPlans = async () => {
       if (anon && checkValidAnon() && username) {
         const result = await getPublishedUserInfo({ username, anon })
         const { bio, profilePicture } = result.data.getPublishedUserInfo;
+        console.log(profilePicture, '<< pp')
         setPlans(result.data.getPublishedUserInfo.plans)
         setUserInfo({ bio, profilePicture })
       }
     }
     publishedPlans()
   }, [anon]);
+
+  
   return (
     <Container maxWidth="lg">
       <Box
@@ -96,7 +97,11 @@ export const Profile = () => {
                             +{Math.round(record.gainInMeters * 3.28084)} ft.
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
-                            {toHHMMSS(record.mileData.reduce((sum, item) => sum + item.pace, 0))}
+                            {toHHMMSS(
+                              record.mileData
+                                .map((item, index, arr) => index === arr.length - 1 ? (item.pace * record.lastMileDistance) : item.pace)
+                                .reduce((sum, pace) => sum + pace, 0)
+                            )}
                           </Typography>
                         </Box>
                         <MileProfile

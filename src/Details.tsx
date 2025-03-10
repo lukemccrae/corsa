@@ -114,11 +114,12 @@ export const Details = () => {
                   bucketKey={plan.bucketKey}
                   slug={plan.slug}
                   label={"Delete"}
+                  disabled={plan.published}
                 />
-                <PublishCourse
+                {/* <PublishCourse
                   plan={plan}
                   label={plan.published ? "Unpublish" : "Publish"}
-                />
+                /> */}
               </Box>
             </Box>
             <Paper elevation={3} sx={{ padding: 4, margin: 2 }}>
