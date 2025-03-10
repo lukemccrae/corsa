@@ -16,6 +16,7 @@ interface DeleteButtonProps {
   label: string;
   slug: string;
   bucketKey: string;
+  disabled: boolean;
 }
 
 export const DeleteCourse = (props: DeleteButtonProps) => {
@@ -54,6 +55,7 @@ export const DeleteCourse = (props: DeleteButtonProps) => {
         color="error"
         startIcon={<DeleteIcon />}
         onClick={handleOpen}
+        disabled={props.disabled}
         sx={{ backgroundColor: "#469CE3", "&:hover": {} }}
       >
         {props.label}

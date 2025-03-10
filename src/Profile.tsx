@@ -17,8 +17,6 @@ export const Profile = () => {
   const { anon, checkValidAnon } = useUser();
   const { username } = useParams();
 
-
-
   React.useEffect(() => {
     const publishedPlans = async () => {
       if (anon && checkValidAnon() && username) {

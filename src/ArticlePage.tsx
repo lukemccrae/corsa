@@ -160,7 +160,7 @@ export const ArticlePage = () => {
                       components={{
                         img: ({ node, ...props }) => <CustomImage {...props} />,
                         p: ({ node, ...props }) => (
-                          <p style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
+                          <p style={{ color: 'rgba(0, 0, 0, 0.6)', fontSize: '20px' }} {...props} />
                         ),
                         h1: ({ node, ...props }) => (
                           <h1 style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
