@@ -25,6 +25,7 @@ export const getPlansByUserId = async (props: GetPlansByUserIdProps) => {
             mileData {
               mileVertProfile
               pace
+              elevationGain
             }
             startTime
             bucketKey
