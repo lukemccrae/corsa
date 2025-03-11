@@ -16,6 +16,7 @@ import { useScreenSize } from "./helpers/screensize.helper";
 import { calcTime } from "./helpers/avgPace.helper";
 import { SaveArticle } from "./SaveArticle";
 import { unescapeMarkdown } from "./helpers/markdown.helper";
+import { Shareables } from "./Shareables";
 
 export const Details = () => {
   const { slug } = useParams();
@@ -57,7 +58,6 @@ export const Details = () => {
 
       const fetchPlan = async () => {
         const planResult: Plan = await getPlanById({ userId, slug });
-        console.log(planResult, "<< pr");
         // this needs to retrieve the bucket key and pass it bwlow
         // const mapResult: FeatureCollection = await getGeoJsonBySortKey({ planId });
         setPlan(planResult);
@@ -122,65 +122,9 @@ export const Details = () => {
                 /> */}
               </Box>
             </Box>
-            <Paper elevation={3} sx={{ padding: 4, margin: 2 }}>
-              {/* Header */}
-              <Typography variant="h5" gutterBottom>
-                {plan.name}
-              </Typography>
-              <Divider sx={{ my: 2 }} />
 
-              {/* Basic Information */}
-              <Box
-                display="flex"
-                flexDirection={{ xs: "column", sm: "row" }}
-                gap={2}
-                sx={{ width: "100%" }}
-              >
-                <Box flex={1}>
-                  <Typography variant="h6">Start Time:</Typography>
-                  <Typography>
-                    {new Date(plan.startTime).toLocaleString()}
-                  </Typography>
-                </Box>
-                {/* <Box flex={1}>
-                  <Typography variant="h6">Elapsed Time:</Typography>
-                  <Typography>{calcTime(plan.mileData)}</Typography>
-                </Box> */}
-                <Box flex={1}>
-                  <Typography variant="h6">Grade Range:</Typography>
-                  <Typography>
-                    {properties?.maxGrade}% to {properties?.minGrade}%
-                  </Typography>
-                </Box>
-              </Box>
-              <Divider sx={{ my: 2 }} />
-
-              {/* Elevation Data */}
-              <Box
-                display="flex"
-                flexDirection={{ xs: "column", sm: "row" }}
-                gap={2}
-                sx={{ width: "100%" }}
-              >
-                <Box flex={1}>
-                  <Typography variant="h6">Elevation Gain:</Typography>
-                  <Typography>
-                    {Math.round(plan.gainInMeters * 3.28084)} feet
-                  </Typography>
-                </Box>
-                <Box flex={1}>
-                  <Typography variant="h6">Elevation Loss:</Typography>
-                  <Typography>
-                    {Math.round(plan.lossInMeters * 3.28084)} feet
-                  </Typography>
-                </Box>
-                <Box flex={1}>
-                  <Typography variant="h6">Total Distance:</Typography>
-                  <Typography>
-                    {plan.distanceInMiles + plan.lastMileDistance} miles
-                  </Typography>
-                </Box>
-              </Box>
+            <Paper>
+              <Shareables plan={plan}></Shareables>
             </Paper>
 
             <PaceTable

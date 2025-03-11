@@ -60,9 +60,11 @@ export const getPlanById = async (props: GetPlanByIdProps) => {
             lastMileDistance
             lossInMeters
             gainInMeters
+            profilePhoto
             gap
             startTime
             userId
+            author
             mileData {
               elevationGain
               gap
