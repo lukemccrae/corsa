@@ -5,20 +5,49 @@ import { createMiniProfile } from './helpers/miniVertProfile.helpter';
 import { Plan } from './types';
 import { toHHMMSS } from './helpers/avgPace.helper';
 import { Logo } from './Logo';
+import { useUser } from './context/UserContext';
+import { handleAssistantCall } from './services/assistant.service';
 
 interface ShareablesProps {
     plan: Plan
 }
 
 export const Shareables = (props: ShareablesProps) => {
-    const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const imageUrl = 'https://example.com/path-to-your-image.jpg'; // Static image URL or path
+    const { user } = useUser();
+    const [articleQuotes, setArticleQuotes] = React.useState<string[]>([]);
 
-    const articleQuotes = [
-        "The Owens Valley is a remarkable place. Winding rivers and canals snake through a flat valley between two mountain ranges. To the west the mighty Sierra Nevada shoots straight up. To the east are the less prestigious but mysterious White Mountains. On top of the Whites are the oldest living things on earth, Bristlecone Pines.",
-        "At 3.2 miles the summit came into view! Maybe it was the knowledge that I was going to get it or maybe I was just spent, but I felt myself softening and did my best to finish strong. At this point I could feel the end. My pace had slowed considerably but I was at the summit block climbing over rocks, panting, trying not to look at the beautiful sunset until I could finally stop moving.",
-        "Since I was on grade, I had to spend more time to do the 8 miles. It’s rare that I can spend that much time at a sustained effort running on real terrain. On the treadmill I spent about 70 minutes above marathon effort as I progressed from 150 - 170bpm+."
-    ];
+    const messages = [
+        "give me three paragraphs or set of sentences from this article",
+        "first one is the one most like an overview.",
+        "second is the most exciting",
+        "third is the most important, the most like a thesis of the article",
+        "give me exact quotes from the article",
+        "not too short",
+        "return them to as stringified JSON",
+        "make each paragraph a string in an array",
+        "limit each one to 50 words",
+        "if you see any markdown formatting please remove it",
+        "Thank You!! =D",
+        `article: ${props.plan.articleContent}`
+    ]
+
+    React.useEffect(() => {
+        const getArticleQuotes = async () => {
+            const result = await handleAssistantCall(messages)
+
+            const cleanedString = result.message.content.replace(/^```json\n/, "").replace(/\n```$/, "");
+            const quotes = JSON.parse(cleanedString)
+            console.log(quotes, '<< jhihi')
+            setArticleQuotes(quotes)
+        };
+        getArticleQuotes();
+    }, []);
+
+    // const articleQuotes = [
+    //     "The Owens Valley is a remarkable place. Winding rivers and canals snake through a flat valley between two mountain ranges. To the west the mighty Sierra Nevada shoots straight up. To the east are the less prestigious but mysterious White Mountains. On top of the Whites are the oldest living things on earth, Bristlecone Pines.",
+    //     "At 3.2 miles the summit came into view! Maybe it was the knowledge that I was going to get it or maybe I was just spent, but I felt myself softening and did my best to finish strong. At this point I could feel the end. My pace had slowed considerably but I was at the summit block climbing over rocks, panting, trying not to look at the beautiful sunset until I could finally stop moving.",
+    //     "Since I was on grade, I had to spend more time to do the 8 miles. It’s rare that I can spend that much time at a sustained effort running on real terrain. On the treadmill I spent about 70 minutes above marathon effort as I progressed from 150 - 170bpm+."
+    // ];
 
     const getRandomColor = () => {
         const colors = [
@@ -45,18 +74,17 @@ export const Shareables = (props: ShareablesProps) => {
                 {/* Data Box */}
                 <Box sx={{
                     display: "flex", flexDirection: "column", margin: 2,
-                    backgroundColor: getRandomColor().bg, borderRadius: 2, padding: 2, position: "relative", color:getRandomColor().text 
+                    backgroundColor: getRandomColor().bg, borderRadius: 2, padding: 2, position: "relative", color: getRandomColor().text
                 }}>
                     <Typography variant="h2" sx={{ color: getRandomColor().text }}>
                         {props.plan.name}
                     </Typography>
 
-                    <Typography variant="body1" fontWeight="bold" color={getRandomColor().text}>
-                        {props.plan.distanceInMiles + props.plan.lastMileDistance} mi
-                    </Typography>
-
                     <Box sx={{ display: "flex", justifyContent: "space-between", paddingTop: 2 }}>
                         <Box>
+                            <Typography variant="body1" fontWeight="bold" color={getRandomColor().text}>
+                                {props.plan.distanceInMiles + props.plan.lastMileDistance} mi
+                            </Typography>
                             <Typography variant="body1" fontWeight="bold" color={getRandomColor().text}>
                                 +{Math.round(props.plan.mileData.reduce((total, md) => total + md.elevationGain, 0) * 3.28084)} ft
                             </Typography>
@@ -107,7 +135,7 @@ export const Shareables = (props: ShareablesProps) => {
                         }}
                     >
                         {/* Centered Text */}
-                        <Typography variant="h4" sx={{ textAlign: "left", paddingRight: 5 }}>
+                        <Typography variant="h5" sx={{ textAlign: "left", paddingRight: 5 }}>
                             "{a}"
                         </Typography>
 
