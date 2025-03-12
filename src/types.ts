@@ -169,5 +169,6 @@ export type CognitoToken = {
   origin_jti: string;
   sub: string;
   token_use: string;
-  preferred_username: string
+  preferred_username: string;
+  picture: string;
 };

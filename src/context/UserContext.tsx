@@ -15,6 +15,7 @@ type User = {
   exp: number;
   idToken: string;
   preferred_username: string;
+  picture: string;
 };
 
 export type Anon = {
@@ -131,10 +132,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   const setUserInStorage = (idToken: string) => {
     const decodedToken = jwtdecode(idToken) as CognitoToken;
-    const { email, exp, sub, preferred_username } = decodedToken;
+    const { email, exp, sub, preferred_username, picture } = decodedToken;
     const userId = sub;
 
-    setUser({ email, exp, userId, idToken, preferred_username })
+    setUser({ email, exp, userId, idToken, preferred_username, picture })
     localStorage.setItem("user", idToken)
   }
 

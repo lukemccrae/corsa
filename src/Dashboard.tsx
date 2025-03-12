@@ -166,7 +166,7 @@ export const Dashboard = () => {
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Account settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt={user.preferred_username.toUpperCase()} src="/static/images/avatar/2.jpg" />
+                    <Avatar alt={user.preferred_username.toUpperCase()} src={user.picture} />
                   </IconButton>
                 </Tooltip>
                 <Menu
