@@ -100,10 +100,10 @@ export const Shareables = (props: ShareablesProps) => {
                 <Box sx={{
                     display: "flex",
                     flexDirection: "column",
-                    margin: 2,
                     backgroundColor: bg,
                     borderRadius: 2,
-                    padding: 2,
+                    margin: 1,
+                    p: 5,
                     position: "relative",
                     color: getRandomColor().text,
                     height: "500px",
@@ -147,7 +147,6 @@ export const Shareables = (props: ShareablesProps) => {
                                 <Typography variant="h6">{props.plan.author}</Typography>
                             </Box>
 
-                            {/* Logo */}
                             <Logo />
                         </Box>
                     </Box>
@@ -202,9 +201,6 @@ export const Shareables = (props: ShareablesProps) => {
                     </Box>
                 )
             })}
-            <Box sx={{ display: "flex", flexDirection: "column", margin: 2 }}>
-
-            </Box>
 
         </Box>
 
