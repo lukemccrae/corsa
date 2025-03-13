@@ -17,6 +17,7 @@ import { Paper, TableContainer } from "@mui/material";
 interface PaceTableProps {
   plan: Plan;
   cols: string[];
+  backgroundColor: string;
 }
 
 export const PaceTable: React.FC<PaceTableProps> = (props: PaceTableProps) => {
@@ -26,7 +27,7 @@ export const PaceTable: React.FC<PaceTableProps> = (props: PaceTableProps) => {
   
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 400, maxWidth: 600, margin: "8px" }} aria-label="pace table" size="small" id="paceTable">
+      <Table sx={{ backgroundColor: props.backgroundColor, minWidth: 400, maxWidth: 600, margin: "8px" }} aria-label="pace table" size="small" id="paceTable">
         <TableHead>
           <TableRow>
             <TableCell sx={{display: checkDisplayCols('Mile')}}>Mile</TableCell>

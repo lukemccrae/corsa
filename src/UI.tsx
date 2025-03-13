@@ -79,7 +79,7 @@ export const UI = () => {
                       {toHHMMSS(record.mileData.reduce((sum, item) => sum + item.pace, 0))}
                     </Typography>
                   </Box>
-                  <MileProfile marginRight={3} mileVertProfile={createMiniProfile(record.mileData)} multiplyPadding={40} color={'black'} />
+                  <MileProfile marginRight={3} mileVertProfile={createMiniProfile(record.mileData, 20)} multiplyPadding={40} color={'black'} />
                 </Box>
               </CardContent>
             </Card>

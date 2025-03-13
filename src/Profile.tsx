@@ -106,7 +106,7 @@ export const Profile = () => {
                         </Box>
                         <MileProfile
                           marginRight={3}
-                          mileVertProfile={createMiniProfile(record.mileData)}
+                          mileVertProfile={createMiniProfile(record.mileData, 20)}
                           multiplyPadding={40}
                           color={"black"}
                         />

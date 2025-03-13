@@ -3,41 +3,64 @@ import React, { useRef } from 'react';
 import { MileProfile } from './MileProfile';
 import { createMiniProfile } from './helpers/miniVertProfile.helpter';
 import { Plan } from './types';
-import { toHHMMSS } from './helpers/avgPace.helper';
+import { averagePaces, toHHMMSS } from './helpers/avgPace.helper';
 import { Logo } from './Logo';
 import { useUser } from './context/UserContext';
 import { handleAssistantCall } from './services/assistant.service';
+import { PaceTable } from './PaceTable';
 
 interface ShareablesProps {
     plan: Plan
 }
 
+type AssistantSummary = {
+    overview: string;
+    exciting: string;
+    thesis: string;
+    summary: string
+}
+
 export const Shareables = (props: ShareablesProps) => {
     const { user } = useUser();
-    const [articleQuotes, setArticleQuotes] = React.useState<string[]>([]);
+    const [articleQuotes, setArticleQuotes] = React.useState<AssistantSummary>({
+        overview: "",
+        exciting: "",
+        thesis: "",
+        summary: ""
+    });
 
-    const messages = [
-        "give me three paragraphs or set of sentences from this article",
-        "first one is the one most like an overview.",
-        "second is the most exciting",
-        "third is the most important, the most like a thesis of the article",
-        "give me exact quotes from the article",
-        "not too short",
-        "return them to as stringified JSON",
-        "make each paragraph a string in an array",
-        "limit each one to 50 words",
-        "if you see any markdown formatting please remove it",
-        "Thank You!! =D",
-        `article: ${props.plan.articleContent}`
-    ]
+    const prompt = `
+        I need exact quotes from the article below. Do not summarize, rephrase, or interpret. Only return direct excerpts from the article.
+
+        Return a **valid stringified JSON** in this format:
+        \`\`\`json
+        {
+        "overview": "EXACT QUOTE FROM ARTICLE",
+        "exciting": "EXACT QUOTE FROM ARTICLE",
+        "thesis": "EXACT QUOTE FROM ARTICLE",
+        "summary": "EXACT QUOTE FROM ARTICLE"
+        }
+        \`\`\`
+
+        ### **Rules:**
+        - **Only include sentences directly from the article.**
+        - **No additional words, no paraphrasing.** 
+        - **Each section must be a direct copy-paste from the article.**
+        - Keep each section **between 100-200 words**.
+        - **Strip out any markdown formatting (like images, lists, or links).**
+        - **Only output the JSON, nothing else. No explanations.**
+
+        ### **Article:**
+        ${props.plan.articleContent}
+    `;
+
+
 
     React.useEffect(() => {
         const getArticleQuotes = async () => {
-            const result = await handleAssistantCall(messages)
-
+            const result = await handleAssistantCall([prompt])
             const cleanedString = result.message.content.replace(/^```json\n/, "").replace(/\n```$/, "");
             const quotes = JSON.parse(cleanedString)
-            console.log(quotes, '<< jhihi')
             setArticleQuotes(quotes)
         };
         getArticleQuotes();
@@ -67,63 +90,76 @@ export const Shareables = (props: ShareablesProps) => {
         return colors[Math.floor(Math.random() * colors.length)];
     };
 
+    const { bg, text } = getRandomColor();
+
     return (
         <Box sx={{ display: "flex", flexDirection: "column", gap: 5 }}>
             {/* data box */}
             <Box sx={{ display: "flex", flexDirection: "column", gap: 5 }}>
                 {/* Data Box */}
                 <Box sx={{
-                    display: "flex", flexDirection: "column", margin: 2,
-                    backgroundColor: getRandomColor().bg, borderRadius: 2, padding: 2, position: "relative", color: getRandomColor().text
+                    display: "flex",
+                    flexDirection: "column",
+                    margin: 2,
+                    backgroundColor: bg,
+                    borderRadius: 2,
+                    padding: 2,
+                    position: "relative",
+                    color: getRandomColor().text,
+                    height: "500px",
+
                 }}>
-                    <Typography variant="h2" sx={{ color: getRandomColor().text }}>
+                    <Typography variant="h2" sx={{ color: text }}>
                         {props.plan.name}
                     </Typography>
-
-                    <Box sx={{ display: "flex", justifyContent: "space-between", paddingTop: 2 }}>
-                        <Box>
-                            <Typography variant="body1" fontWeight="bold" color={getRandomColor().text}>
-                                {props.plan.distanceInMiles + props.plan.lastMileDistance} mi
-                            </Typography>
-                            <Typography variant="body1" fontWeight="bold" color={getRandomColor().text}>
-                                +{Math.round(props.plan.mileData.reduce((total, md) => total + md.elevationGain, 0) * 3.28084)} ft
-                            </Typography>
-                            <Typography variant="body1" fontWeight="bold" color={getRandomColor().text}>
-                                {toHHMMSS(props.plan.mileData.reduce((sum, item) => sum + item.pace, 0))}
-                            </Typography>
-                        </Box>
-                        <MileProfile marginRight={7} mileVertProfile={createMiniProfile(props.plan.mileData)} multiplyPadding={70} color={getRandomColor().text} />
+                    <Box>
+                        <MileProfile marginRight={7} mileVertProfile={createMiniProfile(props.plan.mileData, 50)} multiplyPadding={250} color={getRandomColor().text} />
 
                     </Box>
-                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                        <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                            <Avatar src={props.plan.profilePhoto} sx={{ width: 48, height: 48, marginRight: 1 }} />
-                            <Typography variant="h6">{props.plan.author}</Typography>
-                        </Box>
-                        <Box
-                            sx={{
-                                position: "absolute",
-                                bottom: 16,
-                                right: 16,
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 0,
-                            }}
-                        >
-                            <Logo></Logo>
+                    <Box sx={{ display: "flex", flexDirection: "column", gap: 2, paddingTop: 2 }}>
+                        {/* Data rows */}
+                        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                            <Box>
+                                <Typography variant="body1" fontWeight="bold" color={text}>
+                                    {props.plan.distanceInMiles + props.plan.lastMileDistance} mi
+                                </Typography>
+                                <Typography variant="body1" fontWeight="bold" color={text}>
+                                    +{Math.round(props.plan.mileData.reduce((total, md) => total + md.elevationGain, 0) * 3.28084)} ft
+                                </Typography>
+                                <Typography variant="body1" fontWeight="bold" color={text}>
+                                    {averagePaces(
+                                        props.plan.mileData,
+                                        props.plan.lastMileDistance,
+                                        true
+                                    )} /mi
+                                </Typography>
+                                <Typography variant="body1" fontWeight="bold" color={text}>
+                                    {toHHMMSS(props.plan.mileData.reduce((sum, item) => sum + item.pace, 0))}
+                                </Typography>
+                            </Box>
                         </Box>
 
+                        {/* Row with Avatar, Username, and Logo */}
+                        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            {/* Avatar and Username */}
+                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                                <Avatar src={props.plan.profilePhoto} sx={{ width: 64, height: 64 }} />
+                                <Typography variant="h6">{props.plan.author}</Typography>
+                            </Box>
+
+                            {/* Logo */}
+                            <Logo />
+                        </Box>
                     </Box>
                 </Box>
             </Box>
-            {articleQuotes.map((a) => {
+            {Object.values(articleQuotes).map((a) => {
                 const { bg, text } = getRandomColor();
-
                 return (
                     <Box
                         sx={{
                             position: "relative",
-                            height: "auto",
+                            height: "500px",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",

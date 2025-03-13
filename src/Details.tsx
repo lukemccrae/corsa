@@ -139,6 +139,7 @@ export const Details = () => {
                 "Elapsed",
               ]}
               plan={plan}
+              backgroundColor="white"
             />
 
             {properties && coords && (

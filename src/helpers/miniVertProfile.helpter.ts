@@ -1,6 +1,6 @@
 import { MileData } from "../types";
 
-export const createMiniProfile = (arr: MileData[]): number[] => {
+export const createMiniProfile = (arr: MileData[], downsample: number): number[] => {
     // Initialize variables
     let continuousProfile: number[] = [];
     let lastValue = 0; // Tracks the last value from the previous segment
@@ -31,7 +31,7 @@ export const createMiniProfile = (arr: MileData[]): number[] => {
     );
 
     // Downsample to 20 points
-    const downsampleTo = 20;
+    const downsampleTo = downsample;
     const step = Math.max(Math.floor(normalizedProfile.length / downsampleTo), 1);
     const downsampledProfile = normalizedProfile.filter((_, index) => index % step === 0).slice(0, downsampleTo);
 

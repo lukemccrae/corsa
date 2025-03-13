@@ -16,6 +16,7 @@ export const Logo = () => {
       color: 'inherit',
       textDecoration: 'none',
       alignItems: 'center',
+      justifyContent: "flex-end"
     }}
   >
     CORSA.
