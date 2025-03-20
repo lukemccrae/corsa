@@ -109,11 +109,11 @@ export const Shareables = (props: ShareablesProps) => {
                     height: "500px",
 
                 }}>
-                    <Typography variant="h2" sx={{ color: text }}>
+                    <Typography variant="h4" sx={{ color: text }}>
                         {props.plan.name}
                     </Typography>
                     <Box>
-                        <MileProfile marginRight={7} mileVertProfile={createMiniProfile(props.plan.mileData, 50)} multiplyPadding={250} color={getRandomColor().text} />
+                        <MileProfile marginRight={7} mileVertProfile={createMiniProfile(props.plan.mileData, 50)} multiplyPadding={150} color={getRandomColor().text} />
 
                     </Box>
                     <Box sx={{ display: "flex", flexDirection: "column", gap: 2, paddingTop: 2 }}>

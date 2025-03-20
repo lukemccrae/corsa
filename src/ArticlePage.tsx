@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Avatar, Box, Container, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { Plan } from "./types";
+import { ArticleElement, PaceTableType, Plan } from "./types";
 import { useUser } from "./context/UserContext";
 import { PaceTable } from "./PaceTable";
 import ReactMarkdown from "react-markdown";
@@ -20,6 +20,7 @@ export const ArticlePage = () => {
     const publishedPlans = async () => {
       if (anon && checkValidAnon() && username && slug) {
         const result = await fetchPlanDetails(username, slug, anon);
+        console.log(result, '<< resulty')
         setPlan(result.data.getPlanById);
       }
     };
@@ -38,6 +39,13 @@ export const ArticlePage = () => {
       {...props}
     />
   );
+
+  const isPaceTable = (e: ArticleElement): e is { paceTable: PaceTableType } =>
+    "paceTable" in e;
+
+  const isImage = (e: ArticleElement): e is { image: string } => "image" in e;
+
+  const isText = (e: ArticleElement): e is { text: string } => "text" in e;
 
   return (
     <Container maxWidth="md">
@@ -148,52 +156,61 @@ export const ArticlePage = () => {
                     gap: 3,
                   }}
                 >
-                  <Box
-                    sx={{
-                      flex: 1,
-                      display: "block",
-                      // order: { xs: 1, lg: 2 }, // pace chart always on bottom
-                      padding: 2
-                    }}
-                  >
-                    <ReactMarkdown
-                      components={{
-                        img: ({ node, ...props }) => <CustomImage {...props} />,
-                        p: ({ node, ...props }) => (
-                          <p style={{ color: 'rgba(0, 0, 0, 0.6)', fontSize: '20px' }} {...props} />
-                        ),
-                        h1: ({ node, ...props }) => (
-                          <h1 style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
-                        ),
-                        h2: ({ node, ...props }) => (
-                          <h2 style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
-                        ),
-                        h3: ({ node, ...props }) => (
-                          <h3 style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
-                        ),
-                        ul: ({ node, ...props }) => (
-                          <ul style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
-                        ),
-                      }}
-                      remarkPlugins={[remarkGfm]}
-                    >
-                      {unescapeMarkdown(plan.articleContent)}
-                    </ReactMarkdown>
-                  </Box>
-                  <Box sx={{ order: { xs: 2, lg: 1 }, maxWidth: "600px", marginBottom: 10 }}>
-                    <PaceTable
-                      cols={[
-                        "Mile",
-                        "Pace",
-                        "Profile",
-                        "Avg.",
-                        "Gain",
-                        "GAP",
-                        "Elapsed",
-                      ]}
-                      plan={plan}
-                    ></PaceTable>
-                  </Box>
+                  {plan.articleElements.map((e: ArticleElement, index) => {
+
+                    switch (true) {
+                      case isPaceTable(e):
+                        return (
+                          <Box sx={{ maxWidth: "600px", marginBottom: 10 }}>
+                            <PaceTable
+                              cols={e.paceTable.columns}
+                              backgroundColor="white"
+                              plan={plan}
+                            ></PaceTable>
+                          </Box>
+                        )
+                      case isText(e):
+                        return (
+                          <Box
+                            sx={{
+                              flex: 1,
+                              display: "block",
+                              padding: 2
+                            }}
+                          >
+                            <ReactMarkdown
+                              components={{
+                                img: ({ node, ...props }) => <CustomImage {...props} />,
+                                p: ({ node, ...props }) => (
+                                  <p style={{ color: 'rgba(0, 0, 0, 0.6)', fontSize: '20px' }} {...props} />
+                                ),
+                                h1: ({ node, ...props }) => (
+                                  <h1 style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
+                                ),
+                                h2: ({ node, ...props }) => (
+                                  <h2 style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
+                                ),
+                                h3: ({ node, ...props }) => (
+                                  <h3 style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
+                                ),
+                                ul: ({ node, ...props }) => (
+                                  <ul style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
+                                ),
+                              }}
+                              remarkPlugins={[remarkGfm]}
+                            >
+                              {unescapeMarkdown(e.text)}
+                            </ReactMarkdown>
+                          </Box>
+                        )
+                      case isImage(e):
+                        return (
+                          <div>image not supported yet</div>
+                        )
+                      default:
+                        return <div></div>
+                    }
+                  })}
                 </Box>
               </Box>
             </Grid>

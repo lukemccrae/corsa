@@ -145,9 +145,22 @@ export const fetchPlanDetails = async (
         profilePhoto
         author
         publishDate
+        articleElements {
+          ... on TextElement {
+            text
+          }
+          ... on ImageElement {
+            image
+          }
+          ... on PaceTableElement {
+            paceTable {
+              columns
+              miles
+            }
+          }
+        }
       }
     }
-
   `;
   const result = await anonFetch(query, anon);
   return result;

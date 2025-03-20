@@ -8,6 +8,16 @@ export interface User {
   // profile: string;
 }
 
+export type PaceTableType = {
+  columns: string[]; // This is an enum ["Mile", "Pace", "Profile"]
+  miles: number[];   // e.g., [0, 3]
+};
+
+export type ArticleElement = 
+  | { paceTable: PaceTableType }
+  | { image: string }
+  | { text: string };
+
 export type Plan = {
   slug: string;
   bucketKey: string;
@@ -30,6 +40,7 @@ export type Plan = {
   author: string;
   profilePhoto: string;
   publishDate: string;
+  articleElements: ArticleElement[];
 };
 
 export interface PartialPlan {
