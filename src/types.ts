@@ -16,7 +16,7 @@ export type PaceTableType = {
 export type ArticleElement = 
   | { paceTable: PaceTableType }
   | { image: string }
-  | { text: string };
+  | { content: string };
 
 export type Plan = {
   slug: string;

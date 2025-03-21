@@ -20,7 +20,6 @@ export const ArticlePage = () => {
     const publishedPlans = async () => {
       if (anon && checkValidAnon() && username && slug) {
         const result = await fetchPlanDetails(username, slug, anon);
-        console.log(result, '<< resulty')
         setPlan(result.data.getPlanById);
       }
     };
@@ -45,7 +44,7 @@ export const ArticlePage = () => {
 
   const isImage = (e: ArticleElement): e is { image: string } => "image" in e;
 
-  const isText = (e: ArticleElement): e is { text: string } => "text" in e;
+  const isText = (e: ArticleElement): e is { content: string } => "content" in e;
 
   return (
     <Container maxWidth="md">
@@ -199,7 +198,7 @@ export const ArticlePage = () => {
                               }}
                               remarkPlugins={[remarkGfm]}
                             >
-                              {unescapeMarkdown(e.text)}
+                              {unescapeMarkdown(e.content)}
                             </ReactMarkdown>
                           </Box>
                         )
