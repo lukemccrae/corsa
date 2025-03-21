@@ -19,6 +19,7 @@ export const UI = () => {
     if (user) {
       const fetchPlan = async () => {
         const plans = await getPlansByUserId({ user });
+        console.log(plans, '<< olans')
         setPlans(plans);
       }
       fetchPlan()

@@ -1,4 +1,5 @@
 export const unescapeMarkdown = (escapedString: string) => {
+  console.log(escapedString, '<< escape')
   const parsedString = JSON.parse(escapedString);
   return (
     parsedString

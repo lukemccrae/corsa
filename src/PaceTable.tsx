@@ -18,6 +18,7 @@ interface PaceTableProps {
   plan: Plan;
   cols: string[];
   backgroundColor: string;
+  miles: number[];
 }
 
 export const PaceTable: React.FC<PaceTableProps> = (props: PaceTableProps) => {
@@ -41,7 +42,8 @@ export const PaceTable: React.FC<PaceTableProps> = (props: PaceTableProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {props.plan.mileData.map((md, i) => (
+          {/* render only miles provided in arg */}
+          {props.plan.mileData.slice(props.miles[0], props.miles[1]).map((md, i) => (
             <TableRow key={i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell align="center" sx={{ padding: "0 0 0 3px", display: checkDisplayCols('Mile') }}>
                 {i === props.plan.mileData.length - 1 ? props.plan.lastMileDistance : i + 1}

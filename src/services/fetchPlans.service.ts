@@ -32,7 +32,6 @@ export const getPlansByUserId = async (props: GetPlansByUserIdProps) => {
           }
         }
       `;
-      console.log(query, '<< query')
   try {
     const result = await fetch(domain.appsync, {
       method: "POST",
@@ -54,6 +53,17 @@ export const getPlanById = async (props: GetPlanByIdProps) => {
   const query = ` 
     query MyQuery {
       getPlanById(userId: "${props.userId}" slug: "${props.slug}") {
+          articleElements {
+      ... on TextElement {
+        content
+      }
+      ... on PaceTableElement {
+        paceTable {
+          columns
+          miles
+        }
+      }
+    }
         distanceInMiles
             durationInSeconds
             articleContent
@@ -74,9 +84,9 @@ export const getPlanById = async (props: GetPlanByIdProps) => {
               elevationLoss
             }
             name
-            articleContent
             published
             slug
+            
       }
     }
   `;
@@ -94,6 +104,7 @@ export const getPlanById = async (props: GetPlanByIdProps) => {
       body: JSON.stringify({ query }),
     });
     const plans = await result.json();
+    console.log(plans, '<< plans')
 
     return plans.data.getPlanById;
   } catch (e) {

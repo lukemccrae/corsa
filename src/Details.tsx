@@ -3,7 +3,7 @@ import { PaceTable } from "./PaceTable";
 import { Link, useParams } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import { getPlanById } from "./services/fetchPlans.service";
-import { FeatureProperties, Plan } from "./types";
+import { ArticleElement, FeatureProperties, PaceTableType, Plan } from "./types";
 import { Box, Container, Divider, Paper, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { DeleteCourse } from "./DeleteCourse";
@@ -77,6 +77,14 @@ export const Details = () => {
     }
   };
 
+
+  const isPaceTable = (e: ArticleElement): e is { paceTable: PaceTableType } =>
+    "paceTable" in e;
+
+  const isImage = (e: ArticleElement): e is { image: string } => "image" in e;
+
+  const isText = (e: ArticleElement): e is { content: string } => "text" in e;
+
   if (plan) {
     return (
       <Container sx={{ mt: "100px" }} maxWidth="xl">
@@ -127,22 +135,7 @@ export const Details = () => {
               <Shareables plan={plan}></Shareables>
             </Paper>
 
-            <PaceTable
-              cols={[
-                "Mile",
-                "Pace",
-                "Profile",
-                "Avg.",
-                "Gain",
-                "GAP",
-                "Loss",
-                "Elapsed",
-              ]}
-              plan={plan}
-              backgroundColor="white"
-            />
-
-            {properties && coords && (
+            {/* {properties && coords && (
               <ChartWrapper
                 elevationWidth={elevationWidth}
                 coords={coords}
@@ -151,7 +144,7 @@ export const Details = () => {
                 properties={properties}
                 plan={plan}
               />
-            )}
+            )} */}
           </Box>
 
           {/* Right Side - Flexible Editor */}
@@ -166,15 +159,56 @@ export const Details = () => {
             >
               <SaveArticle slug={plan.slug} label={"Save"} value={value} />
             </Box>
-            <MDEditor
-              value={value}
-              onChange={(val) => setValue(val || "")}
-              preview={"live"}
-            />
-            <MDEditor.Markdown
-              source={value}
-              style={{ whiteSpace: "pre-wrap" }}
-            />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", lg: "column" }, // pace chart always on bottom
+                gap: 3,
+              }}
+            >
+              {plan.articleElements.map((e: ArticleElement, index) => {
+                switch (true) {
+                  case isPaceTable(e):
+                    return (
+                      <Box sx={{ maxWidth: "600px", marginBottom: 10 }}>
+                        <PaceTable
+                          cols={e.paceTable.columns}
+                          miles={e.paceTable.miles}
+                          backgroundColor="white"
+                          plan={plan}
+                        ></PaceTable>
+                      </Box>
+                    )
+                  case isText(e):
+                    console.log(unescapeMarkdown(e.content))
+                    return (
+                      <Box
+                        sx={{
+                          flex: 1,
+                          display: "block",
+                          padding: 2
+                        }}
+                      >
+                        <MDEditor
+                          value={value}
+                          onChange={(val) => setValue(val || "")}
+                          preview={"live"}
+                        />
+                        <MDEditor.Markdown
+                          source={value}
+                          style={{ whiteSpace: "pre-wrap" }}
+                        />
+                      </Box>
+                    )
+                  case isImage(e):
+                    return (
+                      <div>image not supported yet</div>
+                    )
+                  default:
+                    return <div></div>
+                }
+              })}
+            </Box>
           </Box>
         </Box>
       </Container>

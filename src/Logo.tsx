@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material"
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import { Link } from "react-router-dom";
 
 export const Logo = () => {
@@ -21,5 +22,7 @@ export const Logo = () => {
   >
     CORSA.
     <DirectionsRunIcon sx={{ ml: 1, margin: 0 }} />
+    {/* <DirectionsBikeIcon sx={{ ml: 1, margin: 0 }} /> */}
+
   </Typography>
 }
