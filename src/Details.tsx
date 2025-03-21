@@ -63,6 +63,7 @@ export const Details = () => {
         setPlan(planResult);
         // setCoords(mapResult.features[0].geometry.coordinates);
         // setProperties(mapResult.features[0].properties);
+        console.log(unescapeMarkdown(planResult.articleContent))
         setValue(unescapeMarkdown(planResult.articleContent));
       };
       fetchPlan();
@@ -83,7 +84,7 @@ export const Details = () => {
 
   const isImage = (e: ArticleElement): e is { image: string } => "image" in e;
 
-  const isText = (e: ArticleElement): e is { content: string } => "text" in e;
+  const isText = (e: ArticleElement): e is { content: string } => "content" in e;
 
   if (plan) {
     return (
@@ -131,9 +132,9 @@ export const Details = () => {
               </Box>
             </Box>
 
-            <Paper>
+            {/* <Paper>
               <Shareables plan={plan}></Shareables>
-            </Paper>
+            </Paper> */}
 
             {/* {properties && coords && (
               <ChartWrapper
@@ -180,7 +181,6 @@ export const Details = () => {
                       </Box>
                     )
                   case isText(e):
-                    console.log(unescapeMarkdown(e.content))
                     return (
                       <Box
                         sx={{

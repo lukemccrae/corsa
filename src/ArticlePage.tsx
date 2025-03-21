@@ -34,7 +34,7 @@ export const ArticlePage = () => {
     <img
       src={src}
       alt={alt}
-      style={{ maxWidth: "400px", width: "100%", height: "auto" }}
+      style={{ maxWidth: "600px", width: "100%", height: "auto" }}
       {...props}
     />
   );
@@ -44,7 +44,7 @@ export const ArticlePage = () => {
 
   const isImage = (e: ArticleElement): e is { image: string } => "image" in e;
 
-  const isText = (e: ArticleElement): e is { content: string } => "text" in e;
+  const isText = (e: ArticleElement): e is { content: string } => "content" in e;
 
   return (
     <Container maxWidth="md">
