@@ -179,7 +179,7 @@ export const Shareables = (props: ShareablesProps) => {
                             sx={{
                                 position: "absolute",
                                 top: 16,
-                                right: 16,
+                                left: 16,
                             }}
                         >
                             <Avatar src={props.plan.profilePhoto} sx={{ width: 56, height: 56 }} />
