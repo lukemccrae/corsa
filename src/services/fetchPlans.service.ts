@@ -42,7 +42,6 @@ export const getPlansByUserId = async (props: GetPlansByUserIdProps) => {
       body: JSON.stringify({ query }),
     });
     const plans = await result.json();
-    console.log(plans, "<< plans");
     return plans.data.getPlansByUserId;
   } catch (e) {
     console.log(e, "<< error");
@@ -55,7 +54,9 @@ export const getPlanById = async (props: GetPlanByIdProps) => {
       getPlanById(userId: "${props.userId}" slug: "${props.slug}") {
           articleElements {
       ... on TextElement {
-        content
+        text {
+          content
+        }
       }
       ... on PaceTableElement {
         paceTable {
@@ -104,7 +105,6 @@ export const getPlanById = async (props: GetPlanByIdProps) => {
       body: JSON.stringify({ query }),
     });
     const plans = await result.json();
-    console.log(plans, '<< plans')
 
     return plans.data.getPlanById;
   } catch (e) {

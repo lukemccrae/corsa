@@ -1,31 +1,24 @@
 import React from "react";
-import { PaceTable } from "./PaceTable";
 import { Link, useParams } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import { getPlanById } from "./services/fetchPlans.service";
-import { ArticleElement, FeatureProperties, PaceTableType, Plan } from "./types";
-import { Box, Container, Divider, Paper, Typography } from "@mui/material";
+import { ArticleElement, FeatureProperties, Plan } from "./types";
+import { Box, Container } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { DeleteCourse } from "./DeleteCourse";
-import { PublishCourse } from "./PublishCourse";
-import MDEditor from "@uiw/react-md-editor";
-
-import { ChartWrapper } from "./ChartWrapper";
 import { useScreenSize } from "./helpers/screensize.helper";
 // @ts-ignore
-import { calcTime } from "./helpers/avgPace.helper";
 import { SaveArticle } from "./SaveArticle";
-import { unescapeMarkdown } from "./helpers/markdown.helper";
-import { Shareables } from "./Shareables";
+import { ArticleEditor } from "./ArticleEditor";
 
 export const Details = () => {
   const { slug } = useParams();
   const { user } = useUser();
   const [plan, setPlan] = React.useState<Plan>();
-  const [coords, setCoords] = React.useState<number[][]>();
   const [properties, setProperties] = React.useState<FeatureProperties>();
   const [hoveredPoint, setHoveredPoint] = React.useState<number>(0);
   const [value, setValue] = React.useState<string>("**Hello world!!!**");
+  const [elements, setElements] = React.useState<ArticleElement[] | undefined>();
 
   const screenSize = useScreenSize();
 
@@ -53,18 +46,14 @@ export const Details = () => {
   // elevation profile is shortened version of points so this guides indexing the map array
 
   React.useEffect(() => {
+    console.log("hello")
     if (slug && user) {
       const userId = user.preferred_username;
 
       const fetchPlan = async () => {
         const planResult: Plan = await getPlanById({ userId, slug });
-        // this needs to retrieve the bucket key and pass it bwlow
-        // const mapResult: FeatureCollection = await getGeoJsonBySortKey({ planId });
         setPlan(planResult);
-        // setCoords(mapResult.features[0].geometry.coordinates);
-        // setProperties(mapResult.features[0].properties);
-        console.log(unescapeMarkdown(planResult.articleContent))
-        setValue(unescapeMarkdown(planResult.articleContent));
+        setElements(planResult.articleElements.map(el => ({ ...el, editing: false })));
       };
       fetchPlan();
     }
@@ -78,139 +67,39 @@ export const Details = () => {
     }
   };
 
-
-  const isPaceTable = (e: ArticleElement): e is { paceTable: PaceTableType } =>
-    "paceTable" in e;
-
-  const isImage = (e: ArticleElement): e is { image: string } => "image" in e;
-
-  const isText = (e: ArticleElement): e is { content: string } => "content" in e;
-
   if (plan) {
     return (
-      <Container sx={{ mt: "100px" }} maxWidth="xl">
-        <Box
-          display="flex"
-          flexDirection={{ xs: "column", lg: "row" }}
-          sx={{ justifyContent: "flex-start", alignItems: "flex-start" }}
-          width="100%"
-          gap={4}
-        >
-          {/* Left Side - Fixed Width */}
-          <Box
-            display="flex"
-            flexDirection="column"
-            gap={2}
-            width={{ xs: "100%", lg: "520px" }} // Full width on small, fixed on large
-            sx={{
-              alignSelf: "stretch",
-              alignItems: { xs: "center", lg: "flex-start" }, // Center on small, left-align on large
-              textAlign: { xs: "center", lg: "left" }, // Center text on small screens
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
-              }}
-            >
-              <Link to="/app" style={{ color: "#515B63" }}>
-                <ArrowBackIcon />
-              </Link>
-              <Box display="flex" gap={2}>
-                <DeleteCourse
-                  bucketKey={plan.bucketKey}
-                  slug={plan.slug}
-                  label={"Delete"}
-                  disabled={plan.published}
-                />
-                {/* <PublishCourse
-                  plan={plan}
-                  label={plan.published ? "Unpublish" : "Publish"}
-                /> */}
-              </Box>
-            </Box>
-
-            {/* <Paper>
-              <Shareables plan={plan}></Shareables>
-            </Paper> */}
-
-            {/* {properties && coords && (
-              <ChartWrapper
-                elevationWidth={elevationWidth}
-                coords={coords}
-                hoveredPoint={hoveredPoint}
-                handleSetHoveredPoint={handleSetHoveredPoint}
-                properties={properties}
-                plan={plan}
-              />
-            )} */}
-          </Box>
-
-          {/* Right Side - Flexible Editor */}
-          <Box
-            flex="1"
-            minWidth="600px"
-            maxWidth="800px"
-            sx={{ alignSelf: "stretch" }}
-          >
-            <Box
-              sx={{ display: "flex", justifyContent: "end", margin: "10px" }}
-            >
-              <SaveArticle slug={plan.slug} label={"Save"} value={value} />
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: { xs: "column", lg: "column" }, // pace chart always on bottom
-                gap: 3,
-              }}
-            >
-              {plan.articleElements.map((e: ArticleElement, index) => {
-                switch (true) {
-                  case isPaceTable(e):
-                    return (
-                      <Box sx={{ maxWidth: "600px", marginBottom: 10 }}>
-                        <PaceTable
-                          cols={e.paceTable.columns}
-                          miles={e.paceTable.miles}
-                          backgroundColor="white"
-                          plan={plan}
-                        ></PaceTable>
-                      </Box>
-                    )
-                  case isText(e):
-                    return (
-                      <Box
-                        sx={{
-                          flex: 1,
-                          display: "block",
-                          padding: 2
-                        }}
-                      >
-                        <MDEditor
-                          value={value}
-                          onChange={(val) => setValue(val || "")}
-                          preview={"live"}
-                        />
-                        <MDEditor.Markdown
-                          source={value}
-                          style={{ whiteSpace: "pre-wrap" }}
-                        />
-                      </Box>
-                    )
-                  case isImage(e):
-                    return (
-                      <div>image not supported yet</div>
-                    )
-                  default:
-                    return <div></div>
-                }
-              })}
-            </Box>
+      <Container sx={{ mt: "100px" }} maxWidth="lg">
+        <Box sx={{
+          maxWidth: { xs: "100vw", sm: "600px", md: "600px" }, 
+          display: "flex", justifyContent: "space-between", alignItems: "center",
+          margin: 2
+        }}>
+          <Link to="/app" style={{ color: "#515B63" }}>
+            <ArrowBackIcon />
+          </Link>
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <DeleteCourse
+              bucketKey={plan.bucketKey}
+              slug={plan.slug}
+              label={"Delete"}
+              disabled={plan.published}
+            />
+            <SaveArticle slug={plan.slug} label={"Save"} elements={elements} />
           </Box>
         </Box>
+
+        <Box
+          sx={{
+            maxWidth: { xs: "100vw", sm: "600px", md: "600px" },
+
+            mx: "auto", // Centers the content
+            px: { xs: 2, sm: 3 }, // Padding for smaller screens
+          }}
+        >
+          {elements && <ArticleEditor plan={plan} setElements={setElements} elements={elements} />}
+        </Box>
+
       </Container>
     );
   } else {

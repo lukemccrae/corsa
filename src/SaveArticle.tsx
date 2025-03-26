@@ -1,12 +1,13 @@
 import Button from '@mui/material/Button';
-import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
 import { useUser } from './context/UserContext';
 import { saveArticle } from './services/saveArticle.service';
+import { ArticleElement } from './types';
 
 interface SaveArticleProps {
     label: string
     slug: string
-    value: string
+    elements: ArticleElement[] | undefined
 }
 
 
@@ -15,21 +16,20 @@ export const SaveArticle = (props: SaveArticleProps) => {
     const { user } = useUser()
 
     const updateArticleData = async () => {
-        if(user && user.userId) {
-            const article = props.value;
+        if(user && user.userId && props.elements) {
             const slug = props.slug;
             const userId = user.userId
-            const result = await saveArticle({article, slug, userId})    
+            const elements = props.elements
+            const result = await saveArticle({elements, slug, userId})   
         }
     }
-
 
     return (
         <>
             <Button
                 variant="contained"
                 color="error"
-                startIcon={<DeleteIcon />}
+                startIcon={<SaveIcon />}
                 onClick={updateArticleData}
                 sx={{ backgroundColor: '#469CE3', '&:hover': {} }}
             >

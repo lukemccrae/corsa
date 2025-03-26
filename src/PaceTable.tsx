@@ -28,7 +28,7 @@ export const PaceTable: React.FC<PaceTableProps> = (props: PaceTableProps) => {
   
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ backgroundColor: props.backgroundColor, minWidth: 400, maxWidth: 600, margin: "8px" }} aria-label="pace table" size="small" id="paceTable">
+      <Table sx={{ backgroundColor: props.backgroundColor, minWidth: 400, maxWidth: 500 }} aria-label="pace table" size="small" id="paceTable">
         <TableHead>
           <TableRow>
             <TableCell sx={{display: checkDisplayCols('Mile')}}>Mile</TableCell>
