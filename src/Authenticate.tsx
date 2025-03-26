@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
@@ -9,9 +8,6 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
-import { retrieveUserToken } from "./helpers/token.helper";
-import UserPool from "./UserPool";
-import { StravaIcon } from './CustomIcons';
 import { useUser } from './context/UserContext';
 
 
@@ -198,17 +194,6 @@ export const Authenticate = () => {
                   >
                     Sign up
                   </Typography>
-                  {/* <Divider>or</Divider>
-                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <Button
-                      fullWidth
-                      variant="outlined"
-                      onClick={() => alert('Sign in with Strava')}
-                      startIcon={<StravaIcon />}
-                    >
-                      Sign in with Strava
-                    </Button>
-                  </Box> */}
                 </span>
               </Typography>
             </Box>
