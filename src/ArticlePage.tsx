@@ -33,7 +33,6 @@ export const ArticlePage = () => {
     const publishedPlans = async () => {
       if (anon && checkValidAnon() && username && slug) {
         const result = await fetchPlanDetails(username, slug, anon);
-        console.log(result, '<< hi')
         setPlan(result.data.getPlanById);
       }
     };
@@ -173,7 +172,6 @@ export const ArticlePage = () => {
                           </Box>
                         )
                       case isText(e):
-                        console.log(e)
                         return (
                           <Box
                             sx={{

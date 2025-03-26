@@ -9,6 +9,5 @@ export const unescapeMarkdown = (escapedString: string) => {
     .replace(/\\_/g, "_") // Replace \_ with _
     .replace(/\\\|/g, "|") // Replace \| with |
     .replace(/\\\\/g, "\\")
-    console.log(escaped)
   return escaped;
 };

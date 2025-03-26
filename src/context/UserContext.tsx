@@ -110,13 +110,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     
     const email = data.get('register-email')?.toString();
     const password = data.get('register-password')?.toString()
-    console.log(email, password, '< ep')
 
     if (!email || !password) {
       throw new Error('Your user credentials are invalid')
     }
-
-    console.log(email, password)
 
     event.preventDefault();
     UserPool.signUp(email, password, [], [], (err, data) => {

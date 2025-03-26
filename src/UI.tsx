@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Card, CardContent, Typography, CardActionArea, Box } from '@mui/material';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getPlansByUserId } from './services/fetchPlans.service';
 import { useUser } from './context/UserContext';
 import { Plan } from './types';
 import { shortenName } from './helpers/substring.helper'
 import { MileProfile } from './MileProfile';
 import { createMiniProfile } from './helpers/miniVertProfile.helpter';
-import { calculateStartWithTZ } from './helpers/strartTime.helper';
 import { toHHMMSS } from './helpers/avgPace.helper';
 
 export const UI = () => {
@@ -15,11 +14,9 @@ export const UI = () => {
   const [plans, setPlans] = React.useState<Plan[]>([]);
 
   useEffect(() => {
-    console.log(user)
     if (user) {
       const fetchPlan = async () => {
         const plans = await getPlansByUserId({ user });
-        console.log(plans, '<< olans')
         setPlans(plans);
       }
       fetchPlan()
@@ -65,10 +62,6 @@ export const UI = () => {
               }}>
               <CardContent>
                 <Typography>{shortenName(record.name)}</Typography>
-                {/* <Typography>{record.startTime.toLocaleString('en-US', options)}</Typography> */}
-                {/* <Typography variant="body2" color="text.secondary">
-                  {calculateStartWithTZ(record.startTime, record.timezone)}
-                </Typography> */}
                 <Typography variant="body2" color="text.secondary">
                   {record.distanceInMiles + record.lastMileDistance}{ } mi
                 </Typography>

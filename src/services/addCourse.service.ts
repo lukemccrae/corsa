@@ -61,7 +61,6 @@ export const handleFileUpload = async (
     );
 
     const data = await response.json();
-    console.log(data, "<< data");
 
     setProgress(0);
     navigate("/app");

@@ -22,7 +22,6 @@ export const Profile = () => {
       if (anon && checkValidAnon() && username) {
         const result = await getPublishedUserInfo({ username, anon })
         const { bio, profilePicture } = result.data.getPublishedUserInfo;
-        console.log(profilePicture, '<< pp')
         setPlans(result.data.getPublishedUserInfo.plans)
         setUserInfo({ bio, profilePicture })
       }

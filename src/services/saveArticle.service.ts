@@ -28,8 +28,6 @@ export const saveArticle = async (props: SaveArticleProps) => {
     articleElements: JSON.stringify(removeQuotesFromContent(props.elements))
   };
 
-  console.log(JSON.stringify(variables))
-
   try {
     const result = await fetch(
       // "http://localhost:8008/graphql",
@@ -46,7 +44,6 @@ export const saveArticle = async (props: SaveArticleProps) => {
         }),
       }
     );
-    console.log(result, '<< result')
     const jsonResult = await result.json();
     if (jsonResult.data.updateArticleByPlanId) {
       return true;
