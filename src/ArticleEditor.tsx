@@ -8,7 +8,6 @@ import ReactMarkdown from "react-markdown";
 import { CustomImage } from "./ArticlePage";
 import { unescapeMarkdown } from "./helpers/markdown.helper";
 import remarkGfm from "remark-gfm";
-import { SaveArticle } from "./SaveArticle";
 import { saveArticle } from "./services/saveArticle.service";
 
 interface ArticleEditorProps {

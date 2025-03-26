@@ -1,12 +1,11 @@
 import * as React from "react";
-import Title from "./Title";
 import { handleFileUpload } from "./services/addCourse.service.ts";
 import { useUser } from './context/UserContext';
 import { useNavigate, useParams } from 'react-router-dom';
 
 
 import UploadProgress from "./UploadProgress.tsx";
-import { Box, Button, Card, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 export const AddCourse = () => {
   const { user } = useUser()
