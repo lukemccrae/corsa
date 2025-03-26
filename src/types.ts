@@ -13,10 +13,13 @@ export type PaceTableType = {
   miles: number[];   // e.g., [0, 3]
 };
 
-export type ArticleElement = 
-  | { paceTable: PaceTableType }
-  | { image: string }
-  | { content: string };
+export type ArticleElement =
+  | { paceTable: PaceTableType, editing: boolean }
+  | { text: Text, editing: boolean };
+
+export type Text = {
+  content: string;
+}
 
 export type Plan = {
   slug: string;
@@ -112,7 +115,7 @@ export type FeatureProperties = {
   minGrade: number;
   maxGrade: number;
   minPace: number;
-  maxPace: number; 
+  maxPace: number;
   maxElevationInFeet: number
   minElevationInFeet: number
   pointMetadata: PointMetadata[]

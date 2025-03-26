@@ -1,21 +1,21 @@
-import { User } from "../types";
+import { ArticleElement, User } from "../types";
 import { domain } from "../context/domain.context";
 import { retrieveUserToken } from "../helpers/token.helper";
+import { removeQuotesFromContent } from "../helpers/removeQuotesHelper";
 
 interface SaveArticleProps {
-  article: string;
+  elements: ArticleElement[];
   slug: string;
   userId: string;
 }
 
 export const saveArticle = async (props: SaveArticleProps) => {
-  console.log(props);
   const mutation = `
-        mutation MyMutation($slug: ID!, $userId: String!, $articleContent: String!) {
+        mutation MyMutation($slug: ID!, $userId: String!, $articleElements: String!) {
         updateArticleByPlanId(
             slug: $slug,
             userId: $userId,
-            articleContent: $articleContent
+            articleElements: $articleElements
         ) {
             success
         }
@@ -25,10 +25,10 @@ export const saveArticle = async (props: SaveArticleProps) => {
   const variables = {
     slug: props.slug,
     userId: props.userId,
-    articleContent: JSON.stringify(props.article),
+    articleElements: JSON.stringify(removeQuotesFromContent(props.elements))
   };
 
-  console.log(variables, "<< variables");
+  console.log(JSON.stringify(variables))
 
   try {
     const result = await fetch(
@@ -46,8 +46,8 @@ export const saveArticle = async (props: SaveArticleProps) => {
         }),
       }
     );
+    console.log(result, '<< result')
     const jsonResult = await result.json();
-    console.log(jsonResult, "<< hihihi");
     if (jsonResult.data.updateArticleByPlanId) {
       return true;
     } else {

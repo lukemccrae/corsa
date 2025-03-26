@@ -56,15 +56,15 @@ export const Shareables = (props: ShareablesProps) => {
 
 
 
-    React.useEffect(() => {
-        const getArticleQuotes = async () => {
-            const result = await handleAssistantCall([prompt])
-            const cleanedString = result.message.content.replace(/^```json\n/, "").replace(/\n```$/, "");
-            const quotes = JSON.parse(cleanedString)
-            setArticleQuotes(quotes)
-        };
-        getArticleQuotes();
-    }, []);
+    // React.useEffect(() => {
+    //     const getArticleQuotes = async () => {
+    //         const result = await handleAssistantCall([prompt])
+    //         const cleanedString = result.message.content.replace(/^```json\n/, "").replace(/\n```$/, "");
+    //         const quotes = JSON.parse(cleanedString)
+    //         setArticleQuotes(quotes)
+    //     };
+    //     getArticleQuotes();
+    // }, []);
 
     // const articleQuotes = [
     //     "The Owens Valley is a remarkable place. Winding rivers and canals snake through a flat valley between two mountain ranges. To the west the mighty Sierra Nevada shoots straight up. To the east are the less prestigious but mysterious White Mountains. On top of the Whites are the oldest living things on earth, Bristlecone Pines.",
@@ -179,7 +179,7 @@ export const Shareables = (props: ShareablesProps) => {
                             sx={{
                                 position: "absolute",
                                 top: 16,
-                                right: 16,
+                                left: 16,
                             }}
                         >
                             <Avatar src={props.plan.profilePhoto} sx={{ width: 56, height: 56 }} />

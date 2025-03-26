@@ -2,13 +2,26 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Avatar, Box, Container, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { ArticleElement, PaceTableType, Plan } from "./types";
+import { ArticleElement, PaceTableType, Plan , Text} from "./types";
 import { useUser } from "./context/UserContext";
 import { PaceTable } from "./PaceTable";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { unescapeMarkdown } from "./helpers/markdown.helper";
 import { fetchPlanDetails } from "./services/anon.service";
+
+export const CustomImage: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = ({
+  alt,
+  src,
+  ...props
+}) => (
+  <img
+    src={src}
+    alt={alt}
+    style={{ maxWidth: "600px", width: "100%", height: "auto" }}
+    {...props}
+  />
+);
 
 export const ArticlePage = () => {
   // Extract the `id` from the URL
@@ -26,25 +39,15 @@ export const ArticlePage = () => {
     publishedPlans();
   }, [anon, username, slug]);
 
-  const CustomImage: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = ({
-    alt,
-    src,
-    ...props
-  }) => (
-    <img
-      src={src}
-      alt={alt}
-      style={{ maxWidth: "400px", width: "100%", height: "auto" }}
-      {...props}
-    />
-  );
 
-  const isPaceTable = (e: ArticleElement): e is { paceTable: PaceTableType } =>
+
+  const isPaceTable = (e: ArticleElement): e is { paceTable: PaceTableType, editing: boolean } =>
     "paceTable" in e;
 
-  const isImage = (e: ArticleElement): e is { image: string } => "image" in e;
-
-  const isText = (e: ArticleElement): e is { content: string } => "content" in e;
+  const isText = (e: ArticleElement): e is { text: Text, editing: boolean } => {
+    console.log(e)
+    return "text" in e;
+  }
 
   return (
     <Container maxWidth="md">
@@ -163,6 +166,7 @@ export const ArticlePage = () => {
                           <Box sx={{ maxWidth: "600px", marginBottom: 10 }}>
                             <PaceTable
                               cols={e.paceTable.columns}
+                              miles={e.paceTable.miles}
                               backgroundColor="white"
                               plan={plan}
                             ></PaceTable>
@@ -181,7 +185,7 @@ export const ArticlePage = () => {
                               components={{
                                 img: ({ node, ...props }) => <CustomImage {...props} />,
                                 p: ({ node, ...props }) => (
-                                  <p style={{ color: 'rgba(0, 0, 0, 0.6)', fontSize: '20px' }} {...props} />
+                                  <p style={{ color: 'rgba(0, 0, 0, 0.6)', fontSize: '16px' }} {...props} />
                                 ),
                                 h1: ({ node, ...props }) => (
                                   <h1 style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
@@ -198,13 +202,9 @@ export const ArticlePage = () => {
                               }}
                               remarkPlugins={[remarkGfm]}
                             >
-                              {unescapeMarkdown(e.content)}
+                              {JSON.parse(unescapeMarkdown(e.text.content))}
                             </ReactMarkdown>
                           </Box>
-                        )
-                      case isImage(e):
-                        return (
-                          <div>image not supported yet</div>
                         )
                       default:
                         return <div></div>

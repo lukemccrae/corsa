@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "@mui/material/Button";
+import { Button, Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Dialog,
@@ -50,16 +50,25 @@ export const DeleteCourse = (props: DeleteButtonProps) => {
 
   return (
     <>
-      <Button
-        variant="contained"
-        color="error"
-        startIcon={<DeleteIcon />}
-        onClick={handleOpen}
-        disabled={props.disabled}
-        sx={{ backgroundColor: "#469CE3", "&:hover": {} }}
-      >
-        {props.label}
-      </Button>
+      <Tooltip title={props.disabled ? "Published articles cannot be deleted" : ""} arrow>
+        <span>
+          <Button
+            variant="contained"
+            color="error"
+            startIcon={<DeleteIcon />}
+            onClick={handleOpen}
+            disabled={props.disabled}
+            sx={{
+              backgroundColor: "#469CE3",
+              "&:hover": {
+                backgroundColor: "#357ABD",
+              },
+            }}
+          >
+            {props.label}
+          </Button>
+        </span>
+      </Tooltip>
 
       <Dialog
         open={open}
