@@ -2,12 +2,11 @@ import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import { getPlanById } from "./services/fetchPlans.service";
-import { ArticleElement, FeatureProperties, Plan } from "./types";
+import { ArticleElement, Plan } from "./types";
 import { Box, Container } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { DeleteCourse } from "./DeleteCourse";
 import { useScreenSize } from "./helpers/screensize.helper";
-// @ts-ignore
 import { SaveArticle } from "./SaveArticle";
 import { ArticleEditor } from "./ArticleEditor";
 
@@ -15,9 +14,6 @@ export const Details = () => {
   const { slug } = useParams();
   const { user } = useUser();
   const [plan, setPlan] = React.useState<Plan>();
-  const [properties, setProperties] = React.useState<FeatureProperties>();
-  const [hoveredPoint, setHoveredPoint] = React.useState<number>(0);
-  const [value, setValue] = React.useState<string>("**Hello world!!!**");
   const [elements, setElements] = React.useState<ArticleElement[] | undefined>();
 
   const screenSize = useScreenSize();
@@ -42,11 +38,7 @@ export const Details = () => {
       break;
   }
 
-  // condensedPointIndex is a way for the pace calculations to be on the same index with the elevation profile
-  // elevation profile is shortened version of points so this guides indexing the map array
-
   React.useEffect(() => {
-    console.log("hello")
     if (slug && user) {
       const userId = user.preferred_username;
 
@@ -58,14 +50,6 @@ export const Details = () => {
       fetchPlan();
     }
   }, [slug, user]);
-
-  const handleSetHoveredPoint = (x: number) => {
-    if (properties) {
-      setHoveredPoint(
-        Math.floor((x / elevationWidth) * properties.pointMetadata.length)
-      );
-    }
-  };
 
   if (plan) {
     return (
