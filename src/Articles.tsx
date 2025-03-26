@@ -19,13 +19,13 @@ export const Articles = () => {
         author: "colleenmiracle",
         slug: "desert-lung-determination"
       },
-      {
-        name: "Death Valley Bikepacking",
-        coverImage: "https://i.imgur.com/P6xBlp9.png",
-        profilePhoto: "https://dgalywyr863hv.cloudfront.net/pictures/athletes/19680637/14084643/37/large.jpg",
-        author: "lukemccrae",
-        slug: "death-valley-bikepacking"
-      },
+      // {
+      //   name: "Death Valley Bikepacking",
+      //   coverImage: "https://i.imgur.com/P6xBlp9.png",
+      //   profilePhoto: "https://dgalywyr863hv.cloudfront.net/pictures/athletes/19680637/14084643/37/large.jpg",
+      //   author: "lukemccrae",
+      //   slug: "death-valley-bikepacking"
+      // },
       {
         name: "Owens Valley FKT on Mt Dan",
         coverImage: "https://i.imgur.com/yvGPLVe.png",
