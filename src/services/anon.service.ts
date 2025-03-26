@@ -147,7 +147,9 @@ export const fetchPlanDetails = async (
         publishDate
         articleElements {
           ... on TextElement {
-            content
+            text {
+              content
+            }
           }
           ... on PaceTableElement {
             paceTable {

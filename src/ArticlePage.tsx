@@ -33,6 +33,7 @@ export const ArticlePage = () => {
     const publishedPlans = async () => {
       if (anon && checkValidAnon() && username && slug) {
         const result = await fetchPlanDetails(username, slug, anon);
+        console.log(result, '<< hi')
         setPlan(result.data.getPlanById);
       }
     };
@@ -45,7 +46,6 @@ export const ArticlePage = () => {
     "paceTable" in e;
 
   const isText = (e: ArticleElement): e is { text: Text, editing: boolean } => {
-    console.log(e)
     return "text" in e;
   }
 
@@ -173,6 +173,7 @@ export const ArticlePage = () => {
                           </Box>
                         )
                       case isText(e):
+                        console.log(e)
                         return (
                           <Box
                             sx={{
@@ -202,7 +203,7 @@ export const ArticlePage = () => {
                               }}
                               remarkPlugins={[remarkGfm]}
                             >
-                              {JSON.parse(unescapeMarkdown(e.text.content))}
+                              {(unescapeMarkdown(e.text.content))}
                             </ReactMarkdown>
                           </Box>
                         )
