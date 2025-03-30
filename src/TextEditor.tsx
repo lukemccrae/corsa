@@ -5,15 +5,15 @@ import { useEffect, useState } from "react";
 import { saveArticle } from "./services/saveArticle.service";
 import { ArticleElement, Plan } from "./types";
 import DOMPurify from 'dompurify';
+import { ElementsMap } from "./Details";
 
 interface TextEditorProps {
     text: string;
-    plan: Plan;
-    elements: ArticleElement[];
+    elements: ElementsMap;
     index: number;
-    setElements: Function;
-    id: string;
     updateTextElement: Function;
+    setElementIdsForOrder: Function;
+    elementIdsForOrder: string[];
 }
 
 export const TextEditor = (props: TextEditorProps) => {
@@ -27,7 +27,17 @@ export const TextEditor = (props: TextEditorProps) => {
 
 
     const moveItem = (index: number, direction: number) => {
-        // props.setIdOrder(newItems);
+        const updatedElementIds = [...props.elementIdsForOrder];
+        const newIndex = index + direction;
+        // Ensure the new index is within bounds
+        if (newIndex < 0 || newIndex >= updatedElementIds.length) {
+            return; // Do nothing if the new index is out of bounds
+        }
+    
+        // Swap the elements at index and newIndex
+        [updatedElementIds[index], updatedElementIds[newIndex]] = [updatedElementIds[newIndex], updatedElementIds[index]];
+    
+        props.setElementIdsForOrder(updatedElementIds);
     };
 
 
@@ -40,7 +50,7 @@ export const TextEditor = (props: TextEditorProps) => {
     };
 
     const handleSave = async () => {
-        props.updateTextElement(newText, props.index)
+        await props.updateTextElement(newText, props.index)
         setEditing(false)
     }
 
@@ -49,8 +59,9 @@ export const TextEditor = (props: TextEditorProps) => {
     };
 
     const handleEditorChange = (text: any) => {
+        console.log(text, '<< text')
         // need to test this with XSS examples =P
-        const sanitizedContent = DOMPurify.sanitize(text.lastLevel.content);
+        const sanitizedContent = DOMPurify.sanitize(text.level.content);
         setNewText(sanitizedContent);
     }
 
@@ -80,7 +91,7 @@ export const TextEditor = (props: TextEditorProps) => {
             }}
             initialValue={DOMPurify.sanitize(props.text)}
             onChange={handleEditorChange}
-        /> : <div>{props.text}</div>}
+        /> : <div dangerouslySetInnerHTML={{ __html: props.text }}></div>}
         <Stack direction="column">
             <IconButton onClick={() => setEditing(!editing)}>
                 <Edit />
@@ -88,16 +99,16 @@ export const TextEditor = (props: TextEditorProps) => {
             <IconButton sx={{ display: editing ? "inline-flex" : "none" }} onClick={() => moveItem(props.index, -1)} disabled={props.index === 0}>
                 <ArrowUpward />
             </IconButton>
-            <IconButton sx={{ display: editing ? "inline-flex" : "none" }} onClick={() => moveItem(props.index, 1)} disabled={props.index === props.elements.length - 1}>
+            <IconButton sx={{ display: editing ? "inline-flex" : "none" }} onClick={() => moveItem(props.index, 1)} disabled={props.index === props.elementIdsForOrder.length - 1}>
                 <ArrowDownward />
             </IconButton>
 
             <IconButton sx={{ display: editing ? "inline-flex" : "none" }} onClick={() => deleteElement()}>
                 <Delete />
             </IconButton>
-            <IconButton sx={{ display: editing ? "inline-flex" : "none" }} onClick={() => handleSave()}>
+            {/* <IconButton sx={{ display: editing ? "inline-flex" : "none" }} onClick={() => handleSave()}>
                 <Save />
-            </IconButton>
+            </IconButton> */}
             <Dialog open={deleteCheck} onClose={handleCancelDelete}>
                 <DialogTitle>Confirm Deletion</DialogTitle>
                 <DialogContent>

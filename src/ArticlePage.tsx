@@ -41,10 +41,10 @@ export const ArticlePage = () => {
 
 
 
-  const isPaceTable = (e: ArticleElement): e is { paceTable: PaceTableType, editing: boolean } =>
+  const isPaceTable = (e: ArticleElement): e is { paceTable: PaceTableType, editing: boolean, id: string } =>
     "paceTable" in e;
 
-  const isText = (e: ArticleElement): e is { text: Text, editing: boolean } => {
+  const isText = (e: ArticleElement): e is { text: Text, editing: boolean, id: string } => {
     return "text" in e;
   }
 

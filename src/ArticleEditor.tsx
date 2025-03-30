@@ -1,72 +1,92 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, Button, Stack, Box, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import { ArticleElement, PaceTableType, Plan, Text } from "./types";
+import { ArticleElement, MileData, PaceTableType, Plan, Text } from "./types";
 import { PaceTable } from "./PaceTable";
 import { TextEditor } from "./TextEditor";
 import { PaceTableEditor } from "./PaceTableEditor";
+import { saveArticle } from "./services/saveArticle.service";
+import { generateRandomID } from "./helpers/randomId.helper";
+import { ElementsMap } from "./Details";
 
 interface ArticleEditorProps {
-  elements: ArticleElement[];
-  setElements: Function;
-  plan: Plan;
+  userId: string;
+  slug: string;
+  elements: ElementsMap;
+  createNewElementsMap: Function;
+  lastMileDistance: number;
+  mileData: MileData[]
 }
 
 export const ArticleEditor = (props: ArticleEditorProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [elementIdsForOrder, setElementIdsForOrder] = useState<string[] | undefined>()
   const openDialog = () => setDialogOpen(true);
   const closeDialog = () => setDialogOpen(false);
 
+  useEffect(() => {
+    setElementIdsForOrder(Object.keys(props.elements).map((e) => e))
+  }, []);
+
   const addItem = (arg: string) => {
     let newElement: ArticleElement | undefined;
+    let id = generateRandomID(4)
 
     switch (arg) {
       case ("text"):
-        newElement = { text: { content: '"Content"' }, editing: false }
+        newElement = { text: { content: '"Content"' }, editing: false, id }
         break;
       case ("paceTable"):
-        newElement = { paceTable: { columns: ["Mile", "Gain", "Elapsed", "Profile", "Pace", "GAP"], miles: [-1, 4] }, editing: false }
+        newElement = { paceTable: { columns: ["Mile", "Gain", "Elapsed", "Profile", "Pace", "GAP"], miles: [-1, 4] }, editing: false, id }
         break;
       default:
         break;
     }
     if (newElement) {
-      props.setElements([...props.elements ?? [], newElement]);
+      props.createNewElementsMap([...Object.values(props.elements), newElement])
     }
     closeDialog()
   };
 
-  const updateTextElement = (content: string, index: number) => {
-    props.setElements((prevElements: any[]) =>
-      prevElements.map((el, idx) => {
+  const updateTextElement = async (content: string, index: number) => {
+    props.createNewElementsMap((prevElements: any[]) => {
+      const newElements = prevElements.map((el, idx) => {
         if (idx === index) {
-          if ("text" in el) {  // Ensure it's actually a text element
+          if ("text" in el) {
             return {
-              ...el, // Preserve other properties
+              ...el,
               text: {
                 ...el.text,
-                content, // Update content safely
+                content,
               },
             };
           }
         }
-        return el; // Return the original element unchanged
-      })
-    );
+        return el;
+      });
+
+      // Save the new elements after they are set
+      const slug = props.slug;
+      const userId = props.userId;
+      saveArticle({ elements: newElements, slug, userId });
+
+      return newElements; // Ensure state is actually updated
+    });
   };
-  const isPaceTable = (e: ArticleElement): e is { paceTable: PaceTableType, editing: boolean } =>
+
+  const isPaceTable = (e: ArticleElement): e is { paceTable: PaceTableType, editing: boolean, id: string } =>
     "paceTable" in e;
 
-  const isText = (e: ArticleElement): e is { text: Text, editing: boolean } => "text" in e;
+  const isText = (e: ArticleElement): e is { text: Text, editing: boolean, id: string } => "text" in e;
 
   const returnProperElement = (element: ArticleElement, index: number) => {
     if (isPaceTable(element)) {
-      return <Box sx={{display: "flex", flexDirection: "row"}}>
-        <PaceTableEditor element={element.paceTable} plan={props.plan}></PaceTableEditor>
+      return <Box sx={{ display: "flex", flexDirection: "row" }}>
+        <PaceTableEditor element={element.paceTable} mileData={props.mileData} lastMileDistance={props.lastMileDistance}></PaceTableEditor>
       </Box>
     } else if (isText(element)) {
       return <Box sx={{ width: "100%" }}>
-        <TextEditor updateTextElement={updateTextElement} index={index} setElements={props.setElements} id={"123"} elements={props.elements} plan={props.plan} text={element.text.content}></TextEditor>
+        {elementIdsForOrder && <TextEditor setElementIdsForOrder={setElementIdsForOrder} updateTextElement={updateTextElement} index={index} elements={props.elements} elementIdsForOrder={elementIdsForOrder} text={element.text.content}></TextEditor>}
       </Box>
     }
     return null;
@@ -75,7 +95,22 @@ export const ArticleEditor = (props: ArticleEditorProps) => {
   return (
     <>
       {props.elements && <Stack spacing={2}>
-        {props.elements.map((element, index) => {
+        {elementIdsForOrder?.map((id, index) => {
+          return <Card key={id} sx={{ padding: 3, display: "flex" }}>
+            <CardContent>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                {returnProperElement(props.elements[id], index)}
+              </Box>
+            </CardContent>
+          </Card>
+        })}
+
+        {/* {props.elements.map((element, index) => {
           return (
             <Card key={index} sx={{ padding: 3, display: "flex" }}>
               <CardContent>
@@ -90,7 +125,7 @@ export const ArticleEditor = (props: ArticleEditorProps) => {
               </CardContent>
             </Card>
           )
-        })}
+        })} */}
         <Button variant="contained" startIcon={<Add />} onClick={openDialog}>
         </Button>
       </Stack>}

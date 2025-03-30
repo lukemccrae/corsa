@@ -52,20 +52,23 @@ export const getPlanById = async (props: GetPlanByIdProps) => {
   const query = ` 
     query MyQuery {
       getPlanById(userId: "${props.userId}" slug: "${props.slug}") {
-          articleElements {
-      ... on TextElement {
-        text {
-          content
+        articleElements {
+          ... on TextElement {
+            text {
+              content
+            }
+              id
+          }
+          ... on PaceTableElement {
+            paceTable {
+              columns
+              miles
+            }
+              id
+          }
         }
-      }
-      ... on PaceTableElement {
-        paceTable {
-          columns
-          miles
-        }
-      }
-    }
         distanceInMiles
+        bucketKey
             durationInSeconds
             articleContent
             lastMileDistance

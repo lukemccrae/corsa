@@ -14,8 +14,8 @@ export type PaceTableType = {
 };
 
 export type ArticleElement =
-  | { paceTable: PaceTableType, editing: boolean }
-  | { text: Text, editing: boolean };
+  | { paceTable: PaceTableType, editing: boolean, id: string }
+  | { text: Text, editing: boolean, id: string };
 
 export type Text = {
   content: string;

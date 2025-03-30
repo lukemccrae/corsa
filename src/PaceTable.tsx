@@ -4,7 +4,7 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Plan } from "./types";
+import { MileData, Plan } from "./types";
 import {
   averagePaces,
   calcTime,
@@ -12,9 +12,13 @@ import {
 } from "./helpers/avgPace.helper";
 import { MileProfile } from "./MileProfile";
 import { Paper, TableContainer } from "@mui/material";
+type PartialPlan = {
+  mileData: MileData[];
+  lastMileDistance: number;
+}
 
 interface PaceTableProps {
-  plan: Plan;
+  plan: PartialPlan;
   cols: string[];
   backgroundColor: string;
   miles: number[];
