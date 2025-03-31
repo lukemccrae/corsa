@@ -26,7 +26,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/app/course/:slug" element={<Details />}></Route>
       </Routes>
       </UserProvider>
-      <Footer></Footer>
+      {/* <Footer></Footer> */}
     </Router>
   </React.StrictMode>,
 )

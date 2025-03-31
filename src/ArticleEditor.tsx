@@ -58,6 +58,21 @@ export const ArticleEditor = (props: ArticleEditorProps) => {
     props.createNewElementsMap(prevElementsArray)
   };
 
+  const updatePaceTableElement = async (miles: number[], columns: string[], index: number) => {
+    let prevElementsArray = Object.values(props.elements);
+    console.log(prevElementsArray[index], '<< prevElementsArray[index]')
+
+    // Type guard to check if it's a text element
+    if ("paceTable" in prevElementsArray[index]) {
+      prevElementsArray[index].paceTable.columns = columns;
+      prevElementsArray[index].paceTable.miles = miles;
+    } else {
+      console.error("Element at index is not a pace table");
+    }
+    console.log(prevElementsArray, '<< prev')
+    props.createNewElementsMap(prevElementsArray)
+  };
+
   const isPaceTable = (e: ArticleElement): e is { paceTable: PaceTableType, editing: boolean, id: string } =>
     "paceTable" in e;
 
@@ -66,7 +81,7 @@ export const ArticleEditor = (props: ArticleEditorProps) => {
   const returnProperElement = (element: ArticleElement, index: number) => {
     if (isPaceTable(element)) {
       return <Box sx={{ display: "flex", flexDirection: "row" }}>
-        <PaceTableEditor element={element.paceTable} mileData={props.mileData} lastMileDistance={props.lastMileDistance}></PaceTableEditor>
+        <PaceTableEditor updatePaceTableElement={updatePaceTableElement} element={element.paceTable} mileData={props.mileData} lastMileDistance={props.lastMileDistance} index={index} elements={{}} createNewElementsMap={props.createNewElementsMap} setElementIdsForOrder={props.setElementIdsForOrder} elementIdsForOrder={props.elementIdsForOrder}></PaceTableEditor>
       </Box>
     } else if (isText(element)) {
       return <Box sx={{ width: "100%" }}>
@@ -110,13 +125,15 @@ export const ArticleEditor = (props: ArticleEditorProps) => {
             </Card>
           )
         })} */}
-        <Button variant="contained" startIcon={<Add />} onClick={openDialog}>
+        {/* need margin around this button */}
+        <Button sx={{ margin: 2 }} variant="contained" startIcon={<Add />} onClick={openDialog}>
         </Button>
+        <Box sx={{margin: "5px"}}></Box>
       </Stack>}
       <Dialog open={dialogOpen} onClose={closeDialog}>
         <DialogTitle>Create New Item</DialogTitle>
         <DialogContent>
-          <Stack>
+          <Stack spacing={2}>
             <Button variant="contained" onClick={() => addItem("text")}>Create Article</Button>
             <Button variant="contained" onClick={() => addItem("paceTable")}>Create Pace Table</Button>
           </Stack>

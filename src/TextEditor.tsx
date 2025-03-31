@@ -2,8 +2,6 @@ import { ArrowDownward, ArrowUpward, Delete, Edit, Save } from "@mui/icons-mater
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Stack } from "@mui/material"
 import { Editor } from "@tinymce/tinymce-react"
 import { useEffect, useState } from "react";
-import { saveArticle } from "./services/saveArticle.service";
-import { ArticleElement, Plan } from "./types";
 import DOMPurify from 'dompurify';
 import { ElementsMap } from "./Details";
 
@@ -25,7 +23,6 @@ export const TextEditor = (props: TextEditorProps) => {
         setNewText(DOMPurify.sanitize(props.text))
     }, [])
 
-
     const moveItem = (index: number, direction: number) => {
         const updatedElementIds = [...props.elementIdsForOrder];
         const newIndex = index + direction;
@@ -33,11 +30,11 @@ export const TextEditor = (props: TextEditorProps) => {
         if (newIndex < 0 || newIndex >= updatedElementIds.length) {
             return; // Do nothing if the new index is out of bounds
         }
-    
+
         // Swap the elements at index and newIndex
         [updatedElementIds[index], updatedElementIds[newIndex]] = [updatedElementIds[newIndex], updatedElementIds[index]];
-    
-        props.setElementIdsForOrder(updatedElementIds);``
+
+        props.setElementIdsForOrder(updatedElementIds); ``
     };
 
 
@@ -60,7 +57,6 @@ export const TextEditor = (props: TextEditorProps) => {
     };
 
     const handleEditorChange = (text: any) => {
-        console.log(text, '<< text')
         // need to test this with XSS examples =P
         const sanitizedContent = DOMPurify.sanitize(text.level.content);
         setNewText(sanitizedContent);
@@ -73,9 +69,12 @@ export const TextEditor = (props: TextEditorProps) => {
                 selector: '#tinymce',
                 branding: false,
                 width: 480,
+                image_dimensions: false,
+                image_default_width: 480,
+                content_style: 'img {max-width: 100%; height: auto;}',
                 plugins: [
                     // Core editing features
-                    'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks',
+                    'anchor', 'autolink', 'emoticons', 'image', 'link', 'lists', 'visualblocks',
                     // Your account includes a free trial of TinyMCE premium features
                     // Try the most popular premium features until Apr 9, 2025:
                     // 'checklist', 'mediaembed', 'casechange', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown', 'importword', 'exportword', 'exportpdf'
@@ -88,6 +87,18 @@ export const TextEditor = (props: TextEditorProps) => {
                     { value: 'First.Name', title: 'First Name' },
                     { value: 'Email', title: 'Email' },
                 ],
+                // @ts-ignore
+                setup: (editor) => {
+                    // @ts-ignore
+                    editor.on("NodeChange", (e) => {
+                        const images = editor.getBody().querySelectorAll("img");
+                        // @ts-ignore
+                        images.forEach((img) => {
+                            img.style.maxWidth = "450px";
+                            img.style.height = "auto";
+                        });
+                    });
+                },
                 // ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
             }}
             initialValue={DOMPurify.sanitize(props.text)}
@@ -103,7 +114,6 @@ export const TextEditor = (props: TextEditorProps) => {
             <IconButton sx={{ display: editing ? "inline-flex" : "none" }} onClick={() => moveItem(props.index, 1)} disabled={props.index === props.elementIdsForOrder.length - 1}>
                 <ArrowDownward />
             </IconButton>
-
             <IconButton sx={{ display: editing ? "inline-flex" : "none" }} onClick={() => deleteElement()}>
                 <Delete />
             </IconButton>

@@ -163,7 +163,6 @@ export const ArticlePage = () => {
                             <PaceTable
                               cols={e.paceTable.columns}
                               miles={e.paceTable.miles}
-                              backgroundColor="white"
                               plan={plan}
                             ></PaceTable>
                           </Box>

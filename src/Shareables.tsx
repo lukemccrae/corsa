@@ -9,63 +9,80 @@ import { useUser } from './context/UserContext';
 import { handleAssistantCall } from './services/assistant.service';
 import { PaceTable } from './PaceTable';
 import { getRandomColor } from './helpers/randomColor.helper';
+import { ElementsMap } from './Details';
 
 interface ShareablesProps {
-    plan: Plan
+    elements: ElementsMap;
+    profilePhoto: string;
+    showShareables: boolean;
 }
 
 type AssistantSummary = {
     overview: string;
     exciting: string;
     thesis: string;
-    summary: string
+    summary: string;
+    beginning: string;
+    middle: string;
+    end: string;
 }
 
 export const Shareables = (props: ShareablesProps) => {
+    console.log(props)
     const { user } = useUser();
     const [articleQuotes, setArticleQuotes] = React.useState<AssistantSummary>({
         overview: "",
         exciting: "",
         thesis: "",
-        summary: ""
+        summary: "",
+        beginning: "",
+        middle: "",
+        end: ""
     });
 
     const prompt = `
         I need exact quotes from the article below. Do not summarize, rephrase, or interpret. Only return direct excerpts from the article.
 
-        Return a **valid stringified JSON** in this format:
-        \`\`\`json
         {
         "overview": "EXACT QUOTE FROM ARTICLE",
         "exciting": "EXACT QUOTE FROM ARTICLE",
         "thesis": "EXACT QUOTE FROM ARTICLE",
-        "summary": "EXACT QUOTE FROM ARTICLE"
+        "summary": "EXACT QUOTE FROM ARTICLE",
+        "beginning": "EXACT QUOTE FROM ARTICLE",
+        "middle": "EXACT QUOTE FROM ARTICLE",
+        "end": "EXACT QUOTE FROM ARTICLE"
         }
-        \`\`\`
 
         ### **Rules:**
         - **Only include sentences directly from the article.**
         - **No additional words, no paraphrasing.** 
         - **Each section must be a direct copy-paste from the article.**
-        - Keep each section **between 100-200 words**.
+        - Keep each section **between 200-300 words**.
         - **Strip out any markdown formatting (like images, lists, or links).**
         - **Only output the JSON, nothing else. No explanations.**
 
         ### **Article:**
-        ${props.plan.articleContent}
+        ${Object.values(props.elements).map((e) => 'text' in e && e.text ? e.text.content : "").join("\n\n")}
     `;
 
 
-
-    // React.useEffect(() => {
-    //     const getArticleQuotes = async () => {
-    //         const result = await handleAssistantCall([prompt])
-    //         const cleanedString = result.message.content.replace(/^```json\n/, "").replace(/\n```$/, "");
-    //         const quotes = JSON.parse(cleanedString)
-    //         setArticleQuotes(quotes)
-    //     };
-    //     getArticleQuotes();
-    // }, []);
+    React.useEffect(() => {
+        const getArticleQuotes = async () => {
+            try {
+                const result = await handleAssistantCall([prompt]);
+                console.log(result, '<< result');
+    
+                // Parse the JSON content from the result
+                const quotes = JSON.parse(result.message.content);
+    
+                // Assuming you want to set the parsed quotes to state
+                setArticleQuotes(quotes);
+            } catch (error) {
+                console.error("Error parsing result:", error);
+            }
+        };
+        getArticleQuotes();
+    }, [props.showShareables]);
 
     // const articleQuotes = [
     //     "The Owens Valley is a remarkable place. Winding rivers and canals snake through a flat valley between two mountain ranges. To the west the mighty Sierra Nevada shoots straight up. To the east are the less prestigious but mysterious White Mountains. On top of the Whites are the oldest living things on earth, Bristlecone Pines.",
@@ -107,7 +124,7 @@ export const Shareables = (props: ShareablesProps) => {
                                 left: 16,
                             }}
                         >
-                            <Avatar src={props.plan.profilePhoto} sx={{ width: 56, height: 56 }} />
+                            <Avatar src={props.profilePhoto} sx={{ width: 56, height: 56 }} />
                         </Box>
 
                         {/* Name & Profile Photo Bottom Right */}

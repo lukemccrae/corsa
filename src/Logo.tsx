@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 export const Logo = () => {
     return <Typography
-    variant="h5"
     noWrap
     sx={{
       mr: 2,
@@ -21,8 +20,8 @@ export const Logo = () => {
     }}
   >
     CORSA.
-    <DirectionsRunIcon sx={{ ml: 1, margin: 0 }} />
-    {/* <DirectionsBikeIcon sx={{ ml: 1, margin: 0 }} /> */}
+    {/* <DirectionsRunIcon sx={{ ml: 1, margin: 0 }} /> */}
+    <DirectionsBikeIcon sx={{ ml: 1, margin: 0 }} />
 
   </Typography>
 }

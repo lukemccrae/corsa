@@ -3,13 +3,14 @@ import { Link, useParams } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import { getPlanById } from "./services/fetchPlans.service";
 import { Article, ArticleElement, MileData, Plan } from "./types";
-import { Box, Container } from "@mui/material";
+import { Box, Button, CircularProgress, Container } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { DeleteCourse } from "./DeleteCourse";
 import { useScreenSize } from "./helpers/screensize.helper";
 import { SaveArticle } from "./SaveArticle";
 import { ArticleEditor } from "./ArticleEditor";
 import { ConstructionOutlined } from "@mui/icons-material";
+import { Shareables } from "./Shareables";
 
 export type ElementsMap = {
   [key: string]: ArticleElement;
@@ -25,7 +26,8 @@ export const Details = () => {
   const [mileData, setMileData] = React.useState<MileData[] | undefined>();
   const [lastMileDistance, setLastMileDistance] = React.useState<number>();
   const [elementIdsForOrder, setElementIdsForOrder] = React.useState<string[] | undefined>()
-
+  const [profilePhoto, setProfilePhoto] = React.useState<string | undefined>(undefined);
+  const [showShareables, setShowShareables] = React.useState<boolean>(false);
 
   const screenSize = useScreenSize();
 
@@ -66,19 +68,19 @@ export const Details = () => {
 
       const fetchPlan = async () => {
         const planResult: Plan = await getPlanById({ userId, slug });
-        console.log(planResult)
         setUserId(planResult.userId)
         createNewElementsMap(planResult.articleElements)
         setBucketKey(planResult.bucketKey)
         setPublished(planResult.published)
         setMileData(planResult.mileData)
         setLastMileDistance(planResult.lastMileDistance)
+        setProfilePhoto(planResult.profilePhoto)
       };
       fetchPlan();
     }
   }, [slug, user]);
 
-  if (elements && userId && mileData && lastMileDistance && slug && elements && bucketKey && published !== undefined && elementIdsForOrder !== undefined) {
+  if (elements && userId && mileData && lastMileDistance && slug && elements && bucketKey && published !== undefined && elementIdsForOrder !== undefined && profilePhoto !== undefined) {
     return (
       <Container sx={{ mt: "100px" }} maxWidth="lg">
         <Box sx={{
@@ -111,11 +113,21 @@ export const Details = () => {
         >
           <ArticleEditor elementIdsForOrder={elementIdsForOrder} setElementIdsForOrder={setElementIdsForOrder} mileData={mileData} lastMileDistance={lastMileDistance} elements={elements} createNewElementsMap={createNewElementsMap} userId={userId} slug={slug} />
         </Box>
-
+        {showShareables && <Shareables showShareables={showShareables} elements={elements} profilePhoto={profilePhoto}></Shareables>}
+        <Button
+          sx={{ margin: "0 0 40px 25px" }}
+          variant="contained"
+          onClick={() => {
+            setShowShareables(!showShareables);
+          }}
+        >
+          Toggle Shareables
+        </Button>
       </Container>
     );
   } else {
-    console.log(elements,userId,mileData,lastMileDistance,slug,elements,bucketKey,published)
-    return <div>hi</div>;
+    return <Box sx={{ display: 'flex' }}>
+      <CircularProgress />
+    </Box>;
   }
 };
