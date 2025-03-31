@@ -20,8 +20,8 @@ export const Logo = () => {
     }}
   >
     CORSA.
-    {/* <DirectionsRunIcon sx={{ ml: 1, margin: 0 }} /> */}
-    <DirectionsBikeIcon sx={{ ml: 1, margin: 0 }} />
+    <DirectionsRunIcon sx={{ ml: 1, margin: 0 }} />
+    {/* <DirectionsBikeIcon sx={{ ml: 1, margin: 0 }} /> */}
 
   </Typography>
 }

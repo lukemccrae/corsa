@@ -69,7 +69,6 @@ export const ArticleEditor = (props: ArticleEditorProps) => {
     } else {
       console.error("Element at index is not a pace table");
     }
-    console.log(prevElementsArray, '<< prev')
     props.createNewElementsMap(prevElementsArray)
   };
 

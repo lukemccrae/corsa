@@ -83,7 +83,6 @@ export const PaceTableEditor = (props: PaceTableEditorProps) => {
 
     const handleConfirmDelete = () => {
         props.createNewElementsMap([...Object.values(props.elements)].filter((_, i) => i !== props.index))
-
     };
 
     const plan = { mileData: props.mileData, lastMileDistance: props.lastMileDistance }
@@ -125,7 +124,6 @@ export const PaceTableEditor = (props: PaceTableEditorProps) => {
                 <PaceTable
                     cols={columns}
                     miles={miles}
-                    backgroundColor="white"
                     plan={plan}
                 ></PaceTable>
                 <Stack direction="column">

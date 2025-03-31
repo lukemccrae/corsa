@@ -53,7 +53,11 @@ export const TextEditor = (props: TextEditorProps) => {
     }
 
     const handleConfirmDelete = () => {
-        // remove id from list
+        // remove the element from the element map
+        const updatedElementIds = [...props.elementIdsForOrder];
+        updatedElementIds.splice(props.index, 1);
+        props.setElementIdsForOrder(updatedElementIds);
+        setDeleteCheck(false)
     };
 
     const handleEditorChange = (text: any) => {
