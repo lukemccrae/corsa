@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Avatar, Box, Container, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { ArticleElement, PaceTableType, Plan , Text} from "./types";
+import { ArticleElement, PaceTableType, Plan, Text } from "./types";
 import { useUser } from "./context/UserContext";
 import { PaceTable } from "./PaceTable";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { unescapeMarkdown } from "./helpers/markdown.helper";
 import { fetchPlanDetails } from "./services/anon.service";
+import { TitleBox } from "./TitleBox";
 
 export const CustomImage: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = ({
   alt,
@@ -41,10 +42,10 @@ export const ArticlePage = () => {
 
 
 
-  const isPaceTable = (e: ArticleElement): e is { paceTable: PaceTableType, editing: boolean } =>
+  const isPaceTable = (e: ArticleElement): e is { paceTable: PaceTableType, editing: boolean, id: string } =>
     "paceTable" in e;
 
-  const isText = (e: ArticleElement): e is { text: Text, editing: boolean } => {
+  const isText = (e: ArticleElement): e is { text: Text, editing: boolean, id: string } => {
     return "text" in e;
   }
 
@@ -53,7 +54,7 @@ export const ArticlePage = () => {
       {/* Banner Section */}
       {plan && (
         <>
-          <Box
+          {/* <Box
             sx={{
               height: "400px",
               backgroundImage: `url(${plan.coverImage})`,
@@ -89,54 +90,50 @@ export const ArticlePage = () => {
                 {plan.name}
               </Typography>
             </Box>
-          </Box>
+          </Box> */}
           {/* Blog Post Content Section */}
-          <Stack
-            direction="column"
-            spacing={1}
-            alignItems="center"
-            sx={{
-              marginBottom: 2,
-              marginTop: 1,
-              color: "gray.700",
-              fontSize: "0.875rem", // Slightly smaller text
-            }}
-          >
-            <Avatar
-              alt={plan.author}
-              src={plan.profilePhoto}
-              sx={{ width: 64, height: 64 }} // Slightly larger size for better readability
-            />
-            <Box>
-              <Typography
-                to={`/users/${plan.author}`}
-                component={Link}
-                sx={{
-                  color: "black",
-                  textDecoration: "underline",
-                  "&:hover": {
-                    color: "#E3A446",
+          {/* <TitleBox plan={plan}></TitleBox> */}
+          <Box sx={{ marginTop: "90px", width: "80%" }}>
+            <Typography sx={{ color: "black" }} variant="h4">{plan.name}</Typography>
+            <Stack direction="row">
+              <Avatar
+                alt={plan.author}
+                src={plan.profilePhoto}
+                sx={{ width: 64, height: 64 }} // Slightly larger size for better readability
+              />
+              <Box sx={{margin: 1}}>
+                <Typography
+                  to={`/users/${plan.author}`}
+                  component={Link}
+                  sx={{
+                    color: "black",
                     textDecoration: "underline",
-                    textDecorationColor: "#E3A446",
-                  },
-                }}
-                variant="body1"
-              >
-                <strong>{plan.author}</strong>
-              </Typography>
+                    "&:hover": {
+                      color: "#E3A446",
+                      textDecoration: "underline",
+                      textDecorationColor: "#E3A446",
+                    },
+                  }}
+                  variant="body1"
+                >
+                  <strong>{plan.author}</strong>
+                </Typography>
 
-              <Typography>
-                {new Date(Number(plan.publishDate)).toLocaleDateString(
-                  "en-US",
-                  {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  }
-                )}
-              </Typography>
-            </Box>
-          </Stack>
+                <Typography sx={{color: "black"}}>
+                  {new Date(Number(plan.publishDate)).toLocaleDateString(
+                    "en-US",
+                    {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    }
+                  )}
+                </Typography>
+              </Box>
+            </Stack>
+
+          </Box>
+
           <Grid container justifyContent="center">
             <Grid size={{ xs: 10, sm: 12, md: 12 }}>
               <Box sx={{ padding: 1 }}>
@@ -166,7 +163,6 @@ export const ArticlePage = () => {
                             <PaceTable
                               cols={e.paceTable.columns}
                               miles={e.paceTable.miles}
-                              backgroundColor="white"
                               plan={plan}
                             ></PaceTable>
                           </Box>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Card, CardContent, Typography, CardActionArea, Box } from '@mui/material';
+import { Grid, Card, CardContent, Typography, CardActionArea, Box, CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { getPlansByUserId } from './services/fetchPlans.service';
 import { useUser } from './context/UserContext';
@@ -12,11 +12,15 @@ import { toHHMMSS } from './helpers/avgPace.helper';
 export const UI = () => {
   const { user } = useUser();
   const [plans, setPlans] = React.useState<Plan[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
       const fetchPlan = async () => {
+        setLoading(true)
         const plans = await getPlansByUserId({ user });
+        setLoading(false)
+        console.log(plans)
         setPlans(plans);
       }
       fetchPlan()
@@ -33,7 +37,9 @@ export const UI = () => {
         padding: 0,
         // width: "100vw"
       }}
-    >
+    > {loading ? <Box sx={{ display: 'flex', marginTop: "100px" }}>
+      <CircularProgress />
+    </Box> : <></>}
       {plans.map((record, index) => (
         <Box key={index}>
           <CardActionArea

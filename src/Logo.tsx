@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 export const Logo = () => {
     return <Typography
-    variant="h5"
     noWrap
     sx={{
       mr: 2,
