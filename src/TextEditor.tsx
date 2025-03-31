@@ -37,7 +37,7 @@ export const TextEditor = (props: TextEditorProps) => {
         // Swap the elements at index and newIndex
         [updatedElementIds[index], updatedElementIds[newIndex]] = [updatedElementIds[newIndex], updatedElementIds[index]];
     
-        props.setElementIdsForOrder(updatedElementIds);
+        props.setElementIdsForOrder(updatedElementIds);``
     };
 
 
@@ -49,8 +49,9 @@ export const TextEditor = (props: TextEditorProps) => {
         setDeleteCheck(false);
     };
 
-    const handleSave = async () => {
-        await props.updateTextElement(newText, props.index)
+    // handle saving the text box to the element map
+    const handleSave = () => {
+        props.updateTextElement(newText, props.index)
         setEditing(false)
     }
 
@@ -106,9 +107,9 @@ export const TextEditor = (props: TextEditorProps) => {
             <IconButton sx={{ display: editing ? "inline-flex" : "none" }} onClick={() => deleteElement()}>
                 <Delete />
             </IconButton>
-            {/* <IconButton sx={{ display: editing ? "inline-flex" : "none" }} onClick={() => handleSave()}>
+            <IconButton sx={{ display: editing ? "inline-flex" : "none" }} onClick={() => handleSave()}>
                 <Save />
-            </IconButton> */}
+            </IconButton>
             <Dialog open={deleteCheck} onClose={handleCancelDelete}>
                 <DialogTitle>Confirm Deletion</DialogTitle>
                 <DialogContent>

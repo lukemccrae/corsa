@@ -16,17 +16,14 @@ interface ArticleEditorProps {
   createNewElementsMap: Function;
   lastMileDistance: number;
   mileData: MileData[]
+  elementIdsForOrder: string[];
+  setElementIdsForOrder: Function;
 }
 
 export const ArticleEditor = (props: ArticleEditorProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [elementIdsForOrder, setElementIdsForOrder] = useState<string[] | undefined>()
   const openDialog = () => setDialogOpen(true);
   const closeDialog = () => setDialogOpen(false);
-
-  useEffect(() => {
-    setElementIdsForOrder(Object.keys(props.elements).map((e) => e))
-  }, []);
 
   const addItem = (arg: string) => {
     let newElement: ArticleElement | undefined;
@@ -48,30 +45,17 @@ export const ArticleEditor = (props: ArticleEditorProps) => {
     closeDialog()
   };
 
+
   const updateTextElement = async (content: string, index: number) => {
-    props.createNewElementsMap((prevElements: any[]) => {
-      const newElements = prevElements.map((el, idx) => {
-        if (idx === index) {
-          if ("text" in el) {
-            return {
-              ...el,
-              text: {
-                ...el.text,
-                content,
-              },
-            };
-          }
-        }
-        return el;
-      });
+    let prevElementsArray = Object.values(props.elements);
 
-      // Save the new elements after they are set
-      const slug = props.slug;
-      const userId = props.userId;
-      saveArticle({ elements: newElements, slug, userId });
-
-      return newElements; // Ensure state is actually updated
-    });
+    // Type guard to check if it's a text element
+    if ("text" in prevElementsArray[index]) {
+      prevElementsArray[index].text.content = content;
+    } else {
+      console.error("Element at index is not a text element");
+    }
+    props.createNewElementsMap(prevElementsArray)
   };
 
   const isPaceTable = (e: ArticleElement): e is { paceTable: PaceTableType, editing: boolean, id: string } =>
@@ -86,7 +70,7 @@ export const ArticleEditor = (props: ArticleEditorProps) => {
       </Box>
     } else if (isText(element)) {
       return <Box sx={{ width: "100%" }}>
-        {elementIdsForOrder && <TextEditor setElementIdsForOrder={setElementIdsForOrder} updateTextElement={updateTextElement} index={index} elements={props.elements} elementIdsForOrder={elementIdsForOrder} text={element.text.content}></TextEditor>}
+        {props.elementIdsForOrder && <TextEditor setElementIdsForOrder={props.setElementIdsForOrder} updateTextElement={updateTextElement} index={index} elements={props.elements} elementIdsForOrder={props.elementIdsForOrder} text={element.text.content}></TextEditor>}
       </Box>
     }
     return null;
@@ -95,7 +79,7 @@ export const ArticleEditor = (props: ArticleEditorProps) => {
   return (
     <>
       {props.elements && <Stack spacing={2}>
-        {elementIdsForOrder?.map((id, index) => {
+        {props.elementIdsForOrder?.map((id, index) => {
           return <Card key={id} sx={{ padding: 3, display: "flex" }}>
             <CardContent>
               <Box

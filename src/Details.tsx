@@ -23,7 +23,9 @@ export const Details = () => {
   const [bucketKey, setBucketKey] = React.useState<string>();
   const [published, setPublished] = React.useState<boolean>();
   const [mileData, setMileData] = React.useState<MileData[] | undefined>();
-  const [lastMileDistance, setLastMileDistance] = React.useState<number>()
+  const [lastMileDistance, setLastMileDistance] = React.useState<number>();
+  const [elementIdsForOrder, setElementIdsForOrder] = React.useState<string[] | undefined>()
+
 
   const screenSize = useScreenSize();
 
@@ -53,7 +55,9 @@ export const Details = () => {
       acc[element.id] = element;  // Use `id` as the key
       return acc;
     }, {});
-    return elementsMap;
+    setElementIdsForOrder(Object.keys(elementsMap).map((e) => e))
+    setElements(elementsMap)
+    elementsMap;
   }
 
   React.useEffect(() => {
@@ -64,7 +68,7 @@ export const Details = () => {
         const planResult: Plan = await getPlanById({ userId, slug });
         console.log(planResult)
         setUserId(planResult.userId)
-        setElements(createNewElementsMap(planResult.articleElements))
+        createNewElementsMap(planResult.articleElements)
         setBucketKey(planResult.bucketKey)
         setPublished(planResult.published)
         setMileData(planResult.mileData)
@@ -74,7 +78,7 @@ export const Details = () => {
     }
   }, [slug, user]);
 
-  if (elements && userId && mileData && lastMileDistance && slug && elements && bucketKey && published !== undefined) {
+  if (elements && userId && mileData && lastMileDistance && slug && elements && bucketKey && published !== undefined && elementIdsForOrder !== undefined) {
     return (
       <Container sx={{ mt: "100px" }} maxWidth="lg">
         <Box sx={{
@@ -93,7 +97,7 @@ export const Details = () => {
               label={"Delete"}
               disabled={published}
             />
-            <SaveArticle slug={slug} label={"Save"} elements={Object.values(elements)} />
+            <SaveArticle elementIdsForOrder={elementIdsForOrder} slug={slug} label={"Save"} elements={elements} />
           </Box>
         </Box>
 
@@ -105,7 +109,7 @@ export const Details = () => {
             px: { xs: 2, sm: 3 }, // Padding for smaller screens
           }}
         >
-          <ArticleEditor mileData={mileData} lastMileDistance={lastMileDistance} elements={elements} createNewElementsMap={createNewElementsMap} userId={userId} slug={slug} />
+          <ArticleEditor elementIdsForOrder={elementIdsForOrder} setElementIdsForOrder={setElementIdsForOrder} mileData={mileData} lastMileDistance={lastMileDistance} elements={elements} createNewElementsMap={createNewElementsMap} userId={userId} slug={slug} />
         </Box>
 
       </Container>

@@ -3,11 +3,13 @@ import SaveIcon from '@mui/icons-material/Save';
 import { useUser } from './context/UserContext';
 import { saveArticle } from './services/saveArticle.service';
 import { ArticleElement } from './types';
+import { ElementsMap } from './Details';
 
 interface SaveArticleProps {
     label: string
     slug: string
-    elements: ArticleElement[] | undefined
+    elements: ElementsMap
+    elementIdsForOrder: string[]
 }
 
 
@@ -19,7 +21,7 @@ export const SaveArticle = (props: SaveArticleProps) => {
         if(user && user.userId && props.elements) {
             const slug = props.slug;
             const userId = user.userId
-            const elements = props.elements
+            const elements = props.elementIdsForOrder.map((id) => props.elements[id])
             const result = await saveArticle({elements, slug, userId})   
         }
     }
