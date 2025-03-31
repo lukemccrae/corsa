@@ -13,10 +13,10 @@ export const Logo = () => {
       fontFamily: 'monospace',
       fontWeight: 700,
       letterSpacing: '.2rem',
-      color: 'inherit',
+      color: 'black',
       textDecoration: 'none',
       alignItems: 'center',
-      justifyContent: "flex-end"
+      justifyContent: "flex-end",
     }}
   >
     CORSA.

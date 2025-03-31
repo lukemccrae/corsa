@@ -101,7 +101,7 @@ export const ArticlePage = () => {
                 src={plan.profilePhoto}
                 sx={{ width: 64, height: 64 }} // Slightly larger size for better readability
               />
-              <Box sx={{margin: 1}}>
+              <Box sx={{ margin: 1 }}>
                 <Typography
                   to={`/users/${plan.author}`}
                   component={Link}
@@ -119,7 +119,7 @@ export const ArticlePage = () => {
                   <strong>{plan.author}</strong>
                 </Typography>
 
-                <Typography sx={{color: "black"}}>
+                <Typography sx={{ color: "black" }}>
                   {new Date(Number(plan.publishDate)).toLocaleDateString(
                     "en-US",
                     {
@@ -173,32 +173,12 @@ export const ArticlePage = () => {
                             sx={{
                               flex: 1,
                               display: "block",
-                              padding: 2
+                              padding: 2,
+                              color: "black",
+                              width: "500px"
                             }}
                           >
-                            <ReactMarkdown
-                              components={{
-                                img: ({ node, ...props }) => <CustomImage {...props} />,
-                                p: ({ node, ...props }) => (
-                                  <p style={{ color: 'rgba(0, 0, 0, 0.6)', fontSize: '16px' }} {...props} />
-                                ),
-                                h1: ({ node, ...props }) => (
-                                  <h1 style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
-                                ),
-                                h2: ({ node, ...props }) => (
-                                  <h2 style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
-                                ),
-                                h3: ({ node, ...props }) => (
-                                  <h3 style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
-                                ),
-                                ul: ({ node, ...props }) => (
-                                  <ul style={{ color: 'rgba(0, 0, 0, 0.6)' }} {...props} />
-                                ),
-                              }}
-                              remarkPlugins={[remarkGfm]}
-                            >
-                              {(unescapeMarkdown(e.text.content))}
-                            </ReactMarkdown>
+                            <div dangerouslySetInnerHTML={{ __html: e.text.content }}></div>
                           </Box>
                         )
                       default:

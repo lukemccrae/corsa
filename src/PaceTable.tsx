@@ -32,7 +32,7 @@ export const PaceTable: React.FC<PaceTableProps> = (props: PaceTableProps) => {
   const {bg, text} = getRandomColor()
 
   return (
-    <Box>
+    <Box sx={{backgroundColor: "white"}}>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 400, maxWidth: 500 }} aria-label="pace table" size="small" id="paceTable">
           <TableHead>
