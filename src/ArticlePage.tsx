@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Avatar, Box, Container, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Container, Stack, Typography, Link as WebLink } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { ArticleElement, PaceTableType, Plan, Text } from "./types";
 import { useUser } from "./context/UserContext";
@@ -185,6 +185,18 @@ export const ArticlePage = () => {
                         return <div></div>
                     }
                   })}
+
+                  <Typography sx={{width: "500px",  fontStyle: "italic" }} color="black">
+                    Corsa is a platform for athletes to share their journey through writing, blending performance tracking with storytelling. Currently in beta, we’re looking for passionate creators to join and shape the future. Fill out the{' '}
+                    <WebLink
+                      href="https://docs.google.com/forms/d/e/1FAIpQLSeC3yoPVanzaJmeqYOXzIlaYuQnSyezupV5BO4NfEMMBLlCXw/viewform"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      form here
+                    </WebLink> to get a creator invite.
+                  </Typography>
+
                 </Box>
               </Box>
             </Grid>
