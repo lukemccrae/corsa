@@ -20,7 +20,6 @@ export const UI = () => {
         setLoading(true)
         const plans = await getPlansByUserId({ user });
         setLoading(false)
-        console.log(plans)
         setPlans(plans);
       }
       fetchPlan()

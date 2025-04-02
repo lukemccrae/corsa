@@ -3,25 +3,33 @@ import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import { Link } from "react-router-dom";
 
-export const Logo = () => {
-    return <Typography
+interface LogoProps {
+  activityType: string;
+}
+
+export const Logo = (props: LogoProps) => {
+  return <Typography
     noWrap
     sx={{
-      mr: 2,
+      mr: 3,
       display: 'flex',
       flexGrow: 1,
       fontFamily: 'monospace',
       fontWeight: 700,
-      letterSpacing: '.2rem',
+      letterSpacing: '.3rem',
       color: 'black',
       textDecoration: 'none',
       alignItems: 'center',
       justifyContent: "flex-end",
+      fontSize: 22,
     }}
   >
     CORSA.
-    <DirectionsRunIcon sx={{ ml: 1, margin: 0 }} />
-    {/* <DirectionsBikeIcon sx={{ ml: 1, margin: 0 }} /> */}
+    {props.activityType === "RUN" ?
+      (<DirectionsRunIcon sx={{ ml: 1, margin: "0 0 2px 0", fontSize: 25 }} />) :
+      <DirectionsBikeIcon sx={{ ml: 1, margin: "0 0 2px 0", fontSize: 30 }} />
+    }
+
 
   </Typography>
 }

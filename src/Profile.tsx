@@ -2,7 +2,7 @@ import React from 'react';
 import { Plan, User } from './types';
 import { useUser } from './context/UserContext';
 import { getPublishedUserInfo } from './services/anon.service';
-import { Avatar, Box, Card, CardActionArea, CardContent, Container, Typography } from '@mui/material';
+import { Avatar, Box, Card, CardActionArea, CardContent, CircularProgress, Container, Typography } from '@mui/material';
 import { useParams, Link } from 'react-router-dom';
 import { calculateStartWithTZ } from './helpers/strartTime.helper';
 import { shortenName } from './helpers/substring.helper';
@@ -13,6 +13,7 @@ import { createMiniProfile } from './helpers/miniVertProfile.helpter';
 export const Profile = () => {
   const [plans, setPlans] = React.useState<Plan[]>();
   const [userInfo, setUserInfo] = React.useState<{ bio: string, profilePicture: string }>();
+  const [loading, setLoading] = React.useState(false);
 
   const { anon, checkValidAnon } = useUser();
   const { username } = useParams();
@@ -20,7 +21,9 @@ export const Profile = () => {
   React.useEffect(() => {
     const publishedPlans = async () => {
       if (anon && checkValidAnon() && username) {
+        setLoading(true)
         const result = await getPublishedUserInfo({ username, anon })
+        setLoading(false)
         const { bio, profilePicture } = result.data.getPublishedUserInfo;
         setPlans(result.data.getPublishedUserInfo.plans)
         setUserInfo({ bio, profilePicture })
@@ -29,7 +32,7 @@ export const Profile = () => {
     publishedPlans()
   }, [anon]);
 
-  
+
   return (
     <Container maxWidth="lg">
       <Box
@@ -43,6 +46,9 @@ export const Profile = () => {
           p: 2,
         }}
       >
+        {loading ? <Box sx={{ display: 'flex', marginTop: "100px" }}>
+          <CircularProgress />
+        </Box> : null}
         {/* Profile Section */}
         {userInfo && (
           <Box sx={{ display: "flex", alignItems: "flex-start", justifyContent: "flex-start", mb: 4, gap: 2, backgroundColor: "white", padding: "8px", transform: "scale(.98)", borderRadius: 1 }}>
@@ -64,7 +70,7 @@ export const Profile = () => {
 
         {/* Records Section */}
         <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="h5">Posts</Typography> {/* Makes sure this section expands to fill remaining space */}
+          <Typography sx={{ display: loading ? "none" : "flex" }} variant="h5">Posts</Typography> {/* Makes sure this section expands to fill remaining space */}
           {plans &&
             plans.map((record, index) => (
               <Box key={index} sx={{ mb: 2, display: record.published ? "block" : "none" }}>

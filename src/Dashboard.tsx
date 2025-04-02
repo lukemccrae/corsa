@@ -47,9 +47,9 @@ export const Dashboard = () => {
 
   // // Map each setting to its corresponding function
   const settingActions: Record<Setting, () => void> = {
-    Logout: () => logoutUser(),
     "Add Course": () => navigate("/add-course"),
     "App": () => navigate("/app"),    
+    Logout: () => logoutUser(),
   };
 
   return (
