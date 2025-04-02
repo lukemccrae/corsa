@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+<<<<<<< Updated upstream
 import { Avatar, Box, CircularProgress, Container, Stack, Typography, Link as WebLink } from "@mui/material";
+=======
+import { Avatar, Box, Container, Divider, Stack, Typography, Link as WebLink } from "@mui/material";
+>>>>>>> Stashed changes
 import Grid from "@mui/material/Grid2";
 import { ArticleElement, PaceTableType, Plan, Text } from "./types";
 import { useUser } from "./context/UserContext";
@@ -149,7 +153,7 @@ export const ArticlePage = () => {
                 return <div key={index}></div>;
             }
           })}
-
+          <Divider sx={{ my: 3 }} ></Divider>
           <Typography
             sx={{
               width: "100%",
@@ -158,6 +162,7 @@ export const ArticlePage = () => {
               overflowWrap: "break-word",
               wordBreak: "break-word",
               whiteSpace: "normal",
+              margin: "0 0 20px 0"
             }}
             color="black"
           >
