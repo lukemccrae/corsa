@@ -24,6 +24,8 @@ export const Details = () => {
   const [bucketKey, setBucketKey] = React.useState<string>();
   const [published, setPublished] = React.useState<boolean>();
   const [mileData, setMileData] = React.useState<MileData[] | undefined>();
+  const [planName, setPlanName] = React.useState<string | undefined>(); 
+  const [author, setAuthor] = React.useState<string | undefined>(); 
   const [lastMileDistance, setLastMileDistance] = React.useState<number>();
   const [elementIdsForOrder, setElementIdsForOrder] = React.useState<string[] | undefined>()
   const [profilePhoto, setProfilePhoto] = React.useState<string | undefined>(undefined);
@@ -75,12 +77,14 @@ export const Details = () => {
         setMileData(planResult.mileData)
         setLastMileDistance(planResult.lastMileDistance)
         setProfilePhoto(planResult.profilePhoto)
+        setPlanName(planResult.name)
+        setAuthor(planResult.author);
       };
       fetchPlan();
     }
   }, [slug, user]);
 
-  if (elements && userId && mileData && lastMileDistance && slug && elements && bucketKey && published !== undefined && elementIdsForOrder !== undefined && profilePhoto !== undefined) {
+  if (elements && userId && mileData && lastMileDistance && slug && elements && bucketKey && published !== undefined && elementIdsForOrder !== undefined && profilePhoto !== undefined && author && planName) {
     return (
       <Container sx={{ mt: "100px" }} maxWidth="lg">
         <Box sx={{
@@ -113,7 +117,7 @@ export const Details = () => {
         >
           <ArticleEditor elementIdsForOrder={elementIdsForOrder} setElementIdsForOrder={setElementIdsForOrder} mileData={mileData} lastMileDistance={lastMileDistance} elements={elements} createNewElementsMap={createNewElementsMap} userId={userId} slug={slug} />
         </Box>
-        {showShareables && <Shareables showShareables={showShareables} elements={elements} profilePhoto={profilePhoto}></Shareables>}
+        {showShareables && <Shareables showShareables={showShareables} elements={elements} profilePhoto={profilePhoto} planName={planName} mileData={mileData} lastMileDistance={lastMileDistance} author={author}></Shareables>}
         <Button
           sx={{ margin: "0 0 40px 25px" }}
           variant="contained"

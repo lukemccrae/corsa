@@ -2,7 +2,7 @@ import { Avatar, Box, Typography } from '@mui/material';
 import React, { useRef } from 'react';
 import { MileProfile } from './MileProfile';
 import { createMiniProfile } from './helpers/miniVertProfile.helpter';
-import { Plan } from './types';
+import { MileData, Plan } from './types';
 import { averagePaces, toHHMMSS } from './helpers/avgPace.helper';
 import { Logo } from './Logo';
 import { useUser } from './context/UserContext';
@@ -15,6 +15,10 @@ interface ShareablesProps {
     elements: ElementsMap;
     profilePhoto: string;
     showShareables: boolean;
+    planName: string;
+    mileData: MileData[]
+    lastMileDistance: number;
+    author: string;
 }
 
 type AssistantSummary = {
@@ -71,10 +75,10 @@ export const Shareables = (props: ShareablesProps) => {
             try {
                 const result = await handleAssistantCall([prompt]);
                 console.log(result, '<< result');
-    
+
                 // Parse the JSON content from the result
                 const quotes = JSON.parse(result.message.content);
-    
+
                 // Assuming you want to set the parsed quotes to state
                 setArticleQuotes(quotes);
             } catch (error) {
@@ -89,13 +93,67 @@ export const Shareables = (props: ShareablesProps) => {
     //     "At 3.2 miles the summit came into view! Maybe it was the knowledge that I was going to get it or maybe I was just spent, but I felt myself softening and did my best to finish strong. At this point I could feel the end. My pace had slowed considerably but I was at the summit block climbing over rocks, panting, trying not to look at the beautiful sunset until I could finally stop moving.",
     //     "Since I was on grade, I had to spend more time to do the 8 miles. It’s rare that I can spend that much time at a sustained effort running on real terrain. On the treadmill I spent about 70 minutes above marathon effort as I progressed from 150 - 170bpm+."
     // ];
+    const { bg, text } = getRandomColor();
 
     return (
         <Box sx={{ display: "flex", flexDirection: "column", gap: 5 }}>
             {/* data box */}
-            
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                {/* Data Box */}
+                <Box sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    backgroundColor: bg,
+                    borderRadius: 2,
+                    margin: 1,
+                    p: 5,
+                    position: "relative",
+                    color: getRandomColor().text,
+                    height: "500px",
+                }}>
+                    <Typography variant="h4" sx={{ color: text }}>
+                        {props.planName}
+                    </Typography>
+                    <Box>
+                        <MileProfile marginRight={7} mileVertProfile={createMiniProfile(props.mileData, 50)} multiplyPadding={150} color={getRandomColor().text} />
+                    </Box>
+                    <Box sx={{ display: "flex", flexDirection: "column", gap: 2, paddingTop: 2 }}>
+                        {/* Data rows */}
+                        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                            <Box>
+                                <Typography variant="body1" fontWeight="bold" color={text}>
+                                    {props.mileData.length + props.lastMileDistance} mi
+                                </Typography>
+                                <Typography variant="body1" fontWeight="bold" color={text}>
+                                    +{Math.round(props.mileData.reduce((total, md) => total + md.elevationGain, 0) * 3.28084)} ft
+                                </Typography>
+                                <Typography variant="body1" fontWeight="bold" color={text}>
+                                    {averagePaces(
+                                        props.mileData,
+                                        props.lastMileDistance,
+                                        true
+                                    )} /mi
+                                </Typography>
+                                <Typography variant="body1" fontWeight="bold" color={text}>
+                                    {toHHMMSS(props.mileData.reduce((sum, item) => sum + item.pace, 0))}
+                                </Typography>
+                            </Box>
+                        </Box>
+                        {/* Row with Avatar, Username, and Logo */}
+                        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            {/* Avatar and Username */}
+                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                                <Avatar src={props.profilePhoto} sx={{ width: 64, height: 64 }} />
+                                <Typography variant="h6">{props.author}</Typography>
+                            </Box>
+                            <Logo />
+                        </Box>
+                    </Box>
+                </Box>
+            </Box>
             {Object.values(articleQuotes).map((a) => {
-                const { bg, text } = getRandomColor();
+                    const { bg, text } = getRandomColor();
+
                 return (
                     <Box
                         sx={{
