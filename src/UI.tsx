@@ -35,7 +35,6 @@ export const UI = () => {
         flexDirection: 'row',
         gap: 0,
         padding: 0,
-        // width: "100vw"
       }}
     > {loading ? <Box sx={{ display: 'flex', marginTop: "100px" }}>
       <CircularProgress />
@@ -74,7 +73,8 @@ export const UI = () => {
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Box>
                     <Typography variant="body2" color="text.secondary">
-                      +{Math.round(record.mileData.reduce((total, md) => total + md.elevationGain, 0) * 3.28084)} ft.                    </Typography>
+                      +{Math.round(record.mileData.reduce((total, md) => total + md.elevationGain, 0) * 3.28084)} ft.
+                    </Typography>
                     <Typography variant="body2" color="text.secondary">
                       {toHHMMSS(record.mileData.reduce((sum, item) => sum + item.pace, 0))}
                     </Typography>

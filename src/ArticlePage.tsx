@@ -50,58 +50,20 @@ export const ArticlePage = () => {
   }
 
   return (
-    <Container maxWidth="md">
-      {/* Banner Section */}
+    <Container maxWidth="sm">
       {plan && (
         <>
-          {/* <Box
-            sx={{
-              height: "400px",
-              backgroundImage: `url(${plan.coverImage})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              borderRadius: "8px",
-              marginBottom: "20px",
-              marginTop: "64px",
-            }}
-          >
-            <Box
-              sx={{
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                background: "rgba(0, 0, 0, 0.3)",
-                borderRadius: "8px",
-                color: "white",
-                textAlign: "center",
-              }}
-            >
-              <Typography
-                sx={{
-                  typography: {
-                    xs: "h4",
-                    sm: "h2",
-                  },
-                }}
-                gutterBottom
-              >
-                {plan.name}
-              </Typography>
-            </Box>
-          </Box> */}
-          {/* Blog Post Content Section */}
-          {/* <TitleBox plan={plan}></TitleBox> */}
-          <Box sx={{ marginTop: "90px", width: "80%" }}>
-            <Typography sx={{ color: "black" }} variant="h4">{plan.name}</Typography>
-            <Stack direction="row">
+          <Box sx={{ marginTop: "80px" }}>
+            <Typography sx={{ color: "black", margin: 3 }} variant="h4">
+              {plan.name}
+            </Typography>
+            <Stack direction="row" sx={{ margin: "0 0 0 30px" }}>
               <Avatar
                 alt={plan.author}
                 src={plan.profilePhoto}
-                sx={{ width: 64, height: 64 }} // Slightly larger size for better readability
+                sx={{ width: 64, height: 64 }}
               />
-              <Box sx={{ margin: 1 }}>
+              <Box sx={{ margin: 2 }}>
                 <Typography
                   to={`/users/${plan.author}`}
                   component={Link}
@@ -119,88 +81,92 @@ export const ArticlePage = () => {
                   <strong>{plan.author}</strong>
                 </Typography>
 
-                <Typography sx={{ color: "black" }}>
-                  {new Date(Number(plan.publishDate)).toLocaleDateString(
-                    "en-US",
-                    {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    }
-                  )}
+                <Typography sx={{ color: "black", fontSize: "12px" }}>
+                  {new Date(Number(plan.publishDate)).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
                 </Typography>
               </Box>
             </Stack>
-
           </Box>
+          {/* Content Section */}
 
-          <Grid container justifyContent="center">
-            <Grid size={{ xs: 10, sm: 12, md: 12 }}>
-              <Box sx={{ padding: 1 }}>
-                {/* Tag Section */}
-                <Box
-                  sx={{
-                    marginBottom: "20px",
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                ></Box>
+          {plan.articleElements.map((e: ArticleElement, index) => {
+            switch (true) {
+              case isPaceTable(e):
+                return (
+                  <Box
+                    key={index}
+                    sx={{
+                      margin: "20px 0", // Spacing around the pace table
+                      width: "100%", // Ensure it takes full width of the container
+                      overflowX: "auto", // Allow horizontal scrolling if needed
+                    }}
+                  >
+                    <PaceTable
+                      cols={e.paceTable.columns}
+                      miles={e.paceTable.miles}
+                      plan={plan}
+                    />
+                  </Box>
+                );
+              case isText(e):
+                return (
+                  <Box>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        // Responsive width for the text block, fallback to 100% on small screens
+                        width: {
+                          xs: "80vw", // Full width on small screens
+                          sm: "480px", // 70% of the viewport width on medium and larger screens
+                        },
+                        wordWrap: "break-word",
+                        overflowWrap: "break-word",
+                        wordBreak: "break-word",
+                        whiteSpace: "normal",
+                        color: "black",
+                        margin: "0 20px 0 20px"
+                      }}
+                      dangerouslySetInnerHTML={{
+                        __html: `<style>
+                          img {
+                            max-width: 100% !important; 
+                            height: auto;
+                          }
+                        </style>${e.text.content}`
+                      }}
+                    />
+                  </Box>
+                );
+              default:
+                return <div key={index}></div>;
+            }
+          })}
 
-                {/* Content Section */}
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: { xs: "column", lg: "column" }, // pace chart always on bottom
-                    gap: 3,
-                  }}
-                >
-                  {plan.articleElements.map((e: ArticleElement, index) => {
-
-                    switch (true) {
-                      case isPaceTable(e):
-                        return (
-                          <Box sx={{ maxWidth: "600px", marginBottom: 10 }}>
-                            <PaceTable
-                              cols={e.paceTable.columns}
-                              miles={e.paceTable.miles}
-                              plan={plan}
-                            ></PaceTable>
-                          </Box>
-                        )
-                      case isText(e):
-                        return (
-                          <Box
-                            sx={{
-                              flex: 1,
-                              display: "block",
-                              padding: 2,
-                              color: "black",
-                              width: "500px"
-                            }}
-                          >
-                            <div dangerouslySetInnerHTML={{ __html: e.text.content }}></div>
-                          </Box>
-                        )
-                      default:
-                        return <div></div>
-                    }
-                  })}
-
-                  <Typography sx={{width: "500px",  fontStyle: "italic" }} color="black">
-                    Corsa is a platform for athletes to share their journey through writing, blending performance tracking with storytelling. Currently in beta, we’re looking for passionate creators to join and shape the future. Fill out the{' '}
-                    <WebLink
-                      href="https://docs.google.com/forms/d/e/1FAIpQLSeC3yoPVanzaJmeqYOXzIlaYuQnSyezupV5BO4NfEMMBLlCXw/viewform"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      form here
-                    </WebLink> to get a creator invite.
-                  </Typography>
-
-                </Box>
-              </Box>
-            </Grid>
-          </Grid>
+          <Typography
+            sx={{
+              width: "100%",
+              fontStyle: "italic",
+              wordWrap: "break-word",
+              overflowWrap: "break-word",
+              wordBreak: "break-word",
+              whiteSpace: "normal",
+            }}
+            color="black"
+          >
+            Corsa is a platform for athletes to share their journey through writing, blending performance tracking with storytelling. Currently in beta, we’re looking for passionate creators to join and shape the future. Fill out the{' '}
+            <WebLink
+              href="https://docs.google.com/forms/d/e/1FAIpQLSeC3yoPVanzaJmeqYOXzIlaYuQnSyezupV5BO4NfEMMBLlCXw/viewform"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              form here
+            </WebLink>{' '}
+            to get a creator invite.
+          </Typography>
         </>
       )}
     </Container>
