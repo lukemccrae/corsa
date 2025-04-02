@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-<<<<<<< Updated upstream
-import { Avatar, Box, CircularProgress, Container, Stack, Typography, Link as WebLink } from "@mui/material";
-=======
-import { Avatar, Box, Container, Divider, Stack, Typography, Link as WebLink } from "@mui/material";
->>>>>>> Stashed changes
+
+import { Avatar, Box, CircularProgress, Container, Divider, Stack, Typography, Link as WebLink } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { ArticleElement, PaceTableType, Plan, Text } from "./types";
 import { useUser } from "./context/UserContext";

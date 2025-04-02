@@ -117,7 +117,7 @@ export const Details = () => {
             px: { xs: 2, sm: 3 }, // Padding for smaller screens
           }}
         >
-          <ArticleEditor elementIdsForOrder={elementIdsForOrder} setElementIdsForOrder={setElementIdsForOrder} mileData={mileData} lastMileDistance={lastMileDistance} elements={elements} createNewElementsMap={createNewElementsMap} userId={userId} slug={slug} />
+          <ArticleEditor activityType={activityType} elementIdsForOrder={elementIdsForOrder} setElementIdsForOrder={setElementIdsForOrder} mileData={mileData} lastMileDistance={lastMileDistance} elements={elements} createNewElementsMap={createNewElementsMap} userId={userId} slug={slug} />
         </Box>
         {showShareables && <Shareables activityType={activityType} showShareables={showShareables} elements={elements} profilePhoto={profilePhoto} planName={planName} mileData={mileData} lastMileDistance={lastMileDistance} author={author}></Shareables>}
         <Button

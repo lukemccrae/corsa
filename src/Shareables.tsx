@@ -147,7 +147,7 @@ export const Shareables = (props: ShareablesProps) => {
                                 <Avatar src={props.profilePhoto} sx={{ width: 64, height: 64 }} />
                                 <Typography variant="h6">{props.author}</Typography>
                             </Box>
-                            <Logo />
+                            <Logo activityType={props.activityType} />
                         </Box>
                     </Box>
                 </Box>

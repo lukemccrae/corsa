@@ -18,6 +18,7 @@ interface ArticleEditorProps {
   mileData: MileData[]
   elementIdsForOrder: string[];
   setElementIdsForOrder: Function;
+  activityType: string;
 }
 
 export const ArticleEditor = (props: ArticleEditorProps) => {
@@ -79,7 +80,7 @@ export const ArticleEditor = (props: ArticleEditorProps) => {
   const returnProperElement = (element: ArticleElement, index: number) => {
     if (isPaceTable(element)) {
       return <Box sx={{ display: "flex", flexDirection: "row" }}>
-        <PaceTableEditor updatePaceTableElement={updatePaceTableElement} element={element.paceTable} mileData={props.mileData} lastMileDistance={props.lastMileDistance} index={index} elements={{}} createNewElementsMap={props.createNewElementsMap} setElementIdsForOrder={props.setElementIdsForOrder} elementIdsForOrder={props.elementIdsForOrder}></PaceTableEditor>
+        <PaceTableEditor activityType={props.activityType} updatePaceTableElement={updatePaceTableElement} element={element.paceTable} mileData={props.mileData} lastMileDistance={props.lastMileDistance} index={index} elements={{}} createNewElementsMap={props.createNewElementsMap} setElementIdsForOrder={props.setElementIdsForOrder} elementIdsForOrder={props.elementIdsForOrder}></PaceTableEditor>
       </Box>
     } else if (isText(element)) {
       return <Box sx={{ width: "100%" }}>

@@ -15,6 +15,7 @@ interface PaceTableEditorProps {
     setElementIdsForOrder: Function;
     elementIdsForOrder: string[];
     updatePaceTableElement: Function;
+    activityType: string;
 }
 
 export const PaceTableEditor = (props: PaceTableEditorProps) => {
@@ -85,7 +86,7 @@ export const PaceTableEditor = (props: PaceTableEditorProps) => {
         props.createNewElementsMap([...Object.values(props.elements)].filter((_, i) => i !== props.index))
     };
 
-    const plan = { mileData: props.mileData, lastMileDistance: props.lastMileDistance }
+    const plan = { mileData: props.mileData, lastMileDistance: props.lastMileDistance, activityType: props.activityType }
 
     return (
         <Box sx={{ display: "flex", flexDirection: "column" }}>

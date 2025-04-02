@@ -67,7 +67,7 @@ export const TitleBox = (props: TitleBoxProps) => {
                             <Typography variant="h6">{props.plan.author}</Typography>
                         </Box>
 
-                        <Logo />
+                        <Logo activityType={props.plan.activityType} />
                     </Box>
                 </Box>
             </Box>
