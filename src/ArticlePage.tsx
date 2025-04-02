@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Avatar, Box, Container, Stack, Typography, Link as WebLink } from "@mui/material";
+import { Avatar, Box, CircularProgress, Container, Stack, Typography, Link as WebLink } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { ArticleElement, PaceTableType, Plan, Text } from "./types";
 import { useUser } from "./context/UserContext";
@@ -27,13 +27,17 @@ export const CustomImage: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = 
 export const ArticlePage = () => {
   // Extract the `id` from the URL
   const { slug, username } = useParams();
+  const [loading, setLoading] = React.useState<boolean>(false);
   const [plan, setPlan] = React.useState<Plan>();
+
   const { anon, checkValidAnon } = useUser();
 
   React.useEffect(() => {
     const publishedPlans = async () => {
       if (anon && checkValidAnon() && username && slug) {
+        setLoading(true)
         const result = await fetchPlanDetails(username, slug, anon);
+        setLoading(false)
         setPlan(result.data.getPlanById);
       }
     };
@@ -169,6 +173,9 @@ export const ArticlePage = () => {
           </Typography>
         </>
       )}
+      <Box sx={{ display: loading ?  'flex' : 'none' }}>
+        <CircularProgress />
+      </Box>
     </Container>
   );
 };
