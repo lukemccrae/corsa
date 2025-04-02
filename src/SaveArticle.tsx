@@ -16,7 +16,6 @@ interface SaveArticleProps {
 
 
 export const SaveArticle = (props: SaveArticleProps) => {
-    console.log(props.elements, '<< els')
     const [loading, setLoading] = useState(false);
     // TODO: show the last time the document was saved, return this information from the mutation
     const { user } = useUser()
