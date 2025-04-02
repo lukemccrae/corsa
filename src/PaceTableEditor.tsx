@@ -130,10 +130,10 @@ export const PaceTableEditor = (props: PaceTableEditorProps) => {
                     <IconButton onClick={() => setEditing(!editing)}>
                         <Edit />
                     </IconButton>
-                    <IconButton sx={{ display: editing ? "inline-flex" : "none" }} onClick={() => moveItem(props.index, -1)} disabled={props.index === 0}>
+                    <IconButton sx={{ display: editing ? "none" : "inline-flex" }} onClick={() => moveItem(props.index, -1)} disabled={props.index === 0}>
                         <ArrowUpward />
                     </IconButton>
-                    <IconButton sx={{ display: editing ? "inline-flex" : "none" }} onClick={() => moveItem(props.index, 1)} disabled={props.index === props.elementIdsForOrder.length - 1}>
+                    <IconButton sx={{ display: editing ? "none" : "inline-flex" }} onClick={() => moveItem(props.index, 1)} disabled={props.index === props.elementIdsForOrder.length - 1}>
                         <ArrowDownward />
                     </IconButton>
 

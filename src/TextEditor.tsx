@@ -17,7 +17,7 @@ interface TextEditorProps {
 export const TextEditor = (props: TextEditorProps) => {
     const [editing, setEditing] = useState(false);
     const [deleteCheck, setDeleteCheck] = useState(false);
-    const [newText, setNewText] = useState<string>("")
+    const [newText, setNewText] = useState<string>("");
 
     useEffect(() => {
         setNewText(DOMPurify.sanitize(props.text))
@@ -34,7 +34,7 @@ export const TextEditor = (props: TextEditorProps) => {
         // Swap the elements at index and newIndex
         [updatedElementIds[index], updatedElementIds[newIndex]] = [updatedElementIds[newIndex], updatedElementIds[index]];
 
-        props.setElementIdsForOrder(updatedElementIds); ``
+        props.setElementIdsForOrder(updatedElementIds);
     };
 
 
@@ -46,8 +46,9 @@ export const TextEditor = (props: TextEditorProps) => {
         setDeleteCheck(false);
     };
 
-    // handle saving the text box to the element map
+    // // handle saving the text box to the element map
     const handleSave = () => {
+        console.log(props.elementIdsForOrder)
         props.updateTextElement(newText, props.index)
         setEditing(false)
     }
@@ -98,7 +99,7 @@ export const TextEditor = (props: TextEditorProps) => {
                         const images = editor.getBody().querySelectorAll("img");
                         // @ts-ignore
                         images.forEach((img) => {
-                            img.style.maxWidth = "450px";
+                            img.style.maxWidth = "100%";
                             img.style.height = "auto";
                         });
                     });
@@ -112,10 +113,10 @@ export const TextEditor = (props: TextEditorProps) => {
             <IconButton onClick={() => setEditing(!editing)}>
                 <Edit />
             </IconButton>
-            <IconButton sx={{ display: editing ? "inline-flex" : "none" }} onClick={() => moveItem(props.index, -1)} disabled={props.index === 0}>
+            <IconButton sx={{ display: editing ? "none" : "inline-flex" }} onClick={() => moveItem(props.index, -1)} disabled={props.index === 0}>
                 <ArrowUpward />
             </IconButton>
-            <IconButton sx={{ display: editing ? "inline-flex" : "none" }} onClick={() => moveItem(props.index, 1)} disabled={props.index === props.elementIdsForOrder.length - 1}>
+            <IconButton sx={{ display: editing ? "none" : "inline-flex" }} onClick={() => moveItem(props.index, 1)} disabled={props.index === props.elementIdsForOrder.length - 1}>
                 <ArrowDownward />
             </IconButton>
             <IconButton sx={{ display: editing ? "inline-flex" : "none" }} onClick={() => deleteElement()}>

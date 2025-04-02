@@ -60,7 +60,6 @@ export const ArticleEditor = (props: ArticleEditorProps) => {
 
   const updatePaceTableElement = async (miles: number[], columns: string[], index: number) => {
     let prevElementsArray = Object.values(props.elements);
-    console.log(prevElementsArray[index], '<< prevElementsArray[index]')
 
     // Type guard to check if it's a text element
     if ("paceTable" in prevElementsArray[index]) {
@@ -107,24 +106,6 @@ export const ArticleEditor = (props: ArticleEditorProps) => {
             </CardContent>
           </Card>
         })}
-
-        {/* {props.elements.map((element, index) => {
-          return (
-            <Card key={index} sx={{ padding: 3, display: "flex" }}>
-              <CardContent>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  {returnProperElement(element, index)}
-                </Box>
-              </CardContent>
-            </Card>
-          )
-        })} */}
-        {/* need margin around this button */}
         <Button sx={{ margin: 2 }} variant="contained" startIcon={<Add />} onClick={openDialog}>
         </Button>
         <Box sx={{margin: "5px"}}></Box>
