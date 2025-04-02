@@ -19,6 +19,7 @@ interface ShareablesProps {
     mileData: MileData[]
     lastMileDistance: number;
     author: string;
+    activityType: string;
 }
 
 type AssistantSummary = {
@@ -196,7 +197,7 @@ export const Shareables = (props: ShareablesProps) => {
                                 gap: 1,
                             }}
                         >
-                            <Logo></Logo>
+                            <Logo activityType={props.activityType}></Logo>
                         </Box>
                     </Box>
                 )

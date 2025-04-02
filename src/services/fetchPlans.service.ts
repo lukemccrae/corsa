@@ -69,8 +69,7 @@ export const getPlanById = async (props: GetPlanByIdProps) => {
         }
         distanceInMiles
         bucketKey
-            durationInSeconds
-            articleContent
+        activityType
             lastMileDistance
             lossInMeters
             gainInMeters

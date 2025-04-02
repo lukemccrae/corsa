@@ -34,6 +34,7 @@ export const ArticlePage = () => {
     const publishedPlans = async () => {
       if (anon && checkValidAnon() && username && slug) {
         const result = await fetchPlanDetails(username, slug, anon);
+        console.log(result)
         setPlan(result.data.getPlanById);
       }
     };

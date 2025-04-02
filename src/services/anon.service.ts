@@ -122,7 +122,7 @@ export const fetchPlanDetails = async (
   const query = `
     query MyQuery {
       getPlanById(slug: "${slug}", userId: "${userId}") {
-        articleContent
+        activityType
         distanceInMiles
         durationInSeconds
         gainInMeters
@@ -138,6 +138,7 @@ export const fetchPlanDetails = async (
           stopTime
         }
         name
+        activityType
         published
         startTime
         userId

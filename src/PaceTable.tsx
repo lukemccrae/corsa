@@ -17,6 +17,7 @@ import { getRandomColor } from "./helpers/randomColor.helper";
 type PartialPlan = {
   mileData: MileData[];
   lastMileDistance: number;
+  activityType: string;
 }
 
 interface PaceTableProps {
@@ -29,20 +30,10 @@ export const PaceTable: React.FC<PaceTableProps> = (props: PaceTableProps) => {
   function checkDisplayCols(col: string) {
     return props.cols.includes(col) ? "table-cell" : "none"
   }
-  const { bg, text } = getRandomColor()
-
-  function isBetween(num: number, miles: number[]): boolean {
-    if (miles.length !== 2) {
-      console.error('miles array should contain exactly two elements.');
-      return false;
-    }
-    return num >= miles[0] && num <= miles[1];
-  }
-
   return (
     <Box sx={{ backgroundColor: "white", overflowX: "auto" }}>
-      <TableContainer component={Paper}>
-        <Table sx={{ tableLayout: 'fixed', }} aria-label="pace table" size="small">
+      <TableContainer sx={{margin: "0 0 10px 0"}} component={Paper}>
+        <Table sx={{ tableLayout: 'fixed' }} aria-label="pace table" size="small">
           <TableHead>
             <TableRow>
               {["Mile", "Pace", "Profile", "Avg.", "Gain", "Loss", "GAP", "Elapsed"].map((col) => (
@@ -87,8 +78,7 @@ export const PaceTable: React.FC<PaceTableProps> = (props: PaceTableProps) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Divider sx={{ marginTop: "10px" }} />
-      <Logo></Logo>
+      <Logo activityType={props.plan.activityType}></Logo>
     </Box>
   );
 };
