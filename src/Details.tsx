@@ -30,7 +30,6 @@ export const Details = () => {
   const [lastMileDistance, setLastMileDistance] = React.useState<number>();
   const [elementIdsForOrder, setElementIdsForOrder] = React.useState<string[] | undefined>()
   const [profilePhoto, setProfilePhoto] = React.useState<string | undefined>(undefined);
-  const [showShareables, setShowShareables] = React.useState<boolean>(false);
 
   const screenSize = useScreenSize();
 
@@ -119,16 +118,7 @@ export const Details = () => {
         >
           <ArticleEditor elementIdsForOrder={elementIdsForOrder} setElementIdsForOrder={setElementIdsForOrder} mileData={mileData} lastMileDistance={lastMileDistance} elements={elements} createNewElementsMap={createNewElementsMap} userId={userId} slug={slug} />
         </Box>
-        {showShareables && <Shareables activityType={activityType} showShareables={showShareables} elements={elements} profilePhoto={profilePhoto} planName={planName} mileData={mileData} lastMileDistance={lastMileDistance} author={author}></Shareables>}
-        <Button
-          sx={{ margin: "0 0 40px 25px" }}
-          variant="contained"
-          onClick={() => {
-            setShowShareables(!showShareables);
-          }}
-        >
-          Toggle Shareables
-        </Button>
+        <Shareables activityType={activityType} elements={elements} profilePhoto={profilePhoto} planName={planName} mileData={mileData} lastMileDistance={lastMileDistance} author={author}></Shareables>
       </Container>
     );
   } else {
