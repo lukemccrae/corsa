@@ -85,7 +85,7 @@ export const PaceTableEditor = (props: PaceTableEditorProps) => {
         props.createNewElementsMap([...Object.values(props.elements)].filter((_, i) => i !== props.index))
     };
 
-    const plan = { mileData: props.mileData, lastMileDistance: props.lastMileDistance }
+    const plan = { mileData: props.mileData, lastMileDistance: props.lastMileDistance, activityType: "default" }
 
     return (
         <Box sx={{ display: "flex", flexDirection: "column" }}>
