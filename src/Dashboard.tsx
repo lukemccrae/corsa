@@ -78,7 +78,7 @@ export const Dashboard = () => {
             CORSA.
             <DirectionsRunIcon sx={{ ml: 1, margin: 0 }} />
           </Typography>
-          {/* {(user) && (
+          {(user) && (
             <div style={{ display: "flex" }}>
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Account settings">
@@ -116,7 +116,7 @@ export const Dashboard = () => {
                 </Menu>
               </Box>
             </div>
-          )}  */}
+          )} 
 
         </Toolbar>
       </Container>
