@@ -8,6 +8,7 @@ import UserPool from "../UserPool";
 import { CognitoToken } from '../types';
 import jwtdecode from "jwt-decode";
 import { CognitoIdentityClient } from '@aws-sdk/client-cognito-identity';
+import { useNavigate } from 'react-router-dom';
 
 type User = {
   email: string;
@@ -56,6 +57,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [anon, setAnon] = useState<Anon | undefined>(undefined);
   const [isFetching, setIsFetching] = useState(false);
+  const navigate = useNavigate();
+
 
   // On mount, load credentials from localStorage or fetch fresh ones
   useEffect(() => {
@@ -82,7 +85,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   }, []);
 
   const logoutUser = async () => {
+    navigate("/")
     localStorage.removeItem("user")
+    setUser(undefined)
   }
 
   const checkValidUser = (decodedUser: CognitoToken) => {

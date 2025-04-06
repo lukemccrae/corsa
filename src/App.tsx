@@ -6,10 +6,6 @@ import React from "react";
 
 export const App = () => {
     const { user } = useUser();
-    React.useEffect(() => {
-    }, [])
-
-
     return (
         <Box
             component="main"

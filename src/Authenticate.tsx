@@ -69,8 +69,6 @@ export const Authenticate = () => {
     setNeedToRegister(!needToRegister)
   }
 
-
-
   const validateInputs = () => {
     const email = (document.getElementById('register-email') as HTMLInputElement);
     const password = document.getElementById('register-password') as HTMLInputElement;
@@ -178,23 +176,14 @@ export const Authenticate = () => {
 
               </Button>
               <Typography sx={{ textAlign: 'center' }}>
-                Don&apos;t have an account?{' '}
-                <span>
-                  <Typography
-                    onClick={handleNeedToRegister}
-                    variant="body2"
-                    sx={{
-                      alignSelf: 'center',
-                      cursor: 'pointer',
-                      display: 'inline',
-                      color: 'primary.main',      // Link color
-                      textDecoration: 'underline', // Underline style
-                      "&:hover": { textDecoration: 'none' }, // Remove underline on hover
-                    }}
-                  >
-                    Sign up
-                  </Typography>
-                </span>
+                Email{' '}
+                <a
+                  href="mailto:stories@corsa.run"
+                  style={{ color: '#E3A446', textDecoration: 'underline', fontWeight: 1000 }}
+                >
+                  stories@corsa.run
+                </a>{' '}
+                for a beta account
               </Typography>
             </Box>
             : // TERNARY
