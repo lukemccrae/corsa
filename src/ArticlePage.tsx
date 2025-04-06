@@ -10,7 +10,6 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { unescapeMarkdown } from "./helpers/markdown.helper";
 import { fetchPlanDetails } from "./services/anon.service";
-import { TitleBox } from "./TitleBox";
 
 export const CustomImage: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = ({
   alt,
