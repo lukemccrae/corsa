@@ -8,6 +8,7 @@ interface LogoProps {
 }
 
 export const Logo = (props: LogoProps) => {
+  console.log(props, '<< props')
   return <Typography
     noWrap
     sx={{

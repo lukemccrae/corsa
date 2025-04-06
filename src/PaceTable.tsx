@@ -30,6 +30,7 @@ export const PaceTable: React.FC<PaceTableProps> = (props: PaceTableProps) => {
   function checkDisplayCols(col: string) {
     return props.cols.includes(col) ? "table-cell" : "none"
   }
+  console.log(props.plan.activityType)
   return (
     <Box sx={{ backgroundColor: "white", overflowX: "auto" }}>
       <TableContainer sx={{margin: "0 0 10px 0"}} component={Paper}>
