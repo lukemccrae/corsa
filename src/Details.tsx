@@ -24,9 +24,9 @@ export const Details = () => {
   const [bucketKey, setBucketKey] = React.useState<string>();
   const [published, setPublished] = React.useState<boolean>();
   const [mileData, setMileData] = React.useState<MileData[] | undefined>();
-  const [planName, setPlanName] = React.useState<string | undefined>(); 
-  const [author, setAuthor] = React.useState<string | undefined>(); 
-  const [activityType, setActivityType] = React.useState<string | undefined>(); 
+  const [planName, setPlanName] = React.useState<string | undefined>();
+  const [author, setAuthor] = React.useState<string | undefined>();
+  const [activityType, setActivityType] = React.useState<string | undefined>();
   const [lastMileDistance, setLastMileDistance] = React.useState<number>();
   const [elementIdsForOrder, setElementIdsForOrder] = React.useState<string[] | undefined>()
   const [profilePhoto, setProfilePhoto] = React.useState<string | undefined>(undefined);
@@ -87,11 +87,18 @@ export const Details = () => {
 
   if (elements && userId && mileData && lastMileDistance && slug && elements && bucketKey && published !== undefined && elementIdsForOrder !== undefined && profilePhoto !== undefined && author && planName && activityType) {
     return (
-      <Container sx={{ mt: "100px" }} maxWidth="lg">
+      <Container sx={{
+        mt: "80px", // or remove this if you're using `top: 0` sticky headers
+        minHeight: "100vh", // This is key
+        display: "flex",
+        flexDirection: "column",
+      }} maxWidth="lg">
         <Box sx={{
           maxWidth: { xs: "100vw", sm: "600px", md: "600px" },
           display: "flex", justifyContent: "space-between", alignItems: "center",
-          margin: 2
+          margin: 2,
+          top: 0,
+          height: "100%"
         }}>
           <Link to="/app" style={{ color: "#515B63" }}>
             <ArrowBackIcon />
@@ -118,7 +125,7 @@ export const Details = () => {
         >
           <ArticleEditor activityType={activityType} elementIdsForOrder={elementIdsForOrder} setElementIdsForOrder={setElementIdsForOrder} mileData={mileData} lastMileDistance={lastMileDistance} elements={elements} createNewElementsMap={createNewElementsMap} userId={userId} slug={slug} />
         </Box>
-        <Shareables activityType={activityType} elements={elements} profilePhoto={profilePhoto} planName={planName} mileData={mileData} lastMileDistance={lastMileDistance} author={author}></Shareables>
+        {/* <Shareables activityType={activityType} elements={elements} profilePhoto={profilePhoto} planName={planName} mileData={mileData} lastMileDistance={lastMileDistance} author={author}></Shareables> */}
       </Container>
     );
   } else {

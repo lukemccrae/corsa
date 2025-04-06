@@ -32,7 +32,7 @@ export const ArticleEditor = (props: ArticleEditorProps) => {
 
     switch (arg) {
       case ("text"):
-        newElement = { text: { content: '"Content"' }, editing: false, id }
+        newElement = { text: { content: 'New Text' }, editing: false, id }
         break;
       case ("paceTable"):
         newElement = { paceTable: { columns: ["Mile", "Gain", "Elapsed", "Profile", "Pace", "GAP"], miles: [-1, 4] }, editing: false, id }

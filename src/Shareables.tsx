@@ -119,21 +119,22 @@ export const Shareables = (props: ShareablesProps) => {
                 <Box ref={titleRef} sx={{
                     
                     display: "flex",
+                    alignItems: "center",
                     flexDirection: "column",
                     backgroundColor: bg,
                     margin: 1,
                     p: 5,
                     position: "relative",
                     color: text,
-                    height: "750px",
-                    width: "600px",
+                    height: "625px",
+                    width: "500px",
                     justifyContent: "space-between", // Ensures the content is spaced out
                 }}>
-                    <Typography variant="h1" sx={{ color: text }}>
+                    <Typography variant="h2" sx={{ color: text }}>
                         {props.planName}
                     </Typography>
                     <Box>
-                        <MileProfile marginRight={5} mileVertProfile={createMiniProfile(props.mileData, 85)} multiplyPadding={250} color={text} />
+                        <MileProfile marginRight={5} mileVertProfile={createMiniProfile(props.mileData, 70)} multiplyPadding={150} color={text} />
                     </Box>
                     <Box sx={{ display: "flex", flexDirection: "column", gap: 2, paddingTop: 2 }}>
                         {/* Data rows */}
@@ -178,8 +179,8 @@ export const Shareables = (props: ShareablesProps) => {
                     ref={customRef}
                     sx={{
                         position: "relative",
-                        height: "750px",
-                        width: "600px",
+                        height: "625px",
+                        width: "500px",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",

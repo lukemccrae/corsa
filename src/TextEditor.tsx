@@ -67,7 +67,7 @@ export const TextEditor = (props: TextEditorProps) => {
         setNewText(sanitizedContent);
     }
 
-    return <Box sx={{ display: "flex", flexDirection: "row" }}>
+    return <Box sx={{ display: "flex", flexDirection: "row", position: "relative" }}>
         {editing ? <Editor
             apiKey='lc1hsudemo0gx33vhn59zisxgvcp3fktuvifbvk6xnrt7jbh'
             init={{
@@ -108,7 +108,7 @@ export const TextEditor = (props: TextEditorProps) => {
             }}
             initialValue={DOMPurify.sanitize(props.text)}
             onChange={handleEditorChange}
-        /> : <div dangerouslySetInnerHTML={{ __html: props.text }}></div>}
+        /> : <div style={{width: "485px"}} dangerouslySetInnerHTML={{ __html: props.text }}></div>}
         <Stack direction="column">
             <IconButton onClick={() => setEditing(!editing)}>
                 <Edit />
