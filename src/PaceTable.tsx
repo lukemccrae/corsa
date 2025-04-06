@@ -33,7 +33,7 @@ export const PaceTable: React.FC<PaceTableProps> = (props: PaceTableProps) => {
   console.log(props.plan.activityType)
   return (
     <Box sx={{ backgroundColor: "white", overflowX: "auto" }}>
-      <TableContainer sx={{margin: "0 0 10px 0"}} component={Paper}>
+      <TableContainer sx={{ margin: "0 0 10px 0" }} component={Paper}>
         <Table sx={{ tableLayout: 'fixed' }} aria-label="pace table" size="small">
           <TableHead>
             <TableRow>
@@ -46,9 +46,13 @@ export const PaceTable: React.FC<PaceTableProps> = (props: PaceTableProps) => {
           </TableHead>
           <TableBody>
             {props.plan.mileData.map((md, i) => {
-              const mileNumber = i === props.plan.mileData.length - 1 ? props.plan.lastMileDistance : i + 1;
+              const mileNumber = i === props.plan.mileData.length - 1
+                ? props.plan.lastMileDistance
+                : i + 1;
+              const isVisible =
+                mileNumber >= props.miles[0] && mileNumber <= props.miles[1];
               return (
-                <TableRow sx={{ display: i > props.miles[0] && i < props.miles[1] ? "table-row" : "none" }} key={i}>
+                <TableRow sx={{ display: isVisible ? "table-row" : "none" }} key={i}>
                   <TableCell align="left" sx={{ display: checkDisplayCols("Mile"), maxWidth: "60px" }}>
                     {mileNumber}
                   </TableCell>

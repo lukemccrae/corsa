@@ -12,6 +12,7 @@ interface SaveArticleProps {
     slug: string
     elements: ElementsMap
     elementIdsForOrder: string[]
+    planName: string;
 }
 
 
@@ -25,8 +26,9 @@ export const SaveArticle = (props: SaveArticleProps) => {
             const slug = props.slug;
             const userId = user.userId
             const elements = props.elementIdsForOrder.map((id) => props.elements[id])
+            const planName = props.planName;
             setLoading(true)
-            const result = await saveArticle({ elements, slug, userId });
+            const result = await saveArticle({ elements, slug, userId, planName });
             setLoading(false)
         }
     }

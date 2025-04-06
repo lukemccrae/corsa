@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useUser } from "./context/UserContext";
 import { getPlanById } from "./services/fetchPlans.service";
 import { Article, ArticleElement, MileData, Plan } from "./types";
-import { Box, Button, CircularProgress, Container } from "@mui/material";
+import { Box, Button, Card, CardContent, CircularProgress, Container, TextField } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { DeleteCourse } from "./DeleteCourse";
 import { useScreenSize } from "./helpers/screensize.helper";
@@ -111,7 +111,7 @@ export const Details = () => {
               label={"Delete"}
               disabled={published}
             />
-            <SaveArticle elementIdsForOrder={elementIdsForOrder} slug={slug} label={"Save"} elements={elements} />
+            <SaveArticle planName={planName} elementIdsForOrder={elementIdsForOrder} slug={slug} label={"Save"} elements={elements} />
           </Box>
         </Box>
 
@@ -123,6 +123,13 @@ export const Details = () => {
             px: { xs: 2, sm: 3 }, // Padding for smaller screens
           }}
         >
+          <Card sx={{ m: "0 0 10px 0" }}>
+            <CardContent>
+              <TextField sx={{width: "90%"}} onChange={(e) => setPlanName(e.target.value)}
+                id="filled-basic" variant="filled" value={planName} />
+            </CardContent>
+
+          </Card>
           <ArticleEditor activityType={activityType} elementIdsForOrder={elementIdsForOrder} setElementIdsForOrder={setElementIdsForOrder} mileData={mileData} lastMileDistance={lastMileDistance} elements={elements} createNewElementsMap={createNewElementsMap} userId={userId} slug={slug} />
         </Box>
         {/* <Shareables activityType={activityType} elements={elements} profilePhoto={profilePhoto} planName={planName} mileData={mileData} lastMileDistance={lastMileDistance} author={author}></Shareables> */}
