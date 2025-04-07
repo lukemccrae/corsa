@@ -48,7 +48,6 @@ export const saveArticle = async (props: SaveArticleProps) => {
       }
     );
     const jsonResult = await result.json();
-    console.log(jsonResult)
     if (jsonResult.data.updateArticleByPlanId) {
       return true;
     } else {
