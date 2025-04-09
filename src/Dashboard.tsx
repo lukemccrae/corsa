@@ -15,7 +15,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useUser } from './context/UserContext';
 import { ListItemText } from '@mui/material';
 import Divider from '@mui/material/Divider';
-import AddIcon from "@mui/icons-material/Add";
+import AddIcon from '@mui/icons-material/Add';
 
 export const Dashboard = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -41,19 +41,19 @@ export const Dashboard = () => {
   };
 
   // Sketchy menu system matching name to method to execute
-  // Switch to onClick?  
-  type Setting = "Logout" | "Add Course" | "App";
-  const settings: Setting[] = ["Logout", "Add Course", "App"];
+  // Switch to onClick?
+  type Setting = 'Logout' | 'Add Course' | 'App';
+  const settings: Setting[] = ['Logout', 'Add Course', 'App'];
 
   // // Map each setting to its corresponding function
   const settingActions: Record<Setting, () => void> = {
-    "Add Course": () => navigate("/add-course"),
-    "App": () => navigate("/app"),    
+    'Add Course': () => navigate('/add-course'),
+    App: () => navigate('/app'),
     Logout: () => logoutUser(),
   };
 
   return (
-    <AppBar sx={{ backgroundColor: "#515B63" }} position="fixed">
+    <AppBar sx={{ backgroundColor: '#515B63' }} position="fixed">
       <Container maxWidth="md">
         <Toolbar disableGutters>
           <Typography
@@ -62,7 +62,7 @@ export const Dashboard = () => {
             component={Link}
             to="/"
             sx={{
-              display: {md: 'flex' },
+              display: { md: 'flex' },
               flexGrow: 1,
               fontFamily: 'monospace',
               fontWeight: 700,
@@ -78,8 +78,8 @@ export const Dashboard = () => {
             CORSA.
             <DirectionsRunIcon sx={{ ml: 1, margin: 0 }} />
           </Typography>
-          {(user) ? (
-            <div style={{ display: "flex" }}>
+          {user ? (
+            <div style={{ display: 'flex' }}>
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Account settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -103,25 +103,35 @@ export const Dashboard = () => {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting: string) => (
-                    <MenuItem key={setting} onClick={() => {
-                      handleCloseUserMenu();
-                      settingActions[setting as Setting]();
-                    }}>
+                    <MenuItem
+                      key={setting}
+                      onClick={() => {
+                        handleCloseUserMenu();
+                        settingActions[setting as Setting]();
+                      }}
+                    >
                       <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
                     </MenuItem>
                   ))}
                   <Divider></Divider>
-                  <ListItemText primary={user.email} sx={{ textAlign: 'center', color: 'gray', padding: "2px" }} />
-
+                  <ListItemText
+                    primary={user.email}
+                    sx={{ textAlign: 'center', color: 'gray', padding: '2px' }}
+                  />
                 </Menu>
               </Box>
             </div>
-          ): <Typography sx={{color: "white", "&:hover": { color: "#E3A446" }}} component={Link} to={"/app"}>Log In</Typography>}
-
-
+          ) : (
+            <Typography
+              sx={{ color: 'white', '&:hover': { color: '#E3A446' } }}
+              component={Link}
+              to={'/app'}
+            >
+              Log In
+            </Typography>
+          )}
         </Toolbar>
       </Container>
     </AppBar>
   );
-}
-
+};
