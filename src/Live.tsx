@@ -4,12 +4,29 @@ import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import { useUser } from './context/UserContext';
 import L from 'leaflet';
-
-import AWSAppSyncClient, { AUTH_TYPE } from 'aws-appsync';
+import { generateClient } from 'aws-amplify/api';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-import { gql, Observable } from '@apollo/client';
+import * as subscriptions from './graphql/subscriptions';
 
+import { Amplify } from 'aws-amplify';
+
+Amplify.configure({
+  API: {
+    GraphQL: {
+      endpoint: 'https://mqbakxviyfgxbd62z2ikctwroa.appsync-api.us-west-1.amazonaws.com/graphql',
+      region: 'us-west-1',
+      // Set the default auth mode to "iam"
+      defaultAuthMode: 'iam',
+    },
+  },
+  Auth: {
+    Cognito: {
+      identityPoolId: 'us-west-1:85bf7267-2f79-43cc-a053-063c7ee03228',
+      allowGuestAccess: true,
+    },
+  },
+});
 
 const DefaultIcon = L.icon({
   iconUrl: icon,
@@ -20,22 +37,21 @@ const DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-// Your subscription query
-const subscribe2Waypoints = gql`
-  subscription MySubscription {
-    subscribe2Waypoints {
-      lat
-      long
-    }
-  }
-`;
-
 export const Live = () => {
-  const [waypoints, setWaypoints] = useState<any[]>([]);
+  const [waypoints, setWaypoints] = useState<any[]>([
+    { long: -118.134181, lat: 37.146508 },
+    
+  ]);
   const { anon } = useUser();
-  
-
+  const client = generateClient();
   useEffect(() => {
+    // Subscribe to creation of Todo
+    const subscribe2Waypoints = client
+      .graphql({ query: subscriptions.subscribe2Waypoints })
+      .subscribe({
+        next: ({ data }) => console.log(data),
+        error: error => console.warn(error),
+      });
     // Remove the national flag in Leaflet attribution control
     const style = document.createElement('style');
     style.innerHTML = `
@@ -44,53 +60,22 @@ export const Live = () => {
       }
     `;
     document.head.appendChild(style);
-    if(anon) {
-      const client = new AWSAppSyncClient({
-        url: 'wss://mqbakxviyfgxbd62z2ikctwroa.appsync-realtime-api.us-west-1.amazonaws.com/graphql',
-        region: 'us-west-1',
-        auth: {
-          type: AUTH_TYPE.AWS_IAM,
-          credentials: {
-            accessKeyId: anon?.accessKeyId,
-            secretAccessKey: anon?.secretAccessKey,
-            sessionToken: anon?.sessionToken,
-          }, 
-        },
-        offlineConfig: {
-          keyPrefix: `myAppSyncClient-${Math.random().toString(36).substring(7)}`, // Unique keyPrefix
-        },
-      });
-
-      const observable = client.subscribe({ query: subscribe2Waypoints });
-      
-      // Set up subscription handler
-      const subscription = observable.subscribe({
-        next: ({ data }: any) => {
-          console.log("✅ SUBSCRIPTION DATA:", data);
-          const newData = data?.subscribe2Waypoints;
-          setWaypoints((prevWaypoints) => [...prevWaypoints, newData]);
-        },
-        error: (error: any) => {
-          console.warn('Error with subscription:', error);
-        },
-      });
-
+    if (anon) {
       return () => {
-        // console.log("hi")
-        subscription.unsubscribe();
+        subscribe2Waypoints.unsubscribe();
         document.head.removeChild(style);
       };
     } else {
       return () => {
         document.head.removeChild(style);
-      }
+      };
     }
   }, [anon]);
 
   return (
     <Box sx={{ height: '75vh', width: '75vw', position: 'relative' }}>
       <MapContainer
-        center={[37.7749, -122.4194]} // San Francisco
+        center={[waypoints[0].lat, waypoints[0].long]} // San Francisco
         zoom={10}
         scrollWheelZoom={true}
         style={{ height: '100%', width: '100%' }}
@@ -100,10 +85,10 @@ export const Live = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {waypoints.map(waypoint => (
-          <Marker position={[waypoint.lat, waypoint.lng]}>
+          <Marker position={[waypoint.lat, waypoint.long]}>
             <Popup>
-              <h3>{waypoint.title}</h3>
-              <p>{waypoint.content}</p>
+              Latitude: {waypoint.lat} <br />
+              Longitude: {waypoint.long}
             </Popup>
           </Marker>
         ))}

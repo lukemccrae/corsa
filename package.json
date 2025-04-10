@@ -7,13 +7,12 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "codegen": "npx @aws-amplify/cli codegen"
   },
   "dependencies": {
     "@apollo/client": "^3.13.7",
-    "@aws-amplify/api": "^6.3.9",
-    "@aws-amplify/cli": "^12.15.0-next.0",
-    "@aws-amplify/pubsub": "^6.1.53",
+    "@aws-amplify/ui-react": "^6.11.0",
     "@aws-crypto/sha256-js": "^5.2.0",
     "@aws-sdk/credential-providers": "^3.742.0",
     "@aws-sdk/protocol-http": "^3.374.0",
@@ -29,7 +28,7 @@
     "@types/leaflet": "^1.9.17",
     "@types/react-router-dom": "^5.3.3",
     "amazon-cognito-identity-js": "^6.3.12",
-    "aws-amplify": "^4.3.19",
+    "aws-amplify": "^6.14.2",
     "aws-appsync": "^4.1.10",
     "aws-appsync-auth-link": "^3.0.7",
     "aws-appsync-react": "^4.0.16",
