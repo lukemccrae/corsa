@@ -10,9 +10,10 @@ import { AddCourse } from './AddCourse.tsx';
 import { ArticlePage } from './ArticlePage.tsx';
 import { Details } from './Details.tsx';
 import { Profile } from './Profile.tsx';
+import { Live } from './Live.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Router>
       <UserProvider>
       <Dashboard></Dashboard>
@@ -23,8 +24,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/users/:username/posts/:slug" element={<ArticlePage />}></Route>
         <Route path="/add-course" element={<AddCourse />}></Route>
         <Route path="/app/course/:slug" element={<Details />}></Route>
+        <Route path="/live" element={<Live />}></Route>
+
       </Routes>
       </UserProvider>
     </Router>
-  </React.StrictMode>,
+  // </React.StrictMode>,
 )

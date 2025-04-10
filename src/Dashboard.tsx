@@ -110,13 +110,22 @@ export const Dashboard = () => {
               </Box>
             </div>
           ) : (
-            <Typography
-              sx={{ color: 'white', '&:hover': { color: '#E3A446' } }}
-              component={Link}
-              to={'/app'}
-            >
-              Log In
-            </Typography>
+            <Box sx={{ display: 'flex', gap: '1rem' }}>
+              <Typography
+                sx={{ color: 'white', '&:hover': { color: '#E3A446' } }}
+                component={Link}
+                to={'/app'}
+              >
+                Log In
+              </Typography>
+              <Typography
+                sx={{ color: 'white', '&:hover': { color: '#E3A446' } }}
+                component={Link}
+                to={'/live'}
+              >
+                LIVE
+              </Typography>
+            </Box>
           )}
         </Toolbar>
       </Container>
