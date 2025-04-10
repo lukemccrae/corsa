@@ -45,8 +45,8 @@
     "react-mapbox-gl": "^5.1.1",
     "react-markdown": "^9.0.3",
     "react-router-dom": "^6.28.0",
-    "remark-gfm": "^4.0.0",
-    "styled-components": "^6.1.8",
+    "remark-gfm": "^4.0.1",
+    "styled-components": "^6.1.17",
     "uuid": "^9.0.1",
     "yjs": "^13.6.21"
   },

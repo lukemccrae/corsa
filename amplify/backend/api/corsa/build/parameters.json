@@ -1,0 +1,7 @@
+{
+    "AppSyncApiName": "corsa",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "S3DeploymentBucket": "amplify-corsa-dev-394f3-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/1b6ac0d24fda32ebb39f6e1e7283877b596af173"
+}

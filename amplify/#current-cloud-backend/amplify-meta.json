@@ -1,0 +1,46 @@
+{
+    "providers": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-corsa-dev-394f3-authRole",
+            "UnauthRoleArn": "arn:aws:iam::542047678132:role/amplify-corsa-dev-394f3-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::542047678132:role/amplify-corsa-dev-394f3-authRole",
+            "Region": "us-west-1",
+            "DeploymentBucketName": "amplify-corsa-dev-394f3-deployment",
+            "UnauthRoleName": "amplify-corsa-dev-394f3-unauthRole",
+            "StackName": "amplify-corsa-dev-394f3",
+            "StackId": "arn:aws:cloudformation:us-west-1:542047678132:stack/amplify-corsa-dev-394f3/12a14e60-1663-11f0-a9a1-022210a6f94d",
+            "AmplifyAppId": "d1yvk2if4tm7f9"
+        }
+    },
+    "api": {
+        "corsa-graphql-api": {
+            "service": "AppSync",
+            "output": {
+                "authConfig": {
+                    "defaultAuthentication": {
+                        "authenticationType": "AWS_IAM"
+                    },
+                    "additionalAuthenticationProviders": [
+                        {
+                            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+                            "userPoolConfig": {
+                                "userPoolId": "us-west-1_S7GEufYHG",
+                                "awsRegion": "us-west-1",
+                                "appIdClientRegex": null
+                            }
+                        },
+                        {
+                            "authenticationType": "API_KEY"
+                        }
+                    ]
+                },
+                "GraphQLAPIIdOutput": "kpreppqc2nam7kvi4zlnj7jiti",
+                "GraphQLAPIEndpointOutput": "https://mqbakxviyfgxbd62z2ikctwroa.appsync-api.us-west-1.amazonaws.com/graphql",
+                "name": "corsa-graphql-api",
+                "region": "us-west-1",
+                "GraphQLAPIKeyOutput": "da2-s7iwjmjgfzbqhmyohjdkheiyia"
+            },
+            "lastPushTimeStamp": "2025-04-10T23:39:43.278Z"
+        }
+    }
+}
