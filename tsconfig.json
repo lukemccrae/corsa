@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/aws-amplify"
+    ],
     "target": "ESNext",
     "useDefineForClassFields": true,
     "types": ["node"],

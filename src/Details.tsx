@@ -24,6 +24,7 @@ export type ElementsMap = {
 export const Details = () => {
   const { slug } = useParams();
   const { user } = useUser();
+  console.log(user)
   const [elements, setElements] = React.useState<ElementsMap>();
   const [userId, setUserId] = React.useState<string>();
   const [bucketKey, setBucketKey] = React.useState<string>();
