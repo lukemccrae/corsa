@@ -13,17 +13,14 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Plan } from './types';
-import { useUser } from './context/UserContext';
-import { fetchPublishedPlans } from './services/anon.service';
 
 export const Articles = () => {
   const [plans, setPlans] = React.useState<Partial<Plan>[]>();
-  const { anon, checkValidAnon } = useUser();
 
   React.useEffect(() => {
     const publishedPlans = [
       {
-        name: 'Desert Lung and Determination: My 100-Mile Journey at Coldwater',
+        name: 'Desert Lung and Determination',
         coverImage: 'https://i.imgur.com/zjM1dxh.png',
         profilePhoto: 'https://i.imgur.com/ARKqkWp.png',
         author: 'colleenmiracle',
@@ -33,15 +30,23 @@ export const Articles = () => {
         name: 'Death Valley Bikepacking',
         coverImage: 'https://i.imgur.com/P6xBlp9.png',
         profilePhoto:
-          'https://dgalywyr863hv.cloudfront.net/pictures/athletes/19680637/14084643/37/large.jpg',
+          'https://i.imgur.com/tdI9ZXF.png',
         author: 'lukemccrae',
         slug: 'death-valley-bikepacking',
+      },
+      {
+        name: 'Oakland Marathon',
+        coverImage: 'https://i.imgur.com/2RyYv7T.png',
+        profilePhoto:
+          'https://i.imgur.com/tdI9ZXF.png',
+        author: 'lukemccrae',
+        slug: 'oakland-marathon',
       },
       {
         name: 'Owens Valley FKT on Mt Dan',
         coverImage: 'https://i.imgur.com/yvGPLVe.png',
         profilePhoto:
-          'https://dgalywyr863hv.cloudfront.net/pictures/athletes/19680637/14084643/37/large.jpg',
+          'https://i.imgur.com/tdI9ZXF.png',
         author: 'lukemccrae',
         slug: 'mt-dan-fkt',
       },
@@ -54,7 +59,7 @@ export const Articles = () => {
         slug: 'hurt-100',
       },
       {
-        name: 'Glacier Lodge Road to Marathon Redemption',
+        name: 'Glacier Lodge Road',
         coverImage: 'https://i.imgur.com/jHrOH9V.png',
         profilePhoto:
           'https://dgalywyr863hv.cloudfront.net/pictures/athletes/19680637/14084643/37/large.jpg',
@@ -64,24 +69,12 @@ export const Articles = () => {
     ];
 
     setPlans(publishedPlans);
-    // const publishedPlans = async () => {
-    //   const published = await fetch('published.json') // Path relative to the public folder
-    //   .then(response => response.json())
-    //   .then(data => setPlans(data.publishedPlans))
-    //   .catch(error => console.error('Error loading plans:', error));
-    // }
-    // publishedPlans()
   }, []);
   return (
     <Box
       component="main"
       sx={{
-        // backgroundImage: `url('../splash.min.jpg');`,
         flexGrow: 1,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed' /* This keeps the background image fixed while scrolling */,
-        backgroundRepeat: 'no-repeat',
         height: '100vh',
         overflow: 'auto',
         width: '100vw',
@@ -120,16 +113,11 @@ export const Articles = () => {
                       component="img"
                       height="140"
                       image={post.coverImage}
-                      // alt={post.title}
                     />
                     <CardContent>
-                      {/* <Tags tags={post.tags}></Tags> */}
                       <Typography sx={{ margin: '10px 0 10px 0' }} variant="h6" gutterBottom>
                         {post.name}
                       </Typography>
-                      {/* <Typography variant="body2" sx={{ mt: 2 }}>
-                    {post.content}
-                  </Typography> */}
                       <Stack direction="row" spacing={1} alignItems="center">
                         <Avatar
                           alt={post.profilePhoto}

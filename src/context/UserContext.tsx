@@ -7,7 +7,6 @@ import { AuthenticationDetails, CognitoRefreshToken, CognitoUser } from "amazon-
 import UserPool from "../UserPool";
 import { CognitoToken } from '../types';
 import jwtdecode from "jwt-decode";
-import { CognitoIdentityClient } from '@aws-sdk/client-cognito-identity';
 import { useNavigate } from 'react-router-dom';
 
 type User = {
@@ -167,7 +166,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     }
 
     event.preventDefault();
-    UserPool.signUp(email, password, [], [], (err, data) => {
+    UserPool.signUp(email, password, [], [], (err) => {
       if (err) {
         console.error(err);
       }
@@ -236,8 +235,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const getAnonCreds = async (): Promise<AwsCredentialIdentity> => {
     const REGION = "us-west-1";
     const IDENTITY_POOL_ID = "us-west-1:85bf7267-2f79-43cc-a053-063c7ee03228";
-
-    const cognitoClient = new CognitoIdentityClient({ region: REGION });
 
     const credentialsProvider = fromCognitoIdentityPool({
       identityPoolId: IDENTITY_POOL_ID,

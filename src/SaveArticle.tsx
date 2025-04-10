@@ -2,7 +2,6 @@ import Button from '@mui/material/Button';
 import SaveIcon from '@mui/icons-material/Save';
 import { useUser } from './context/UserContext';
 import { saveArticle } from './services/saveArticle.service';
-import { ArticleElement } from './types';
 import { ElementsMap } from './Details';
 import { useState } from 'react';
 import { Box, CircularProgress } from '@mui/material';
@@ -18,18 +17,25 @@ interface SaveArticleProps {
 
 export const SaveArticle = (props: SaveArticleProps) => {
     const [loading, setLoading] = useState(false);
-    // TODO: show the last time the document was saved, return this information from the mutation
     const { user } = useUser()
 
     const updateArticleData = async () => {
         if (user && user.userId && props.elements) {
             const slug = props.slug;
-            const userId = user.userId
-            const elements = props.elementIdsForOrder.map((id) => props.elements[id])
+            const userId = user.userId;
+            const elements = props.elementIdsForOrder.map((id) => props.elements[id]);
             const planName = props.planName;
-            setLoading(true)
-            const result = await saveArticle({ elements, slug, userId, planName });
-            setLoading(false)
+
+            setLoading(true);
+
+            try {
+                await saveArticle({ elements, slug, userId, planName });
+            } catch (error) {
+                console.error('Error saving article:', error);
+                // Optionally show an error message to the user
+            } finally {
+                setLoading(false);
+            }
         }
     }
 

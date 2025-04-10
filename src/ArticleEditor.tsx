@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Card,
   CardContent,
@@ -11,11 +11,9 @@ import {
   DialogActions,
 } from '@mui/material';
 import { Add } from '@mui/icons-material';
-import { ArticleElement, MileData, PaceTableType, Plan, Text } from './types';
-import { PaceTable } from './PaceTable';
+import { ArticleElement, MileData, PaceTableType, Text } from './types';
 import { TextEditor } from './TextEditor';
 import { PaceTableEditor } from './PaceTableEditor';
-import { saveArticle } from './services/saveArticle.service';
 import { generateRandomID } from './helpers/randomId.helper';
 import { ElementsMap } from './Details';
 

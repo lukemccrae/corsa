@@ -8,7 +8,6 @@ import {
   DialogTitle,
   FormControl,
   IconButton,
-  InputLabel,
   ListItemText,
   MenuItem,
   Select,
@@ -17,7 +16,7 @@ import {
   TextField,
 } from '@mui/material';
 import { PaceTable } from './PaceTable';
-import { ArticleElement, MileData, PaceTableType, Plan } from './types';
+import { MileData, PaceTableType } from './types';
 import { Edit, ArrowUpward, ArrowDownward, Delete, Save } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import { ElementsMap } from './Details';

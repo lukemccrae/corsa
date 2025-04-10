@@ -2,10 +2,9 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useUser } from './context/UserContext';
 import { getPlanById } from './services/fetchPlans.service';
-import { Article, ArticleElement, MileData, Plan } from './types';
+import { ArticleElement, MileData, Plan } from './types';
 import {
   Box,
-  Button,
   Card,
   CardContent,
   CircularProgress,
@@ -14,11 +13,9 @@ import {
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { DeleteCourse } from './DeleteCourse';
-import { useScreenSize } from './helpers/screensize.helper';
 import { SaveArticle } from './SaveArticle';
 import { ArticleEditor } from './ArticleEditor';
-import { ConstructionOutlined } from '@mui/icons-material';
-import { Shareables } from './Shareables';
+// import { Shareables } from './Shareables';
 
 export type ElementsMap = {
   [key: string]: ArticleElement;
@@ -38,29 +35,7 @@ export const Details = () => {
   const [lastMileDistance, setLastMileDistance] = React.useState<number>();
   const [elementIdsForOrder, setElementIdsForOrder] = React.useState<string[] | undefined>();
   const [profilePhoto, setProfilePhoto] = React.useState<string | undefined>(undefined);
-
-  const screenSize = useScreenSize();
-
-  let elevationWidth: number = 500;
-
-  switch (screenSize) {
-    case 'sm':
-      elevationWidth = window.innerWidth - 100;
-      break;
-    case 'md':
-      elevationWidth = 500;
-      break;
-    case 'lg':
-      elevationWidth = 500;
-      break;
-    case 'xl':
-      elevationWidth = 500;
-      break;
-    default:
-      elevationWidth = 700;
-      break;
-  }
-
+  
   // use element IDs to create map for fast rendering
   const createNewElementsMap = (elements: ArticleElement[]) => {
     const elementsMap = elements.reduce<ElementsMap>((acc, element) => {

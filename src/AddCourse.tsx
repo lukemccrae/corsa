@@ -1,7 +1,7 @@
 import * as React from "react";
 import { handleFileUpload } from "./services/addCourse.service.ts";
 import { useUser } from './context/UserContext';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 import UploadProgress from "./UploadProgress.tsx";

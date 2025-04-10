@@ -1,8 +1,7 @@
-import { Box, Container, Grid, Paper } from "@mui/material"
+import { Box, Container } from "@mui/material"
 import { useUser } from "./context/UserContext"
 import { Authenticate } from "./Authenticate";
 import { UI } from "./UI";
-import React from "react";
 
 export const App = () => {
     const { user } = useUser();

@@ -45,6 +45,7 @@ export type Plan = {
   publishDate: string;
   articleElements: ArticleElement[];
   activityType: string;
+  subHeading: string;
 };
 
 export interface PartialPlan {

@@ -10,7 +10,6 @@ import { AddCourse } from './AddCourse.tsx';
 import { ArticlePage } from './ArticlePage.tsx';
 import { Details } from './Details.tsx';
 import { Profile } from './Profile.tsx';
-import { Footer } from './Footer.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -26,7 +25,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Route path="/app/course/:slug" element={<Details />}></Route>
       </Routes>
       </UserProvider>
-      {/* <Footer></Footer> */}
     </Router>
   </React.StrictMode>,
 )

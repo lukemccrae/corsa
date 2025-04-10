@@ -131,18 +131,6 @@ export const Authenticate = () => {
                 />
               </FormControl>
               <FormControl>
-                {/* <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <FormLabel htmlFor="password">Password</FormLabel>
-                <Link
-                  component="button"
-                  type="button"
-                  onClick={handleClickOpenForgotPassword}
-                  variant="body2"
-                  sx={{ alignSelf: 'baseline' }}
-                >
-                  Forgot your password?
-                </Link>
-              </Box> */}
                 <TextField
                   error={passwordError}
                   helperText={passwordErrorMessage}
@@ -159,7 +147,6 @@ export const Authenticate = () => {
                 />
               </FormControl>
 
-              {/* <ForgotPassword open={open} handleClose={handleClose} /> */}
               <Button type="submit" fullWidth variant="contained" onClick={validateInputs}>
                 Sign in
               </Button>

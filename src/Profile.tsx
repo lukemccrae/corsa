@@ -1,10 +1,9 @@
 import React from 'react';
-import { Plan, User } from './types';
+import { Plan } from './types';
 import { useUser } from './context/UserContext';
 import { getPublishedUserInfo } from './services/anon.service';
 import { Avatar, Box, Card, CardActionArea, CardContent, CircularProgress, Container, Typography } from '@mui/material';
 import { useParams, Link } from 'react-router-dom';
-import { calculateStartWithTZ } from './helpers/strartTime.helper';
 import { shortenName } from './helpers/substring.helper';
 import { toHHMMSS } from './helpers/avgPace.helper';
 import { MileProfile } from './MileProfile';

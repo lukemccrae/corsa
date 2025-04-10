@@ -1,4 +1,4 @@
-import { ArticleElement, User } from "../types";
+import { ArticleElement } from "../types";
 import { domain } from "../context/domain.context";
 import { retrieveUserToken } from "../helpers/token.helper";
 import { removeQuotesFromContent } from "../helpers/removeQuotesHelper";

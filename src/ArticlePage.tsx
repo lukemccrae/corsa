@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 
 import {
@@ -11,13 +11,9 @@ import {
   Typography,
   Link as WebLink,
 } from '@mui/material';
-import Grid from '@mui/material/Grid2';
 import { ArticleElement, PaceTableType, Plan, Text } from './types';
 import { useUser } from './context/UserContext';
 import { PaceTable } from './PaceTable';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import { unescapeMarkdown } from './helpers/markdown.helper';
 import { fetchPlanDetails } from './services/anon.service';
 
 export const CustomImage: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = ({
@@ -65,10 +61,38 @@ export const ArticlePage = () => {
     <Container maxWidth="sm">
       {plan && (
         <>
-          <Box sx={{ marginTop: '80px' }}>
-            <Typography sx={{ color: 'black', margin: 3 }} variant="h4">
-              {plan.name}
-            </Typography>
+          <Box sx={{ marginTop: '120px' }}>
+            <Box sx={{ marginTop: '80px' }}>
+              {/* Blog title */}
+              <Typography
+                variant="h4"
+                sx={{
+                  color: 'black',
+                  fontWeight: 'bold',
+                  fontSize: '2.25rem', // ~36px like Substack
+                  lineHeight: 1.3,
+                  marginX: 3,
+                  marginBottom: 1,
+                }}
+              >
+                {plan.name}
+              </Typography>
+
+              {/* Subheading / subtitle */}
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  color: 'text.secondary',
+                  fontSize: '0.9375rem', // ~15px
+                  fontWeight: 400,
+                  lineHeight: 1.5,
+                  marginX: 3,
+                  marginBottom: 3,
+                }}
+              >
+                {plan.subHeading}
+              </Typography>
+            </Box>
             <Stack direction="row" sx={{ margin: '0 0 0 30px' }}>
               <Avatar alt={plan.author} src={plan.profilePhoto} sx={{ width: 64, height: 64 }} />
               <Box sx={{ margin: 2 }}>
@@ -99,6 +123,8 @@ export const ArticlePage = () => {
               </Box>
             </Stack>
           </Box>
+          <Divider></Divider>
+
           {/* Content Section */}
 
           {plan.articleElements.map((e: ArticleElement, index) => {
