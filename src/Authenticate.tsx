@@ -10,7 +10,6 @@ import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import { useUser } from './context/UserContext';
 
-
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
@@ -43,17 +42,13 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
     position: 'absolute',
     zIndex: -1,
     inset: 0,
-    backgroundImage:
-      'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
+    backgroundImage: 'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
     backgroundRepeat: 'no-repeat',
     ...theme.applyStyles('dark', {
-      backgroundImage:
-        'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
+      backgroundImage: 'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
     }),
   },
 }));
-
-
 
 export const Authenticate = () => {
   const [emailError, setEmailError] = React.useState(false);
@@ -64,14 +59,13 @@ export const Authenticate = () => {
   const [needToRegister, setNeedToRegister] = React.useState(false);
   const { loginUser, registerUser } = useUser();
 
-
   const handleNeedToRegister = () => {
-    setNeedToRegister(!needToRegister)
-  }
+    setNeedToRegister(!needToRegister);
+  };
 
   const validateInputs = () => {
-    const email = (document.getElementById('register-email') as HTMLInputElement);
-    const password = document.getElementById('register-password') as HTMLInputElement;
+    const email = document.getElementById('email') as HTMLInputElement;
+    const password = document.getElementById('password') as HTMLInputElement;
     let isValid = true;
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
@@ -104,9 +98,9 @@ export const Authenticate = () => {
             variant="h4"
             sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
           >
-            {needToRegister ? "Sign up" : "Sign in"}
+            {needToRegister ? 'Sign up' : 'Sign in'}
           </Typography>
-          {!needToRegister ?
+          {!needToRegister ? (
             <Box
               component="form"
               onSubmit={loginUser}
@@ -137,18 +131,6 @@ export const Authenticate = () => {
                 />
               </FormControl>
               <FormControl>
-                {/* <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <FormLabel htmlFor="password">Password</FormLabel>
-                <Link
-                  component="button"
-                  type="button"
-                  onClick={handleClickOpenForgotPassword}
-                  variant="body2"
-                  sx={{ alignSelf: 'baseline' }}
-                >
-                  Forgot your password?
-                </Link>
-              </Box> */}
                 <TextField
                   error={passwordError}
                   helperText={passwordErrorMessage}
@@ -165,15 +147,8 @@ export const Authenticate = () => {
                 />
               </FormControl>
 
-              {/* <ForgotPassword open={open} handleClose={handleClose} /> */}
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                onClick={validateInputs}
-              >
+              <Button type="submit" fullWidth variant="contained" onClick={validateInputs}>
                 Sign in
-
               </Button>
               <Typography sx={{ textAlign: 'center' }}>
                 Email{' '}
@@ -186,7 +161,8 @@ export const Authenticate = () => {
                 for a beta account
               </Typography>
             </Box>
-            : // TERNARY
+          ) : (
+            // TERNARY
             <Box
               component="form"
               onSubmit={registerUser}
@@ -232,12 +208,7 @@ export const Authenticate = () => {
                   color={passwordError ? 'error' : 'primary'}
                 />
               </FormControl>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                onClick={validateInputs}
-              >
+              <Button type="submit" fullWidth variant="contained" onClick={validateInputs}>
                 Sign up
               </Button>
               <Typography sx={{ textAlign: 'center' }}>
@@ -250,19 +221,19 @@ export const Authenticate = () => {
                       alignSelf: 'center',
                       cursor: 'pointer',
                       display: 'inline',
-                      color: 'primary.main',      // Link color
+                      color: 'primary.main', // Link color
                       textDecoration: 'underline', // Underline style
-                      "&:hover": { textDecoration: 'none' }, // Remove underline on hover
+                      '&:hover': { textDecoration: 'none' }, // Remove underline on hover
                     }}
                   >
                     Sign in
                   </Typography>
                 </span>
               </Typography>
-            </Box>}
+            </Box>
+          )}
         </Card>
       </SignInContainer>
-
     </div>
   );
-}
+};

@@ -3,7 +3,6 @@ import { Sha256 } from "@aws-crypto/sha256-js";
 import { HttpRequest } from "@aws-sdk/protocol-http";
 import { domain } from "../context/domain.context";
 import { Anon } from "../context/UserContext";
-import { User } from "../types";
 
 interface GetPublishedUserInfoProps {
   username: String;
@@ -127,6 +126,7 @@ export const fetchPlanDetails = async (
         durationInSeconds
         gainInMeters
         gap
+        subHeading
         lastMileDistance
         lossInMeters
         mileData {

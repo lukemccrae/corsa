@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/aws-amplify"
+    ],
     "target": "ESNext",
     "useDefineForClassFields": true,
     "types": ["node"],
@@ -18,8 +22,8 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": false, //todo: might want this to be true in the future
-    "noUnusedParameters": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],

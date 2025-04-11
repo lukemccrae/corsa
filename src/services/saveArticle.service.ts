@@ -1,4 +1,4 @@
-import { ArticleElement, User } from "../types";
+import { ArticleElement } from "../types";
 import { domain } from "../context/domain.context";
 import { retrieveUserToken } from "../helpers/token.helper";
 import { removeQuotesFromContent } from "../helpers/removeQuotesHelper";
@@ -7,15 +7,17 @@ interface SaveArticleProps {
   elements: ArticleElement[];
   slug: string;
   userId: string;
+  planName: string;
 }
 
 export const saveArticle = async (props: SaveArticleProps) => {
   const mutation = `
-        mutation MyMutation($slug: ID!, $userId: String!, $articleElements: String!) {
+        mutation MyMutation($slug: ID!, $userId: String!, $articleElements: String!, $planName: String!) {
         updateArticleByPlanId(
             slug: $slug,
             userId: $userId,
             articleElements: $articleElements
+            planName: $planName
         ) {
             success
         }
@@ -25,7 +27,8 @@ export const saveArticle = async (props: SaveArticleProps) => {
   const variables = {
     slug: props.slug,
     userId: props.userId,
-    articleElements: JSON.stringify(removeQuotesFromContent(props.elements))
+    articleElements: JSON.stringify(removeQuotesFromContent(props.elements)),
+    planName: props.planName
   };
 
   try {

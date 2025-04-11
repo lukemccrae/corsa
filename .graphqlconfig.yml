@@ -1,0 +1,16 @@
+projects:
+  corsa-graphql-api:
+    schemaPath: src/graphql/schema.json
+    includes:
+      - src/graphql/**/*.ts
+    excludes:
+      - ./amplify/**
+      - src/API.ts
+    extensions:
+      amplify:
+        codeGenTarget: typescript
+        generatedFileName: src/API.ts
+        docsFilePath: src/graphql
+        region: us-west-1
+        apiId: kpreppqc2nam7kvi4zlnj7jiti
+        maxDepth: 2

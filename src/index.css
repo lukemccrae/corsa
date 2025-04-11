@@ -79,6 +79,15 @@ button:focus-visible {
   }
 }
 
+.leaflet-container {
+  height: 75vh;
+  width: 75wh;
+}
+
+.leaflet-attribution-flag {
+  display: none !important;
+}
+
 /* 
 colors
 

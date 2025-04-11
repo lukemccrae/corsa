@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "corsa",
+    "serviceName": "AppSync",
+    "defaultAuthType": {
+      "mode": "AWS_IAM"
+    }
+  }
+}

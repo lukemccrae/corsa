@@ -3,11 +3,10 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { AwsCredentialIdentity } from "@aws-sdk/types";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-providers";
 
-import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
+import { AuthenticationDetails, CognitoRefreshToken, CognitoUser } from "amazon-cognito-identity-js";
 import UserPool from "../UserPool";
 import { CognitoToken } from '../types';
 import jwtdecode from "jwt-decode";
-import { CognitoIdentityClient } from '@aws-sdk/client-cognito-identity';
 import { useNavigate } from 'react-router-dom';
 
 type User = {
@@ -35,6 +34,7 @@ type UserContextType = {
   logoutUser: () => Promise<void>
   loginUser: (event: any) => Promise<void>
   registerUser: (event: any) => Promise<void>
+  maybeRefreshUser: () => Promise<void>
 };
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -70,7 +70,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       if (checkValidUser(decodedUser)) {
         setUserInStorage(localUserCreds)
       } else {
-        localStorage.removeItem("user")
+        refreshUserSession();
       }
     }
 
@@ -89,6 +89,51 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     localStorage.removeItem("user")
     setUser(undefined)
   }
+
+  const maybeRefreshUser = async () => {
+    if (!user) return;
+    const now = Date.now() / 1000;
+  
+    if (user.exp < now + 60) {
+      await refreshUserSession();
+    }
+  };
+
+  const refreshUserSession = async () => {
+    const storedToken = localStorage.getItem("refreshToken");
+    const userEmail = user?.email;
+  
+    if (!storedToken || !userEmail) {
+      console.warn("No refresh token or user email found");
+      return;
+    }
+  
+    const cognitoUser = new CognitoUser({
+      Username: userEmail,
+      Pool: UserPool,
+    });
+  
+    const refreshToken = new CognitoRefreshToken({
+      RefreshToken: storedToken,
+    });
+  
+    return new Promise<void>((resolve, reject) => {
+      cognitoUser.refreshSession(refreshToken, (err, session) => {
+        if (err) {
+          console.error("Error refreshing session", err);
+          logoutUser(); // Optional
+          reject(err);
+        } else {
+          const newIdToken = session.getIdToken().getJwtToken();
+          const newRefreshToken = session.getRefreshToken().getToken();
+  
+          setUserInStorage(newIdToken);
+          localStorage.setItem("refreshToken", newRefreshToken); // ✅ refresh token might rotate
+          resolve();
+        }
+      });
+    });
+  };
 
   const checkValidUser = (decodedUser: CognitoToken) => {
     if (!decodedUser) return false;
@@ -121,7 +166,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     }
 
     event.preventDefault();
-    UserPool.signUp(email, password, [], [], (err, data) => {
+    UserPool.signUp(email, password, [], [], (err) => {
       if (err) {
         console.error(err);
       }
@@ -165,9 +210,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: function (result) {
         const idToken = result.getIdToken().getJwtToken()
-
-        // const refreshToken = result.getRefreshToken()
-        // TODO store refresh token and perform auto-refresh
+        const refreshToken = result.getRefreshToken().getToken();
+        localStorage.setItem("refreshToken", refreshToken);
 
         setUserInStorage(idToken)
       },
@@ -191,8 +235,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const getAnonCreds = async (): Promise<AwsCredentialIdentity> => {
     const REGION = "us-west-1";
     const IDENTITY_POOL_ID = "us-west-1:85bf7267-2f79-43cc-a053-063c7ee03228";
-
-    const cognitoClient = new CognitoIdentityClient({ region: REGION });
 
     const credentialsProvider = fromCognitoIdentityPool({
       identityPoolId: IDENTITY_POOL_ID,
@@ -242,7 +284,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, anon, registerUser, loginUser, checkValidAnon, setAnonCreds, getAnon, logoutUser }}>
+    <UserContext.Provider value={{ maybeRefreshUser, user, anon, registerUser, loginUser, checkValidAnon, setAnonCreds, getAnon, logoutUser }}>
       {children}
     </UserContext.Provider>
   );

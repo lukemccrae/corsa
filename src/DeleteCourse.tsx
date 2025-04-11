@@ -1,16 +1,16 @@
-import React from "react";
-import { Button, Tooltip } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import React from 'react';
+import { Button, Tooltip } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { deletePlanById } from "./services/deletePlan.service";
-import { useUser } from "./context/UserContext";
+} from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { deletePlanById } from './services/deletePlan.service';
+import { useUser } from './context/UserContext';
 
 interface DeleteButtonProps {
   label: string;
@@ -32,7 +32,7 @@ export const DeleteCourse = (props: DeleteButtonProps) => {
       await deletePlanById({ userId, slug, bucketKey });
     }
 
-    navigate("/app");
+    navigate('/app');
   };
 
   const handleOpen = () => {
@@ -50,7 +50,7 @@ export const DeleteCourse = (props: DeleteButtonProps) => {
 
   return (
     <>
-      <Tooltip title={props.disabled ? "Published articles cannot be deleted" : ""} arrow>
+      <Tooltip title={props.disabled ? 'Published articles cannot be deleted' : ''} arrow>
         <span>
           <Button
             variant="contained"
@@ -59,9 +59,9 @@ export const DeleteCourse = (props: DeleteButtonProps) => {
             onClick={handleOpen}
             disabled={props.disabled}
             sx={{
-              backgroundColor: "#469CE3",
-              "&:hover": {
-                backgroundColor: "#357ABD",
+              backgroundColor: '#469CE3',
+              '&:hover': {
+                backgroundColor: '#357ABD',
               },
             }}
           >
